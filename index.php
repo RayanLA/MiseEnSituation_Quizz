@@ -1,16 +1,11 @@
-<?php
-  session_start();
-?>
-
 <html>
     <?php
 
     include 'header.php';
 
-    $_POST['test'] = "toto";
+    
 
     ?>
-
     <?php 
           $ArrayQuizz = get3MostTrendyQuizz();
           //var_dump(($ArrayQuizz));
@@ -30,7 +25,10 @@
             if($i==0) echo '<div class="carousel-item active">';
             else echo '<div class="carousel-item">';
 
-            echo '<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
+            /*echo '<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
+              <div class="container">';*/
+
+            echo '<img class="bd-placeholder-img" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" style="opacity: 0.75;"/>
               <div class="container">';
 
             if($i==0) echo '<div class="carousel-caption text-left">';
@@ -81,7 +79,7 @@
   <div class="row mb-2">
   <?php
     $bd = OpenCon();
-    $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,quizz.date_creation as crea FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+    $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,quizz.date_creation as crea, quizz.url as url FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
      while (($row = $result->fetch_assoc())) {
       
       echo("<div class=\"col-md-6\">");
@@ -94,9 +92,10 @@
       echo("<a href=\"#\" class=\"stretched-link\">Tester mes connaissances</a>");
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
-      echo("<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" 
+      /*echo("<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" 
               preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\">
-              <title>Placeholder</title><rect width=\"100%\" height=\"100%\" fill=\"#55595c\"/><text x=\"50%\" y=\"50%\" fill=\"#eceeef\" dy=\".3em\">Thumbnail</text></svg>");
+              <title>Placeholder</title><rect width=\"100%\" height=\"100%\" fill=\"#55595c\"/><text x=\"50%\" y=\"50%\" fill=\"#eceeef\" dy=\".3em\">Thumbnail</text></svg>");*/
+      echo("<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."' style='overflow: hidden;object-fit: contain;'></img>");
       echo("</div>");
       echo("</div>");
       echo("</div>");

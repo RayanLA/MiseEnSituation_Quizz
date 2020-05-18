@@ -26,6 +26,7 @@ CREATE TABLE quizz
 	id_categorie INT NOT NULL,
 	description VARCHAR(300) NOT NULL,
 	date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+	url VARCHAR(500),
 	CONSTRAINT fk_id_createur FOREIGN KEY (id_createur) REFERENCES utilisateurs(id),
 	CONSTRAINT fk_id_categorie FOREIGN KEY (id_categorie) REFERENCES categories(id),
 	CONSTRAINT uni_quizz_categorie UNIQUE(id_categorie, nom)
