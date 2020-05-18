@@ -109,19 +109,22 @@
           </button>
         </div>
         <div class="modal-body">
-          <label for="email"><b>Pseudo</b></label>
+          <label for="email"><b>Identifiant</b></label>
           <input type="text" placeholder="Pseudo" class="form-control" name="email" required>
 
-          <label for="psw"><b>Password</b></label>
+          <label for="psw"><b>Mot de passe</b></label>
           <input type="password"  class="form-control" placeholder="Enter Password" name="psw" required>
+          <br/>
+          Pas encore inscrit ? <a href="inscription.php">Inscription</a>
+          
 
         </div>
         <div class="modal-footer">
         <!--<p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>-->
-
           <div class="clearfix">
             <button type="submit" class="btn btn-secondary">Connexion</button>
           </div>
+          
         </div>
       </div>
     </form>
