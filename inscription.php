@@ -1,8 +1,5 @@
 <?php
   session_start();
-  include("databaseRequests.php");
-  //Pour tester 
-  //testCo();
 ?>
 
 <html>
