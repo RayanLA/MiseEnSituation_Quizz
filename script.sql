@@ -84,17 +84,19 @@ INSERT INTO categories (nom) VALUES ('Films');
 
 
 /*INSERT QUIZZ */
-INSERT INTO quizz (id_createur, nom, id_categorie)
+INSERT INTO quizz (id_createur, nom, id_categorie, description)
 VALUES ( (SELECT id FROM utilisateurs WHERE login='iborne'), 
 		 'Disney', 
-		 (SELECT id FROM categories WHERE nom='Films') 
+		 (SELECT id FROM categories WHERE nom='Films') , 
+		 'Le monde merveilleux des dauphins ! '
 );
 
 
-INSERT INTO quizz (id_createur, nom, id_categorie)
+INSERT INTO quizz (id_createur, nom, id_categorie, description)
 VALUES ( (SELECT id FROM utilisateurs WHERE login='rlaroze'), 
 		 'Pokemon', 
-		 (SELECT id FROM categories WHERE nom='Jeux Vidéos') 
+		 (SELECT id FROM categories WHERE nom='Jeux Vidéos'), 
+		 'Le monde merveilleux des pikachus !'
 );
 
 
