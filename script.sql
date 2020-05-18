@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS utilisateurs, categories, quizz, questions,
 
 
 /*Table Creation */
-CREATE TABLE utilisateurs as U 
+CREATE TABLE utilisateurs
 (	
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	login VARCHAR(100) NOT NULL, 
@@ -12,7 +12,7 @@ CREATE TABLE utilisateurs as U
 	CONSTRAINT uni_util UNIQUE(login)
 );
 
-CREATE TABLE categories as C
+CREATE TABLE categories
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	nom VARCHAR(100) NOT NULL, 
@@ -22,15 +22,15 @@ CREATE TABLE categories as C
 CREATE TABLE quizz 
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	login_createur VARCHAR(100) NOT NULL,
+	id_createur INT NOT NULL,
 	nom VARCHAR(100) NOT NULL, 
 	id_categorie INT NOT NULL, 
-	FOREIGN KEY (login_createur) REFERENCES U(id),
-	FOREIGN KEY (id_categorie) REFERENCES C(id)?
+	CONSTRAINT fk_id_createur FOREIGN KEY (id_createur) REFERENCES utilisateurs(id),
+	CONSTRAINT fk_id_categorie FOREIGN KEY (id_categorie) REFERENCES categories(id),
 	CONSTRAINT uni_quizz_categorie UNIQUE(id_categorie, nom)
 );
 
-CREATE TABLE questions as Q 
+CREATE TABLE questions
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	id_quizz INT,
@@ -38,22 +38,22 @@ CREATE TABLE questions as Q
 	FOREIGN KEY (id_quizz) REFERENCES quizz(id)
 );
 
-CREATE TABLE reponses as R 
+CREATE TABLE reponses
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	id_question INT, 
+	id_question INT NOT NULL, 
 	reponse VARCHAR(100) NOT NULL, 
 	correct BOOLEAN NOT NULL DEFAULT 0, 
-	FOREIGN KEY id_question REFERENCES Q(id)
+	CONSTRAINT fk_id_question FOREIGN KEY (id_question) REFERENCES questions(id)
 );
 
-CREATE TABLE scores	as S 
+CREATE TABLE scores
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	id_quizz INT NOT NULL, 
 	id_utilisateur INT NOT NULL, 
-	FOREIGN KEY id_quizz REFERENCES quizz(id),
-	FOREIGN KEY id_utilisateur REFERENCES U(id),
+	CONSTRAINT fk_id_quizz FOREIGN KEY (id_quizz) REFERENCES quizz(id),
+	CONSTRAINT fk_id_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id),
 	CONSTRAINT uniq_quizz_utilisateur UNIQUE(id_quizz, id_utilisateur)
 );
 
