@@ -1,8 +1,3 @@
-/*Drop existing table */
-DROP TABLE IF EXISTS utilisateurs, categories, quizz, questions,
-					reponses, scores;
-
-
 /*Table Creation */
 CREATE TABLE utilisateurs
 (	
