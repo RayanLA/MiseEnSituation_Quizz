@@ -86,7 +86,7 @@
   <div class="row mb-2">
   <?php
     $bd = OpenCon();
-    $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+    $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,quizz.date_creation as crea FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
      while (($row = $result->fetch_assoc())) {
       
       echo("<div class=\"col-md-6\">");
@@ -94,6 +94,8 @@
       echo("<div class=\"col p-4 d-flex flex-column position-static\">");
       echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
       echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
+      echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
+      echo("<p class=\"mb-auto\">".$row["description"]."</p>");
       echo("<a href=\"#\" class=\"stretched-link\">Tester mes connaissances</a>");
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
