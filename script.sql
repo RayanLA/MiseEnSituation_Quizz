@@ -1,7 +1,5 @@
 /*Drop existing table */
-DROP TABLE IF EXISTS utilisateurs, categories, quizz, questions,
-					reponses, scores;
-
+DROP TABLE IF EXISTS scores, reponses, questions, quizz, categories, utilisateurs;
 
 /*Table Creation */
 CREATE TABLE utilisateurs
@@ -24,7 +22,9 @@ CREATE TABLE quizz
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	id_createur INT NOT NULL,
 	nom VARCHAR(100) NOT NULL, 
-	id_categorie INT NOT NULL, 
+	id_categorie INT NOT NULL,
+	description VARCHAR(300) NOT NULL,
+	date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 	CONSTRAINT fk_id_createur FOREIGN KEY (id_createur) REFERENCES utilisateurs(id),
 	CONSTRAINT fk_id_categorie FOREIGN KEY (id_categorie) REFERENCES categories(id),
 	CONSTRAINT uni_quizz_categorie UNIQUE(id_categorie, nom)
