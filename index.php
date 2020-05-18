@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  include("databaseRequests.php");
+  //Pour tester 
+  //testCo();
+?>
+
 <html>
     <head>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
