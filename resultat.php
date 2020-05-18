@@ -11,6 +11,8 @@
   <div class="col-md-12 blog-main">
       <h3 class="pb-4 mb-4 border-bottom">
       <?php
+        $answer[] = 1;
+        $_POST['repUser'] = $answer;
         $_POST['idQuizz'] = 1;
         $_POST['nomQuizz'] = 'Quiz';
         $idq = $_POST['idQuizz'];
@@ -21,13 +23,16 @@
 
   <div>
   <?php
+    $repUser = $_POST['repUser'];
+
 
     $bd = OpenCon();
     $result = $bd->query("SELECT question, id FROM questions WHERE questions.id_quizz = $idq ORDER BY questions.id");
 
-    $count = 1;
+    $count = 0;
 
     while (($row = $result->fetch_assoc())) {
+      $count++;
       echo("<h3 class=\"mb-0\"> Question ".$count." : ".$row["question"]."</h3>");
 
       $result2 = $bd->query("SELECT reponse, correct FROM reponses WHERE  reponses.id_question = ".$row['id']." ORDER BY reponses.id");
@@ -40,10 +45,12 @@
       
       }
       $result2->free();
-      $count ++;
 
     }
     $result->free();
+    if ($count !== count($repUser)){
+      echo("probleme nombre de réponse différent");
+    }
 
     CloseCon($bd);
 
