@@ -1,6 +1,6 @@
 <?php
   session_start();
-  include("databaseRequests.php");
+  /*include("databaseRequests.php");*/
   //Pour tester 
   //testCo();
 ?>
@@ -9,6 +9,8 @@
     <?php
 
     include 'header.php';
+
+    $_POST['test'] = "toto";
 
     ?>
   
@@ -120,7 +122,7 @@
 <div id="loginModal" class="modal fade" role="dialog">
   <!--<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>-->
   <div class="modal-dialog form-group">
-    <form class="modal-content" action="#">
+    <form class="modal-content" action="connexion.php" method="post">
       <div class="container">
         <div class="modal-header">
           <h5 class="modal-title" id="title" style="text-align: center">S'identifier</h5>
@@ -130,10 +132,10 @@
         </div>
         <div class="modal-body">
           <label for="email"><b>Identifiant</b></label>
-          <input type="text" placeholder="Pseudo" class="form-control" name="email" required>
+          <input type="text" placeholder="Pseudo" class="form-control" name="login" required>
 
           <label for="psw"><b>Mot de passe</b></label>
-          <input type="password"  class="form-control" placeholder="Enter Password" name="psw" required>
+          <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
           <br/>
           Pas encore inscrit ? <a href="inscription.php">Inscription</a>
           
@@ -149,6 +151,11 @@
       </div>
     </form>
   </div>
+}
+    
+  ?>
+  
+
 </div>
 
 <footer class="blog-footer">
