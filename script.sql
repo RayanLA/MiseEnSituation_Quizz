@@ -57,4 +57,68 @@ CREATE TABLE scores
 	CONSTRAINT uniq_quizz_utilisateur UNIQUE(id_quizz, id_utilisateur)
 );
 
-/*Insert */
+/*Insert USERS */
+INSERT INTO utilisateurs (login, mdp)
+VALUES ('iborne', 'olaf');
+
+INSERT INTO utilisateurs (login, mdp)
+VALUES ('rlaroze', 'pikachu');
+
+INSERT INTO utilisateurs (login, mdp)
+VALUES ('aly', 'quentin');
+
+INSERT INTO utilisateurs (login, mdp)
+VALUES ('lnedjar', 'meunuiserie');
+
+INSERT INTO utilisateurs (login, mdp)
+VALUES ('rvende', 'campagne');
+
+
+
+/*INSERT CATEGORIES */
+
+INSERT INTO categories (nom) VALUES ('Jeux vidéos');
+
+INSERT INTO categories (nom) VALUES ('Films');
+
+
+
+/*INSERT QUIZZ */
+INSERT INTO quizz (id_createur, nom, id_categorie)
+VALUES ( (SELECT id FROM utilisateurs WHERE login='iborne'), 
+		 'Disney', 
+		 (SELECT id FROM categories WHERE nom='Films') 
+);
+
+
+INSERT INTO quizz (id_createur, nom, id_categorie)
+VALUES ( (SELECT id FROM utilisateurs WHERE login='rlaroze'), 
+		 'Pokemon', 
+		 (SELECT id FROM categories WHERE nom='Jeux Vidéos') 
+);
+
+
+/*INSERT QUESTIONS */
+INSERT INTO questions (id_quizz, question)
+VALUES ( (SELECT id FROM quizz WHERE nom='Disney'), 
+	'Comment s\'appellent les amis d\'Ariel ? '
+);
+
+
+
+/*INSERT REPONSES */
+INSERT INTO reponses (id_question, reponse)
+VALUES ( (SELECT id FROM questions WHERE question='Comment s\'appellent les amis d\'Ariel ? '),
+ 		'Patrick et bob'
+);
+
+INSERT INTO reponses (id_question, reponse)
+VALUES ( (SELECT id FROM questions WHERE question='Comment s\'appellent les amis d\'Ariel ? '),
+ 		'Olaf et sven'
+);
+
+INSERT INTO reponses (id_question, reponse, correct)
+VALUES ( (SELECT id FROM questions WHERE question='Comment s\'appellent les amis d\'Ariel ? '),
+ 		'Sebastien et polochon',
+  		'1'
+);
