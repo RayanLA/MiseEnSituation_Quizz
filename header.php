@@ -36,6 +36,8 @@
           echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
         }
 
+        CloseCon($bd);
+
     ?>
     
     </nav>
