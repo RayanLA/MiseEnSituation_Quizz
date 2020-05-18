@@ -53,6 +53,7 @@ CREATE TABLE scores
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 	id_quizz INT NOT NULL, 
 	id_utilisateur INT NOT NULL, 
+	score INT NOT NULL DEFAULT 0,
 	CONSTRAINT fk_id_quizz FOREIGN KEY (id_quizz) REFERENCES quizz(id),
 	CONSTRAINT fk_id_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id),
 	CONSTRAINT uniq_quizz_utilisateur UNIQUE(id_quizz, id_utilisateur)
@@ -100,6 +101,20 @@ VALUES ( (SELECT id FROM utilisateurs WHERE login='rlaroze'),
 		 'Le monde merveilleux des pikachus !'
 );
 
+INSERT INTO quizz (id_createur, nom, id_categorie, description)
+VALUES ( (SELECT id FROM utilisateurs WHERE login='rlaroze'), 
+		 'Uncharted', 
+		 (SELECT id FROM categories WHERE nom='Jeux Vidéos'), 
+		 'Le monde merveilleux des pikachus !'
+);
+
+INSERT INTO quizz (id_createur, nom, id_categorie, description)
+VALUES ( (SELECT id FROM utilisateurs WHERE login='rlaroze'), 
+		 'Call of Duty !', 
+		 (SELECT id FROM categories WHERE nom='Jeux Vidéos'), 
+		 'Le monde merveilleux des pikachus !'
+);
+
 
 /*INSERT QUESTIONS */
 INSERT INTO questions (id_quizz, question)
@@ -124,4 +139,55 @@ INSERT INTO reponses (id_question, reponse, correct)
 VALUES ( (SELECT id FROM questions WHERE question='Comment s\'appellent les amis d\'Ariel ? '),
  		'Sebastien et polochon',
   		'1'
+);
+
+/*INSERT SCORE*/
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 100,
+		(SELECT id FROM utilisateurs WHERE login='rlaroze'),
+		(SELECT id FROM quizz WHERE nom='Disney')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 200,
+		(SELECT id FROM utilisateurs WHERE login='rlaroze'),
+		(SELECT id FROM quizz WHERE nom='Pokemon')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 300,
+		(SELECT id FROM utilisateurs WHERE login='rlaroze'),
+		(SELECT id FROM quizz WHERE nom='Uncharted')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 400,
+		(SELECT id FROM utilisateurs WHERE login='rlaroze'),
+		(SELECT id FROM quizz WHERE nom='Call of Duty !')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 300,
+		(SELECT id FROM utilisateurs WHERE login='iborne'),
+		(SELECT id FROM quizz WHERE nom='Uncharted')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 300,
+		(SELECT id FROM utilisateurs WHERE login='rvende'),
+		(SELECT id FROM quizz WHERE nom='Uncharted')
+
+);
+
+INSERT INTO scores (score, id_utilisateur, id_quizz)
+VALUES ( 400,
+		(SELECT id FROM utilisateurs WHERE login='iborne'),
+		(SELECT id FROM quizz WHERE nom='Call of Duty !')
+
 );
