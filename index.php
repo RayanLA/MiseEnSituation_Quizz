@@ -61,6 +61,24 @@
   </div>
   <div class="col-md-12 blog-main">
       <h3 class="pb-4 mb-4 font-italic border-bottom">
+        Ajouter un nouveau quizz
+      </h3>
+  </div>  
+  <div class="row mb-12">
+    
+    <div class="col-md-12">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">Toi aussi test les connaissances des autres</strong>
+          <p class="card-text">Nous t'offrons la possibilité de créer tes propres quizz, puis cela clique 
+            sur le lien en juste en dessous. Fait grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
+          <a href="#" class="stretched-link" style="text-align: center;">Créer un quizz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 blog-main">
+      <h3 class="pb-4 mb-4 font-italic border-bottom">
         Derniers quizz
       </h3>
   </div>  
