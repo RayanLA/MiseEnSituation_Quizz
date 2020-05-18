@@ -30,17 +30,17 @@ include ('databaseRequests.php');
 ?>
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="p-2 text-muted" href="#animaux">Animaux</a>
-      <a class="p-2 text-muted" href="#art">Art et culture</a>
-      <a class="p-2 text-muted" href="">Technologies</a>
-      <a class="p-2 text-muted" href="#">Histoire</a>
-      <a class="p-2 text-muted" href="#">Culture</a>
-      <a class="p-2 text-muted" href="#">Business</a>
-      <a class="p-2 text-muted" href="#">Politique</a>
-      <a class="p-2 text-muted" href="#">Opinion</a>
-      <a class="p-2 text-muted" href="#">Sciences</a>
-      <a class="p-2 text-muted" href="#">Santé</a>
-      <a class="p-2 text-muted" href="#">Mode</a>
-      <a class="p-2 text-muted" href="#">Voyage</a>
+    <?php
+
+        $bd = OpenCon();
+        $result = $bd->query("SELECT * FROM categories");
+	 			while (($row = $result->fetch_assoc())) {
+          echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
+        }
+
+        CloseCon($bd);
+
+    ?>
+    
     </nav>
   </div>
