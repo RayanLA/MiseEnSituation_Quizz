@@ -1,6 +1,6 @@
 <?php
 	include 'header.php';
-	var_dump($_POST);
+  unset($_SESSION['data'])
 ?>
 
 <div>
