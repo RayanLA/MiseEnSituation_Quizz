@@ -70,7 +70,7 @@
               $bd = OpenCon();
               $result = $bd->query("SELECT * FROM categories");
               while (($row = $result->fetch_assoc())) {
-                echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
+                echo("<a class=\"p-2 text-muted\" href=\"QuizzParCategorie.php?idCategorie=".$row["id"]."\">".$row["nom"]."</a>");
               }
 
               CloseCon($bd);
