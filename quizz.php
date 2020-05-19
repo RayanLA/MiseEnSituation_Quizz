@@ -26,7 +26,7 @@
 	    echo '
 	    <style>.hide{display:none;}</style>
 	    	<form action="question.php" method="post">
-		    	<input name="numquestion" id="numquestion" value="0" class="hide"/>
+		    	<input name="numquestion" id="numquestion" value="1" class="hide"/>
 		    	<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
 		    	<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 		    	<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
