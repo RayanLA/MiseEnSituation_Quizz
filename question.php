@@ -48,7 +48,7 @@
           while (($row2 = $result2->fetch_assoc())) {
             $answcount++;
             echo("<div class=\"form-check\" >");
-            echo("<input class=\"form-check-input\" type=\"checkbox\" name=\"question\" value=\"".$answcount."\" id=\"defaultCheck1\">");
+            echo("<input class=\"form-check-input\" type=\"checkbox\" name=\"question[]\" value=\"".$answcount."\" id=\"defaultCheck1\">");
             echo("<label class=\"form-check-label\" for=\"defaultCheck1\">".$row2["reponse"]."</label>");
             echo("</div>");
       
