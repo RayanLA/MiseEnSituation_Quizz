@@ -1,16 +1,9 @@
 <html>
     <?php
-
-    include 'header.php';
-
-    
-
+      include 'header.php';
+      $ArrayQuizz = get3MostTrendyQuizz();
     ?>
-    <?php 
-          $ArrayQuizz = get3MostTrendyQuizz();
-          //var_dump(($ArrayQuizz));
-      ?>
-  
+
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -81,9 +74,27 @@
   </div>  
 
   <div class="row mb-2">
+
+    <script type="text/javascript">
+      function validateForm(e){e.closest("form").submit();}
+    </script>
+    <style type="text/css">
+      .link{
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent;
+      }
+    </style>
   <?php
     $bd = OpenCon();
-    $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,quizz.date_creation as crea, quizz.url as url FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+
+    $result = $bd->query("
+      SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,
+      quizz.date_creation as crea, quizz.url as url, categories.id as id_categorie,
+      quizz.id as id_quizz
+      FROM quizz,categories 
+      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+
      while (($row = $result->fetch_assoc())) {
       
       echo("<div class=\"col-md-6\">");
@@ -93,7 +104,13 @@
       echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
       echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
       echo("<p class=\"mb-auto\">".$row["description"]."</p>");
-      echo("<a href=\"#\" class=\"stretched-link\">Tester mes connaissances</a>");
+
+      echo('<form action="quizz.php" method="post">
+          <input type="text" name="id_categorie" value="'.$row["id_quizz"].'" style="display:none">
+          <input type="text" name="id_categorie" value="'.$row["id_categorie"].'" style="display:none">
+          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
+        </form>');
+
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
       /*echo("<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" 
