@@ -2,21 +2,27 @@
 
 <?php
 	include 'header.php';
-	echo($_POST['nomQuizz']);
-	echo($_POST['numquestion']);
-	var_dump($_POST);
 
 	if (isset($_POST['idQuizz']) && isset($_POST['nomQuizz']) && isset($_POST['numquestion']) && isset($_POST['nomcat'])){
+
+		$array = [];
+		if(!empty($_POST['question'])) {    
+    	foreach($_POST['question'] as $value){
+    		$array[] = $value;
+    	}
+  	}
+  	$_SESSION["data"][] = $array;
+  	//var_dump($_SESSION["data"]);
 ?>
 
 <div>
   <form action="question.php" method="post" id="autoclick">
     <div class="form-group">
-    	<input name="numquestion" id="numquestion" value="<?php echo($_POST['numquestion']+1); ?>"/>
-    	<input name="idQuizz" id="idQuizz" value="<?php echo($_POST['idQuizz']); ?>"/>
-    	<input name="nomQuizz" id="nomQuizz" value="<?php echo($_POST['nomQuizz']); ?>"/>
-    	<input name="nomcat" id="nomcat" value="<?php echo($_POST['nomcat']); ?>"/>
-    	<button type="submit" class="btn btn-primary">Valider</button>
+    	<input type="hidden" name="numquestion" id="numquestion" value="<?php echo($_POST['numquestion']+1); ?>"/>
+    	<input type="hidden" name="idQuizz" id="idQuizz" value="<?php echo($_POST['idQuizz']); ?>"/>
+    	<input type="hidden" name="nomQuizz" id="nomQuizz" value="<?php echo($_POST['nomQuizz']); ?>"/>
+    	<input type="hidden" name="nomcat" id="nomcat" value="<?php echo($_POST['nomcat']); ?>"/>
+    	<button type="submit" class="btn btn-primary"style="display:none">Valider</button>
     </div>
    </form>
  </div>
@@ -29,7 +35,6 @@
 	} else {
 		echo("Page introuvable");
 	}
-?>
-<?php
+
       include 'footer.php'
 ?>
