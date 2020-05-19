@@ -81,7 +81,7 @@
     $bd = OpenCon();
     $result = $bd->query("SELECT quizz.nom as qnom,categories.nom as cnom,quizz.description as description,quizz.date_creation as crea, quizz.url as url FROM quizz,categories WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
      while (($row = $result->fetch_assoc())) {
-      
+      var_dump($row);
       echo("<div class=\"col-md-6\">");
       echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
       echo("<div class=\"col p-4 d-flex flex-column position-static\">");
