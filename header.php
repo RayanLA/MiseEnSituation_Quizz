@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  include ('databaseRequests.php');
+  
+  updateImages();
+?>
 <head>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
   <title>QUIZZ</title>
@@ -15,7 +21,7 @@
 
         </div>
         <div class="col-4 text-center">
-          <a class="blog-header-logo text-dark" href="#">Quizzio</a>
+          <a class="blog-header-logo text-dark" href="index.php">Quizzio</a>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
           <a class="text-muted" href="#" aria-label="Search">
@@ -32,9 +38,6 @@
           </div>
           </div>
           </header>
-          <?php 
-          include ('databaseRequests.php'); 
-          ?>
           <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
               <?php
