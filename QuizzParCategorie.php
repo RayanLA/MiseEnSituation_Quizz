@@ -22,33 +22,32 @@
   <div class="row mb-2">
     <?php 
     $conn = OpenCon();
-
     try {
-      //TO DO : remplacer le 2 par $_POST['id_catégorie'] lors de l'envoie de la page précèdente
-      if($result = $conn->query("SELECT * FROM quizz WHERE id_categorie='2'")){
-         while (($row = $result->fetch_assoc())) {
-                  echo '<div class="col-md-6">
-                  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                      <h3 class="mb-0">'.$row['nom'].'</h3>
-                      <p class="card-text mb-auto"> Ce quizz comporte ';
+      if($result = $conn->query("SELECT * FROM quizz WHERE id_categorie=".$_GET['idCategorie']." ")){
+         while ($row = $result->fetch_assoc()) {
+            echo '<div class="col-md-6">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">'.$row['nom'].'</h3>
+                <p class="card-text mb-auto"> Ce quizz comporte ';
 
-                      $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id']." ";
-                      $result = mysqli_query($conn,$query) or die (mysqli_error());
-                      $resultat=mysqli_fetch_row($result);
-                      echo $resultat[0]. ' questions</p>
+                $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id']." ";
+                $result1 = mysqli_query($conn,$query) or die (mysqli_error());
+                $resultat=mysqli_fetch_row($result1);
+                echo $resultat[0]. ' questions</p>
 
-                      <a href="#" class="stretched-link">Tester mes connaissances</a>
-                    </div>
-                    <div class="col-auto d-none d-lg-block">
-                      <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                    </div>
-                  </div>
-                </div>'; 
-              }
+                <p><i>'.$row['description'].' </i></p>
+
+                <a href="Quizz.php?idQuizz='.$row['id'].'" class="stretched-link">Tester mes connaissances</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <img class="bd-placeholder-img" width="200" height="250" focusable="false" role="img" aria-label="Placeholder: Thumbnail" src="'.$row["url"].'" style="overflow: hidden;object-fit: contain;"></img>
+              </div>
+            </div>
+          </div>'; 
+        }
+        $result->free();
       }
-
-      $result->free();
     } catch (Exception $e) {
       echo $e;
     }
