@@ -52,24 +52,28 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-  <div class="col-md-12 blog-main">
-      <h3 class="pb-4 mb-4 font-italic border-bottom">
-        Ajouter un nouveau quizz
-      </h3>
-  </div>  
-  <div class="row mb-12">
-    
-    <div class="col-md-12">
-      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">Toi aussi test les connaissances des autres</strong>
-          <p class="card-text">Nous t'offrons la possibilité de créer tes propres quizz, puis cela clique 
-            sur le lien en juste en dessous. Fait grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
-          <a href="#" class="stretched-link" style="text-align: center;">Créer un quizz</a>
+  <?php
+    if(isset($_SESSION['login'])){
+      echo '<div class="col-md-12 blog-main">
+          <h3 class="pb-4 mb-4 font-italic border-bottom">
+            Ajouter un nouveau quizz
+          </h3>
+      </div>  
+      <div class="row mb-12">
+        
+        <div class="col-md-12">
+          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+              <strong class="d-inline-block mb-2 text-primary">Toi aussi test les connaissances des autres</strong>
+              <p class="card-text">Nous t\'offrons la possibilité de créer tes propres quizz, puis cela clique 
+                sur le lien en juste en dessous. Fait grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
+              <a href="#" class="stretched-link" style="text-align: center;">Créer un quizz</a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div>';
+    }
+  ?>
   <div class="col-md-12 blog-main">
       <h3 class="pb-4 mb-4 font-italic border-bottom">
         Derniers quizz
@@ -113,54 +117,6 @@
   </div>
 </div>
 
-<div id="loginModal" class="modal fade" role="dialog">
-  <!--<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>-->
-  <div class="modal-dialog form-group">
-    <form class="modal-content" action="connexion.php" method="post">
-      <div class="container">
-        <div class="modal-header">
-          <h5 class="modal-title" id="title" style="text-align: center">S'identifier</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <label for="email"><b>Identifiant</b></label>
-          <input type="text" placeholder="Pseudo" class="form-control" name="login" required>
-
-          <label for="psw"><b>Mot de passe</b></label>
-          <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
-          <br/>
-          Pas encore inscrit ? <a href="inscription.php">Inscription</a>
-          
-
-        </div>
-        <div class="modal-footer">
-        <!--<p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>-->
-          <div class="clearfix">
-            <button type="submit" class="btn btn-secondary">Connexion</button>
-          </div>
-          
-        </div>
-      </div>
-    </form>
-  </div>
-}
-    
-  ?>
-  
-
-</div>
-
-<footer class="blog-footer">
-  <p>Quizzio by RILAR.</p>
-  <p>
-    <a href="#">Retournez en haut</a>
-  </p>
-</footer>
-</body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script></body>
-</html>
-
-</html>
+<?php
+      include 'footer.php'
+?>
