@@ -88,26 +88,31 @@
 	 /*https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q=book&searchType=image*/
 
 	 function getURL($theme){
+	 	//echo("theme : ".$theme);
 	 	try {
 	 		$ch = curl_init();
 			// IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
 			// in most cases, you should set it to true
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_URL, "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q=".$theme."&searchType=image");
+			$url  = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q='".urlencode($theme)."'&searchType=image";
+			curl_setopt($ch, CURLOPT_URL, $url);
 			$result = curl_exec($ch);
+			/*var_dump($result);
+			var_dump($url);*/
 			curl_close($ch);
 
 			$obj = json_decode($result);
+			//var_dump($obj);
 			if(is_object($obj)){
 				$tab = $obj->{'items'};
-				echo(($tab[0]->{'link'})."<br>");
+				//echo(($tab[0]->{'link'})."<br>");
 				return $tab[0]->{'link'};
 			}
-			return " ";
+			return "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
 	 		
 	 	} catch (Exception $e) {
-	 		return ' ';
+	 		return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
 	 	}
 	 	
 	 }
