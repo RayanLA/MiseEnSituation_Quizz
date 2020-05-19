@@ -106,8 +106,8 @@
       echo("<p class=\"mb-auto\">".$row["description"]."</p>");
 
       echo('<form action="quizz.php" method="post">
-          <input type="text" name="id_quizz" value="'.$row["id_quizz"].'" style="display:none">
-          <input type="text" name="id_categorie" value="'.$row["id_categorie"].'" style="display:none">
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
           <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
         </form>');
 
