@@ -20,17 +20,12 @@
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-          
-        <?php
-            if(!isset($_SESSION['login'])){
-              echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal">S\'identifier</a>';
-            }else{
 
+        <?php
+            if(isset($_SESSION['login'])){
             echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
             }
-          ?>
-      
-          
+        ?>
         </div>
         <div class="col-4 text-center">
           <a class="blog-header-logo text-dark" href="index.php">Quizzio</a>
@@ -40,8 +35,11 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24" focusable="false"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
           </a>-->
 
-                  <?php
-                if(isset($_SESSION['login'])){
+              <?php
+                if(!isset($_SESSION['login'])){
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal">S\'identifier</a>';
+                }
+                else{
                   echo '<div class="dropdown">';
                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       echo '<svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -73,10 +71,7 @@
               while (($row = $result->fetch_assoc())) {
                 echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
               }
-
               CloseCon($bd);
-
               ?>
-
             </nav>
           </div>
