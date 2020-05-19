@@ -43,10 +43,12 @@
           echo("</div>");
         
           $result2 = $bd->query("SELECT reponse FROM reponses WHERE  reponses.id_question = ".$row['id']." ORDER BY reponses.id");
+          $answcount = 0;
         
           while (($row2 = $result2->fetch_assoc())) {
-            echo("<div class=\"form-check\" name=\"firs\">");
-            echo("<input class=\"form-check-input\" type=\"checkbox\" value=\"0\" id=\"defaultCheck1\">");
+            $answcount++;
+            echo("<div class=\"form-check\" >");
+            echo("<input class=\"form-check-input\" type=\"checkbox\" name=\"question\" value=\"".$answcount."\" id=\"defaultCheck1\">");
             echo("<label class=\"form-check-label\" for=\"defaultCheck1\">".$row2["reponse"]."</label>");
             echo("</div>");
       
@@ -68,7 +70,7 @@
       <?php
         } else {
       ?>
-      <form action="resultat.php" method="post">
+      <form action="resultat.php" method="post" id="autoclick">
         <input name="numquestion" id="numquestion" value="<?php echo($numquestion); ?>"/>
         <input name="idQuizz" id="idQuizz" value="<?php echo($idQuizz); ?>"/>
         <input name="nomQuizz" id="nomQuizz" value="<?php echo($nomQuizz); ?>"/>
