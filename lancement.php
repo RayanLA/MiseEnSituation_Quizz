@@ -18,3 +18,7 @@
 <script type="text/javascript">
   	//document.getElementById("autoclick").submit();
 </script>
+
+<?php
+      include 'footer.php'
+?>
