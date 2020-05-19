@@ -1,62 +1,35 @@
-
 <html>
-    <?php
 
-    include 'header.php';
-    ?>
-  
-  <div class="col-md-12 blog-main">
-      <h3 class="pb-4 mb-4 border-bottom">
-      <?php
-        $answer[] = 1;
-        $_POST['repUser'] = $answer;
-        $_POST['idQuizz'] = 1;
-        $_POST['nomQuizz'] = 'Quiz';
-        $idq = $_POST['idQuizz'];
-        echo($_POST['nomQuizz']);
-      ?>
-      </h3>
-  </div>  
+<?php
+	include 'header.php';
+	echo($_POST['nomQuizz']);
+	echo($_POST['numquestion']);
+	var_dump($_POST);
 
-  <div>
-  <?php
-    $repUser = $_POST['repUser'];
+	if (isset($_POST['idQuizz']) && isset($_POST['nomQuizz']) && isset($_POST['numquestion']) && isset($_POST['nomcat'])){
+?>
 
+<div>
+  <form action="question.php" method="post" id="autoclick">
+    <div class="form-group">
+    	<input name="numquestion" id="numquestion" value="<?php echo($_POST['numquestion']+1); ?>"/>
+    	<input name="idQuizz" id="idQuizz" value="<?php echo($_POST['idQuizz']); ?>"/>
+    	<input name="nomQuizz" id="nomQuizz" value="<?php echo($_POST['nomQuizz']); ?>"/>
+    	<input name="nomcat" id="nomcat" value="<?php echo($_POST['nomcat']); ?>"/>
+    	<button type="submit" class="btn btn-primary">Valider</button>
+    </div>
+   </form>
+ </div>
 
-    $bd = OpenCon();
-    $result = $bd->query("SELECT question, id FROM questions WHERE questions.id_quizz = $idq ORDER BY questions.id");
+<script type="text/javascript">
+  document.getElementById("autoclick").submit();
+</script>
 
-    $count = 0;
-
-    while (($row = $result->fetch_assoc())) {
-      $count++;
-      echo("<h3 class=\"mb-0\"> Question ".$count." : ".$row["question"]."</h3>");
-
-      $result2 = $bd->query("SELECT reponse, correct FROM reponses WHERE  reponses.id_question = ".$row['id']." ORDER BY reponses.id");
-
-
-      while (($row2 = $result2->fetch_assoc())) {
-
-      echo("<div class=\"mb-1 text-muted\">".$row2["reponse"]."</div>");
-      echo("<p class=\"mb-auto\">".$row2["correct"]."</p>");
-      
-      }
-      $result2->free();
-
-    }
-    $result->free();
-    if ($count !== count($repUser)){
-      echo("probleme nombre de réponse différent");
-    }
-
-    CloseCon($bd);
-
-  ?>
-    
-  </div>
-
-
-
+<?php
+	} else {
+		echo("Page introuvable");
+	}
+?>
 <div id="loginModal" class="modal fade" role="dialog">
   <!--<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>-->
   <div class="modal-dialog form-group">
@@ -100,6 +73,4 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script></body>
-</html>
-
 </html>
