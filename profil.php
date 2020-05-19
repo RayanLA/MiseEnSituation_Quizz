@@ -24,19 +24,19 @@
   <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
           
-                <form>
+                <form action="#" method="post">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Ancien mot de passe</label>
-                        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="password1">Ancien mot de passe</label>
+                        <input type="password" class="form-control" id="password1" name="password1" aria-describedby="emailHelp">
                         
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Nouveau mot de passe</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <label for="password2">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="password2" name="password2">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Confirmation nouveau mot de passe</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <label for="password3">Confirmation nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="password3" name="password3">
                     </div>
                     <div class="text-center">
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -62,7 +62,30 @@
 </div>
 <br/>
 
+TOTO <br>
+
+
 <?php
+    try {
+      /*echo 'HERE0';*/
+      if(isset($_POST['password1'])){
+      $pwdIsCorrect = verifyIdentity($_SESSION['login'], $_POST['password1']);
+      if($pwdIsCorrect){
+        $pwd = $_POST['password2'];
+        $login = $_SESSION['login'];
+        $requestSQL = "UPDATE utilisateurs SET mdp = '".$pwd."'  WHERE login = '".$login."'";
+
+        $conn1 = OpenCon();
+        $conn1->query($requestSQL);
+        CloseCon($conn1);
+      }
+
+      }
+    } catch (Exception $e) {
+      var_dump($e);
+    }
+      
+      
       include 'footer.php'
 ?>
 

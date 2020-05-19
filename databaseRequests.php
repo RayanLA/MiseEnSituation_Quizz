@@ -140,4 +140,27 @@
 
 	 	CloseCon($conn);
 	 }
+
+	function verifyIdentity($login, $mdp){
+	 	try {
+	 		$bd = OpenCon();
+	 		if ($stmt = $bd->prepare("SELECT COUNT(id) FROM utilisateurs WHERE login=? AND mdp=?")){
+
+	 			$stmt->bind_param("ss", $_SESSION['login'], $_POST['password1']);
+	 			$stmt->execute();
+	 			$count_result = 0; 
+	 			$stmt->bind_result($count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return $count_result;
+	 			
+	 		}
+	 	} catch (Exception $e) {
+	 		echo $e;
+	 		return 0;
+	 	}
+        return 0;
+	 }
  ?> 
