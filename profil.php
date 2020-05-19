@@ -62,9 +62,6 @@
 </div>
 <br/>
 
-TOTO <br>
-
-
 <?php
     try {
       /*echo 'HERE0';*/
