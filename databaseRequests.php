@@ -119,8 +119,8 @@
 	 		if($result = $conn->query("SELECT id, nom FROM quizz WHERE url IS NULL LIMIT 3")){
 	 			 while (($row = $result->fetch_assoc())) {
 	 			 	$urlImage = getURL($row['nom']);
-	 			 	echo ($row['nom']."<br>");
-	 			 	echo ("UPDATE quizz SET url='".$urlImage.'\' WHERE id='.$row['id']);
+	 			 	//echo ($row['nom']."<br>");
+	 			 	//echo ("UPDATE quizz SET url='".$urlImage.'\' WHERE id='.$row['id']);
                    $conn->query("UPDATE quizz SET url='".$urlImage.'\' WHERE id='.$row['id']);
             	}
 	 		}else{;
