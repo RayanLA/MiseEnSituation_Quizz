@@ -1,7 +1,8 @@
 <html>
     <?php
     include 'header.php';
-    /*var_dump($_SESSION);*/
+
+    if(isset($_SESSION['data'])) unset($_SESSION['data']);
 
     if(isset($_POST['idQuizz']) && isset($_POST['idCategorie'])){
     	$array = getQuizzInfo($_POST['idQuizz'], $_POST['idCategorie']);
@@ -13,8 +14,10 @@
 	    			<strong class="d-inline-block mb-2 text-primary">'.$array['date_creation'].'</strong>
 	    			<p class="card-text">'.$array['description'].'</p>');
 
-    	echo '<script type="text/javascript">
+    
+    echo '<script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
+      function openAuthModal(){ document.getElementById("modalAuth").click(); }
     </script>
     <style type="text/css">
       .link{
@@ -23,16 +26,40 @@
         background-color: transparent;
       }</style>';
 
-	    echo '
+
+
+      if(isset($_SESSION) && isset($_SESSION['login'])){
+      	 echo '
 	    <style>.hide{display:none;}</style>
 	    	<form action="question.php" method="post">
-		    	<input name="numquestion" id="numquestion" value="0" class="hide"/>
+		    	<input name="numquestion" id="numquestion" value="1" class="hide"/>
 		    	<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
 		    	<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 		    	<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
 		    	<span class="stretched-link link" onclick="validateForm(this)">Commencer le quizz !</span>
 	    	</form>
 	    ';
+	}else{
+		/*echo '<span class="stretched-link link" onclick="" style="margin-top:2em;">Oups, il semble que tu n\'est pas encore connecté(e)... :(</span>';*/
+		echo ' 
+				<div class="row p-4 justify-content-center align-self-center">
+					<div class="col" style="max-width=50%">
+						<button class="btn btn-lg btn-primary" onclick="openAuthModal()">Se connecter</button>
+					</div>
+					<div class="col">
+						<style>.hide{display:none;}</style>
+						<form action="question.php" method="post">
+							<input name="numquestion" id="numquestion" value="1" class="hide"/>
+							<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
+							<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
+							<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
+							<input name="isGuest" id="isGuest" value="true" class="hide"/>
+							<span class="stretched-link link" style="vertical-align: middle;" onclick="validateForm(this)"> Ou jouer anonymement</span>
+						</form>
+						
+					</div>
+				</div>';
+	}
 
 	   /* echo '<a href="#" class="stretched-link" style="text-align: center;">Commencer le quizz</a>';*/
 
@@ -46,14 +73,13 @@
 	    echo('	</div>');
 
 	    /*Score personnel */
-	    
-	    $UserScore = getUserScore($_SESSION['idUtilisateur'], $_POST['idQuizz']);
-	    if(isset($UserScore)){
-	    	echo '<h3 class="font-italic">Ton meilleur score sur ce quizz : '.$UserScore.'</h3>';
-			/*echo '<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">';
+	    if(isset($_SESSION) && isset($_SESSION['login'])){
 
-			echo '	</div>';*/
-	    }
+	    	$UserScore = getUserScore($_SESSION['idUtilisateur'], $_POST['idQuizz']);
+	    	if(isset($UserScore)){
+	    		echo '<h3 class="font-italic">Ton meilleur score sur ce quizz : '.$UserScore.'</h3>';
+			}
+		}
 	    
 
 	    /*SCORE BOARD */

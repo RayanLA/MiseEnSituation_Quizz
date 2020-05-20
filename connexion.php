@@ -24,7 +24,8 @@ if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=?
     //connexion
     $res = mysqli_fetch_row($result);
 
-    $_SESSION['login'] = $_POST['login'];
+    $_SESSION['login']   = $_POST['login'];
+    $_SESSION['isGuest'] = false;
     
     header("Location:index.php?f=1");
     }

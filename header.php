@@ -36,10 +36,7 @@
           </a>-->
 
               <?php
-                if(!isset($_SESSION['login'])){
-                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal">S\'identifier</a>';
-                }
-                else{
+                if(isset($_SESSION['login'])){
                   echo '<div class="dropdown">';
                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       echo '<svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -57,6 +54,14 @@
                       </svg></a>';
                     echo '</div>';
                   echo '</div>';
+                }elseif(!isset($_SESSION['login']) && !( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) )) {
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="modalAuth">S\'identifier</a>';
+                }
+
+                if( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) ){
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="">Invité</a>';
                 }
               ?>
           </div>

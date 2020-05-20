@@ -4,6 +4,7 @@
     <?php
 
   include 'header.php';
+  
 
   if (isset($_POST['idQuizz']) && isset($_POST['nomQuizz']) && isset($_POST['numquestion']) && isset($_POST['nomcat'])&&isset($_SESSION['data'])){
 
