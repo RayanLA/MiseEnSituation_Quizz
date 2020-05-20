@@ -1,7 +1,9 @@
 <html>
   <?php
-
   include 'header.php';
+
+  if(isset($_POST['isGuest']) && $_POST['isGuest']) $_SESSION['isGuest']=$_POST['isGuest'];
+
   if (isset($_POST['idQuizz']) && isset($_POST['nomQuizz']) && isset($_POST['numquestion']) && isset($_POST['nomcat'])){
     $idQuizz = $_POST['idQuizz'];
     $nomQuizz = $_POST['nomQuizz'];
