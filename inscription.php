@@ -1,7 +1,9 @@
 <html>
     <?php
-
     include 'header.php';
+    if(isset($_SESSION["login"])){
+      header("Location:index.php");
+    }
     ?>
   
   <div class="col-md-12 blog-main">
