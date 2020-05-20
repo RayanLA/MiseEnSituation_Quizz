@@ -26,7 +26,7 @@
 	    echo '
 	    <style>.hide{display:none;}</style>
 	    	<form action="question.php" method="post">
-		    	<input name="numquestion" id="numquestion" value="0" class="hide"/>
+		    	<input name="numquestion" id="numquestion" value="1" class="hide"/>
 		    	<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
 		    	<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 		    	<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
@@ -39,7 +39,7 @@
 
 	    echo '</div>';
 
-    	echo "<div class=\"col-3 p-4 d-flex flex-column position-static\">
+    	echo "<div class=\".col-md-5 .col-3 .col-lg-3 p-4 d-flex flex-column position-static\">
     		<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$array["url"]."' style='overflow: hidden;object-fit: contain;'></img>
     			</div>";
 
