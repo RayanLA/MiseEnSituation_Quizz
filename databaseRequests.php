@@ -45,6 +45,10 @@
 	 	CloseCon($conn);
 	 }
 
+	 function phpAlert($msg) {
+		echo '<script type="text/javascript">alert("' . $msg . '")</script>';
+	}
+
 	function get3MostTrendyQuizz(){
 	 	$conn = OpenCon();
 	 	//result array

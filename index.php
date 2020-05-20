@@ -55,6 +55,7 @@
   </div>
   <?php
     if(isset($_SESSION['login'])){
+      phpAlert("Connexion réussie !"); 
       echo '<div class="col-md-12 blog-main">
           <h3 class="pb-4 mb-4 font-italic border-bottom">
             Ajouter un nouveau quizz
@@ -73,6 +74,11 @@
           </div>
         </div>
       </div>';
+    }
+    elseif(isset($_GET['f'])) {
+      if ($_GET['f'] == 0){
+        phpAlert("Login ou mot de passe incorrect !"); 
+      }
     }
   ?>
   <div class="col-md-12 blog-main">

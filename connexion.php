@@ -25,7 +25,7 @@ if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=?
     $res = mysqli_fetch_row($result);
 
     $_SESSION['login'] = $_POST['login'];
-    
+
     header("Location:index.php?f=1");
     }
     else {
