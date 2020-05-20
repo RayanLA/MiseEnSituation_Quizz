@@ -160,3 +160,9 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 100%;
   height: 32rem;
 }
+
+/*IMAGES*/
+.logo{
+  width: 60px;
+  height: 60px;
+}

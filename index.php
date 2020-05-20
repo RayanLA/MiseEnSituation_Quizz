@@ -30,7 +30,15 @@
 
             echo '<h1>'.$ArrayQuizz[$i][0].'</h1>';
             echo '<p>'.$ArrayQuizz[$i][1].'</p>';
-            echo '<p><a class="btn btn-lg btn-primary" href="'.'quiz/'.$ArrayQuizz[$i][2].'/'.$ArrayQuizz[$i][3].'" role="button">En savoir plus !</a></p>';
+
+
+            echo '<form action="quizz.php" method="post">
+          
+            <input type="text" name="idQuizz" value="'.$ArrayQuizz[$i][3].'" style="display:none">
+            <input type="text" name="idCategorie" value="'.$ArrayQuizz[$i][2].'" style="display:none">
+            <p><span class="btn btn-lg btn-primary" onclick="validateForm(this)" role=\'button\'>En savoir plus !</span></p>
+          </form>' ;
+
             echo ' </div></div></div>';
           }
       ?>
@@ -47,6 +55,10 @@
   </div>
   <?php
     if(isset($_SESSION['login'])){
+      if(isset($_SESSION['justConnected']) && $_SESSION['justConnected']){
+        phpAlert("Connexion réussie !"); 
+        unset($_SESSION['justConnected']);
+      }
       echo '<div class="col-md-12 blog-main">
           <h3 class="pb-4 mb-4 font-italic border-bottom">
             Ajouter un nouveau quizz
@@ -65,6 +77,11 @@
           </div>
         </div>
       </div>';
+    }
+    elseif(isset($_GET['f'])) {
+      if ($_GET['f'] == 0){
+        phpAlert("Login ou mot de passe incorrect !"); 
+      }
     }
   ?>
   <div class="col-md-12 blog-main">
@@ -96,7 +113,6 @@
       WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
 
      while (($row = $result->fetch_assoc())) {
-      
       echo("<div class=\"col-md-6\">");
       echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
       echo("<div class=\"col p-4 d-flex flex-column position-static\">");
@@ -136,4 +152,5 @@
 
 <?php
       include 'footer.php'
+
 ?>

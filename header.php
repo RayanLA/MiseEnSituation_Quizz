@@ -8,7 +8,9 @@
 ?>
 <head>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
-  <title>QUIZZ</title>
+  <link rel="icon" href="img/icone.png" />
+  <title>QUIZZIO</title>
+
 
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
@@ -20,13 +22,13 @@
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-
+          <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
         <?php
             if(isset($_SESSION['login'])){
             echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
             }
         ?>
-        </div>
+        </div>    
         <div class="col-4 text-center">
           <a class="blog-header-logo text-dark" href="index.php">Quizzio</a>
         </div>
@@ -36,10 +38,7 @@
           </a>-->
 
               <?php
-                if(!isset($_SESSION['login'])){
-                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal">S\'identifier</a>';
-                }
-                else{
+                if(isset($_SESSION['login'])){
                   echo '<div class="dropdown">';
                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       echo '<svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -57,6 +56,14 @@
                       </svg></a>';
                     echo '</div>';
                   echo '</div>';
+                }elseif(!isset($_SESSION['login']) && !( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) )) {
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="modalAuth">S\'identifier</a>';
+                }
+
+                if( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) ){
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="">Invité</a>';
                 }
               ?>
           </div>
