@@ -55,7 +55,10 @@
   </div>
   <?php
     if(isset($_SESSION['login'])){
-      phpAlert("Connexion réussie !"); 
+      if(isset($_SESSION['justConnected']) && $_SESSION['justConnected']){
+        phpAlert("Connexion réussie !"); 
+        unset($_SESSION['justConnected']);
+      }
       echo '<div class="col-md-12 blog-main">
           <h3 class="pb-4 mb-4 font-italic border-bottom">
             Ajouter un nouveau quizz
