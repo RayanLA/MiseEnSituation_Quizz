@@ -66,15 +66,6 @@
 
 </main><!-- /.container -->
 
-<footer class="blog-footer">
-  <p>Quizzio by RILAR.</p>
-  <p>
-    <a href="#">Retournez en haut</a>
-  </p>
-</footer>
-</body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script></body>
-</html>
-
-</html>
+<?php
+      include 'footer.php'
+?>

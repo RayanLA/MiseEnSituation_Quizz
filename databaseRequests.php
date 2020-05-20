@@ -88,26 +88,31 @@
 	 /*https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q=book&searchType=image*/
 
 	 function getURL($theme){
+	 	//echo("theme : ".$theme);
 	 	try {
 	 		$ch = curl_init();
 			// IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
 			// in most cases, you should set it to true
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_URL, "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q=".$theme."&searchType=image");
+			$url  = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q='".urlencode($theme)."'&searchType=image";
+			curl_setopt($ch, CURLOPT_URL, $url);
 			$result = curl_exec($ch);
+			/*var_dump($result);
+			var_dump($url);*/
 			curl_close($ch);
 
 			$obj = json_decode($result);
+			//var_dump($obj);
 			if(is_object($obj)){
 				$tab = $obj->{'items'};
-				echo(($tab[0]->{'link'})."<br>");
+				//echo(($tab[0]->{'link'})."<br>");
 				return $tab[0]->{'link'};
 			}
-			return " ";
+			return "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
 	 		
 	 	} catch (Exception $e) {
-	 		return ' ';
+	 		return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
 	 	}
 	 	
 	 }
@@ -123,11 +128,10 @@
 	 			 	//echo ("UPDATE quizz SET url='".$urlImage.'\' WHERE id='.$row['id']);
                    $conn->query("UPDATE quizz SET url='".$urlImage.'\' WHERE id='.$row['id']);
             	}
+            	$result->free();
 	 		}else{;
 	 			//ECHEC 
 	 		}
-
-			$result->free();
 	 	} catch (Exception $e) {
 	 		echo $e;
 	 	}
@@ -135,4 +139,108 @@
 
 	 	CloseCon($conn);
 	 }
+
+	function verifyIdentity($login, $mdp){
+	 	try {
+	 		$bd = OpenCon();
+	 		if ($stmt = $bd->prepare("SELECT COUNT(id) FROM utilisateurs WHERE login=? AND mdp=?")){
+
+	 			$stmt->bind_param("ss", $_SESSION['login'], $_POST['password1']);
+	 			$stmt->execute();
+	 			$count_result = 0; 
+	 			$stmt->bind_result($count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return $count_result;
+	 			
+	 		}
+	 	} catch (Exception $e) {
+	 		echo $e;
+	 		return 0;
+	 	}
+        return 0;
+	 }
+
+
+	function getQuizzInfo($idQuizz, $idCategorie){
+		try {
+			$conn = OpenCon();
+
+			$requestSQL = "SELECT q.nom as nom, q.date_creation as date_creation, q.description as description, q.url as url, c.nom as nomCategorie 
+						FROM quizz q, categories c
+						 WHERE c.id=q.id_categorie AND q.id=".$idQuizz;
+			
+			/*var_dump($requestSQL);*/
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	return $row;
+            	}
+            	$result->free();
+	 		}else{;
+	 			//ECHEC 
+	 		}
+
+			CloseCon($conn);
+		} catch (Exception $e) {
+			echo $e;	
+		}
+	}
+
+	function getScoreBoard($idQuizz){
+		try {
+			$res = [];$i=0;
+			$conn = OpenCon();
+			
+			$requestSQL = "SELECT u.login, s.score 
+						   FROM quizz q, scores s, utilisateurs u 
+						   WHERE q.id=s.id_quizz AND u.id=s.id_utilisateur AND q.id=".$idQuizz." 
+						   ORDER BY s.score DESC LIMIT 5";
+
+			/*var_dump($requestSQL);*/
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$i] = $row; $i++;
+            	}
+            	$result->free();
+	 		}else{;
+	 			//ECHEC 
+	 		}
+			CloseCon($conn);
+		} catch (Exception $e) {
+			echo $e;	
+		}
+		return $res;
+	}
+
+	function getUserScore($id_utilisateur, $idQuizz){
+		try {
+			$conn = OpenCon();
+			
+			$requestSQL = "SELECT s.score as score
+						   FROM utilisateurs u, scores s, quizz q 
+						   WHERE s.id_utilisateur=u.id AND q.id=s.id_quizz AND 
+						   		 u.id=".$id_utilisateur." AND q.id=".$idQuizz;
+
+			/*var_dump($requestSQL);*/
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	return $row['score'];
+            	}
+            	$result->free();
+	 		}else{;
+	 			//ECHEC 
+	 		}
+			CloseCon($conn);
+			return null;
+		} catch (Exception $e) {
+			echo $e;	
+			return null;
+		}
+	}
+
  ?> 
