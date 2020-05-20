@@ -152,7 +152,7 @@
 	 			$stmt->fetch();
 
 	 			CloseCon($bd);
-	 			var_dump("Result dbRequest : ".$count_result."<br>");
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
 	 			return $count_result;
 	 			
 	 		}
