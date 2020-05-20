@@ -247,4 +247,45 @@
 		}
 	}
 
+
+	function generateCardQuizz($row){
+		echo("<div class=\"col-md-6\">");
+      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
+      echo("<div class=\"col p-4 d-flex flex-column position-static\">");
+      echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
+      
+
+      echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
+
+      /*Start  nb résultat */
+      echo '<p class="card-text mb-auto"> Ce quizz comporte ';
+      $conn = OpenCon();
+      $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id_quizz']." ";
+      $result1 = mysqli_query($conn,$query) or die (mysqli_error());
+      $resultat=mysqli_fetch_row($result1);
+      echo $resultat[0]. ' questions</p>';
+      CloseCon($conn);
+      /*End */
+
+
+      
+      echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
+      echo("<p class=\"mb-auto\">".$row["description"]."</p>");
+
+      echo('<form action="quizz.php" method="post">
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
+          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
+        </form>');
+
+      echo("</div>");
+      echo("<div class=\"col-auto d-none d-lg-block\">");
+      echo("<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."' style='overflow: hidden;object-fit: contain;'></img>");
+      echo("</div>");
+      echo("</div>");
+      echo("</div>");
+	}
+
  ?> 
+
+
