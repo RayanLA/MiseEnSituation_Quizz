@@ -166,3 +166,19 @@ h1, h2, h3, h4, h5, h6 {
   width: 60px;
   height: 60px;
 }
+
+.formQuizDiv{
+  padding: 1.5em;
+}
+
+.descriptionQuizz {
+  white-space: nowrap;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbnailImage{
+  overflow: hidden;
+  object-fit: contain;
+}

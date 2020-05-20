@@ -247,4 +247,27 @@
 		}
 	}
 
+	function getExistingCategories(){
+		try {
+			$res=[];$i=0;
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id 
+						   FROM categories";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$i] = $row; $i++;
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
  ?> 
