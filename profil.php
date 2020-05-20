@@ -63,37 +63,25 @@
 <br/>
 
 <?php
-      echo 'HERE0';
+    try {
+      /*echo 'HERE0';*/
       if(isset($_POST['password1'])){
-        echo 'HERE1';
-        $bd = OpenCon();
-        if ($stmt = $bd->prepare("SELECT COUNT(id) FROM utilisateurs WHERE login=? AND mdp=?")){
-          echo 'here2';
-          $stmt->bind_param("ss", $_SESSION['login'], $_POST['password1']);
-          //echo('SELECT COUNT(id) FROM utilisateurs WHERE login='.$_SESSION['login'].' AND mdp='.$_POST['password1']);
-          $stmt->execute();
-          $count_result = 0; 
-          $stmt->bind_result($count_result);
-          $stmt->fetch();
+      $pwdIsCorrect = verifyIdentity($_SESSION['login'], $_POST['password1']);
+      if($pwdIsCorrect){
+        $pwd = $_POST['password2'];
+        $login = $_SESSION['login'];
+        $requestSQL = "UPDATE utilisateurs SET mdp = '".$pwd."'  WHERE login = '".$login."'";
 
-          if ($count_result==1){
-            //connexion
-            echo 'here3';
-            
-            //$update = $bd->prepare("UPDATE utilisateurs SET mdp = '$_POST['password2']'  WHERE login = '$_SESSION['login']'");
-            //$result = $update->execute(array($_POST['password2'],$_SESSION['login']));
-            $pwd = $_POST['password2'];
-            $login = $_SESSION['login'];
-            echo "UPDATE utilisateurs SET mdp = '".$pwd."',now()  WHERE login = '".$login."'";
-            $bd->query("UPDATE utilisateurs SET mdp = '".$pwd."',now()  WHERE login = '".$login."'");
-            
-            echo 'here4';
-            
-          }
-
-        }
-        CloseCon($bd);
+        $conn1 = OpenCon();
+        $conn1->query($requestSQL);
+        CloseCon($conn1);
       }
+
+      }
+    } catch (Exception $e) {
+      var_dump($e);
+    }
+      
       
       include 'footer.php'
 ?>
