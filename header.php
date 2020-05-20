@@ -8,7 +8,9 @@
 ?>
 <head>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
-  <title>QUIZZ</title>
+  <link rel="icon" href="img/icone.png" />
+  <title>QUIZZIO</title>
+
 
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
@@ -20,13 +22,13 @@
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-
+          <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
         <?php
             if(isset($_SESSION['login'])){
             echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
             }
         ?>
-        </div>
+        </div>    
         <div class="col-4 text-center">
           <a class="blog-header-logo text-dark" href="index.php">Quizzio</a>
         </div>
