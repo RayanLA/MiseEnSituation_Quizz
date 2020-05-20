@@ -25,7 +25,7 @@
           <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
         <?php
             if(isset($_SESSION['login'])){
-            echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
+            echo '<a class="p-2 text-muted" href="creationQuizz.php">Créer un quizz</a>';
             }
         ?>
         </div>    
