@@ -95,13 +95,7 @@
     <script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
     </script>
-    <style type="text/css">
-      .link{
-        color: #007bff;
-        text-decoration: none;
-        background-color: transparent;
-      }
-    </style>
+    
   <?php
     $bd = OpenCon();
 
@@ -113,29 +107,9 @@
       WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
 
      while (($row = $result->fetch_assoc())) {
-      echo("<div class=\"col-md-6\">");
-      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
-      echo("<div class=\"col p-4 d-flex flex-column position-static\">");
-      echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
-      echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
-      echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
-      echo("<p class=\"mb-auto\">".$row["description"]."</p>");
-
-      echo('<form action="quizz.php" method="post">
-          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
-          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
-          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
-        </form>');
-
-      echo("</div>");
-      echo("<div class=\"col-auto d-none d-lg-block\">");
-      /*echo("<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" 
-              preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\">
-              <title>Placeholder</title><rect width=\"100%\" height=\"100%\" fill=\"#55595c\"/><text x=\"50%\" y=\"50%\" fill=\"#eceeef\" dy=\".3em\">Thumbnail</text></svg>");*/
-      echo("<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."' style='overflow: hidden;object-fit: contain;'></img>");
-      echo("</div>");
-      echo("</div>");
-      echo("</div>");
+      
+      generateCardQuizz($row);
+      
       
       
       //echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");

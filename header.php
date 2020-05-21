@@ -79,7 +79,17 @@
               $bd = OpenCon();
               $result = $bd->query("SELECT * FROM categories");
               while (($row = $result->fetch_assoc())) {
-                echo("<a class=\"p-2 text-muted\" href=\"QuizzParCategorie.php?idCategorie=".$row["id"]."\">".$row["nom"]."</a>");
+                echo '<script type="text/javascript">
+                      function validateForm(e){e.closest("form").submit();}
+                    </script>';
+                echo"
+                <style>.hide{display:none;}</style>
+                  <form action=\"QuizzParCategorie.php\" method=\"post\">
+                    <input name=\"idCategorie\" id=\"numquestion\" value=\"".$row["id"]."\" class=\"hide\"/>
+                    <input name=\"nomCategorie\" value=\"".$row["nom"]."\" class=\"hide\"/>
+                    <a class=\"p-2 text-muted\" onclick=\"validateForm(this)\">".$row["nom"]."</a>
+                  </form>
+                  ";
               }
               CloseCon($bd);
               ?>
