@@ -16,6 +16,9 @@
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/blog.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
+  <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
   <div class="container">
@@ -25,7 +28,7 @@
           <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
         <?php
             if(isset($_SESSION['login'])){
-            echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
+            echo '<a class="p-2 text-muted" href="creationQuizz.php">Créer un quizz</a>';
             }
         ?>
         </div>    

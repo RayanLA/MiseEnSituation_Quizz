@@ -167,6 +167,43 @@ h1, h2, h3, h4, h5, h6 {
   height: 60px;
 }
 
+.formQuizDiv{
+  padding: 1.5em;
+}
+
+.descriptionQuizz {
+  white-space: nowrap;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbnailImage{
+  overflow: hidden;
+  object-fit: contain;
+}
+
+.VraiFaux{
+  width: 58px;
+}
+
+.RemoveQuestion{
+  color: red;
+  border-color: red !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.addResponse{
+  color: green;
+  border-color: green !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.hide{
+  display: none;
+}
 
 .link{
   color: #007bff;
