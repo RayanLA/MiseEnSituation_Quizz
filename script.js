@@ -76,17 +76,17 @@ function addQuestion(){
     questionReponse[id] = 0;
 }
 
-function changeCorrect(e){
+function changeCorrect(e, i, id){
     if($(e).text()=="Faux"){
         $(e).text("Vrai");
         $(e).addClass("btn-success");
         $(e).removeClass("btn-danger");
-        $('#correct_1').val('true');
+        $('#cq_'+i+'_'+id).val('true');
     }else{
         $(e).text("Faux");
         $(e).addClass("btn-danger");
         $(e).removeClass("btn-success");
-        $('#correct_1').val('false');
+        $('#cq_'+i+'_'+id).val('false');
 
     }
 }
@@ -111,8 +111,8 @@ function addResponse(i){
         '<div class="input-group mb-3">'
             +'<input type="text" class="form-control" id="q_'+i+'_'+id+'" placeholder="Reponse '+id+'" name="q_'+i+'_'+id+'">'
             +'<div class="input-group-append">'
-                +'<input id="correct_1" type="hidden" name="cq_'+i+'_'+id+'" value="false">'
-                +'<button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this)">Faux</button>'
+                +'<input id="cq_'+i+'_'+id+'" type="hidden" name="cq_'+i+'_'+id+'" value="false">'
+                +'<button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this, '+i+', '+id+')">Faux</button>'
                 +'<button class="btn btn-outline-secondary btn-outline-danger RemoveQuestion" type="button" onclick="deleteQuestion(this, '+i+','+id+')"> '
                 +'<i class="far fa-times-circle"></i>'
                 +'</button>'
