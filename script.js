@@ -94,19 +94,22 @@ function changeCorrect(e){
 function deleteQuestion(e, i, id){
     $(e).closest('.input-group').remove();//.remove();
     questionReponse[i]--;
+    console.log('de '+(id+1)+' à '+(questionReponse[i]+1));
+    for (var j = id+1; j <= questionReponse[i]+1; j++) {
+        console.log('#q_'+i+'_'+j)
+        $('#q_'+i+'_'+j).attr("placeholder", "Reponse "+(j-1));
+        $('#q_'+i+'_'+j).attr("id", "q_"+i+"_"+(j-1));
+    }
 }
 
 
 function addResponse(i){
     questionReponse[i]++;
     var id = questionReponse[i];
-    console.log(questionReponse);
-    console.log('addResponse onto '+i+ " for question "+id);
-    console.log('#responseContener_'+id);
     $('#responseContener_'+(i))
     .append(
         '<div class="input-group mb-3">'
-            +'<input type="text" class="form-control" placeholder="Reponse '+id+'" name="q_'+i+'_'+id+'">'
+            +'<input type="text" class="form-control" id="q_'+i+'_'+id+'" placeholder="Reponse '+id+'" name="q_'+i+'_'+id+'">'
             +'<div class="input-group-append">'
                 +'<input id="correct_1" type="hidden" name="cq_'+i+'_'+id+'" value="false">'
                 +'<button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this)">Faux</button>'
