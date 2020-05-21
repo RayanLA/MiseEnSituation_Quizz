@@ -59,7 +59,7 @@ function addQuestion(){
 
     $(".questionContener")
     .append(
-        '<div>'
+        '<div  class="p-3  border rounded mb-4">'
             +'<div class=" input-group mb-3">'
                 +'<div class="input-group-prepend">'
                     +'<span class="input-group-text" id="basic-addon1">Question '+(id+1)+': </span>'

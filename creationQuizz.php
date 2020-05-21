@@ -97,8 +97,8 @@
     			</div>
 
     			<!-- Question -->
-    			<div class="row no-gutters border rounded mb-4">
-    				<div class="questionContener col-md-12 p-3" ></div>
+    			<div class="row no-gutters">
+    				<div class="questionContener col-md-12" ></div>
     			</div>
 
     			<!-- Bouton ajout question-->
