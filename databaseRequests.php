@@ -272,9 +272,9 @@
 	}
 
 	function createquizz($conn, $nomQuizz, $description, $url ){
-		var_dump("
+		/*var_dump("
 					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
-			 		VALUES (".$_SESSION['idUtilisateur'].", ".$nomQuizz.", ".$_POST['categorie'].", ".$description.", ".$url.")");
+			 		VALUES (".$_SESSION['idUtilisateur'].", ".$nomQuizz.", ".$_POST['categorie'].", ".$description.", ".$url.")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
@@ -291,9 +291,9 @@
 	}
 
 	function createQuestion($conn, $question, $idQuizz){
-		var_dump("
+		/*var_dump("
 					INSERT INTO questions (id_quizz, question)
-			 		VALUES (".$idQuizz.", ".$question.")");
+			 		VALUES (".$idQuizz.", ".$question.")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO questions (id_quizz, question)
@@ -310,9 +310,9 @@
 	}
 
 	function createAnswer($conn, $reponse, $correct, $idQuestion){
-		var_dump("
+		/*var_dump("
 					INSERT INTO reponses (id_question, reponse, correct)
-			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");
+			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO reponses (id_question, reponse, correct)
@@ -357,10 +357,10 @@
 
 				createQuestion($conn, $theQuestion, $latestIdQuizz);
 				$latestIdQuestion = getLatestId($conn);
-
-				for ($j=1; $j <= count($aQuestion['reponses']['reponse']); $j++) { 
-					$reponse   = $aQuestion['reponses']['reponse'][$j];
-					$isCorrect = $aQuestion['reponses']['correct'][$j];
+				
+				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+					$reponse   = $value;
+					$isCorrect = $aQuestion['reponses']['correct'][$id];
 					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
 				}
 			}

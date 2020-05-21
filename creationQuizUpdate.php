@@ -3,7 +3,7 @@
     	include 'header.php';	
     	prepareDataForQuizzCreation();
     	$tab = addQuizz();
-
+    	
     	if(count($tab)==2){
     		echo '
     			<form action="quizz.php" method="post">
