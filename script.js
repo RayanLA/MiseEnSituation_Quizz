@@ -54,7 +54,26 @@ function getUrlImage(input){
 }
 
 function addQuestion(){
-    $(".questionContener").prepend('<div><div class=" input-group mb-3"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Question : </span></div><input type="text" class="form-control" id="question" name="question"><button class="btn btn-outline-secondary btn-outline-success addResponse" type="button" onclick="addResponse(this)"><i class="fas fa-plus-circle"></i></button></div><div class="responseContener"></div></div>');
+
+    var id = questionReponse.length;
+
+    $(".questionContener")
+    .append(
+        '<div>'
+            +'<div class=" input-group mb-3">'
+                +'<div class="input-group-prepend">'
+                    +'<span class="input-group-text" id="basic-addon1">Question '+(id+1)+': </span>'
+                +'</div>'
+                +'<input type="text" class="form-control" id="question_'+id+'" name="question_'+id+'">'
+                +'<button class="btn btn-outline-secondary btn-outline-success addResponse" type="button" onclick="addResponse('+id+')">'
+                +'<i class="fas fa-plus-circle"></i>'
+                +'</button>'
+            +'</div>'
+            +'<div id="responseContener_'+id+'"></div>'
+        +'</div>'
+    );
+
+    questionReponse[id] = 0;
 }
 
 function changeCorrect(e){
@@ -72,24 +91,40 @@ function changeCorrect(e){
     }
 }
 
-function deleteQuestion(e){
+function deleteQuestion(e, i, id){
     $(e).closest('.input-group').remove();//.remove();
+    questionReponse[i]--;
 }
 
 
-function addResponse(e){
-    //console.log($(e).closest('.uneQuestion').find('.responseContener').prepend("toto"));
-    //$(e).closest('.responseContener').prepend("fkfopjfpio");
-    //$('.responseContener').prepend( $('#uneReponse').html() );
-
-    $('.responseContener').prepend('<div class="input-group mb-3"><input type="text" class="form-control" placeholder="Reponse" name="reponse_1"><div class="input-group-append" id="button-addon4"><input id="correct_1" type="hidden" name="correct_1" value="false"><button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this)">Faux</button><button class="btn btn-outline-secondary btn-outline-danger RemoveQuestion" type="button" onclick="deleteQuestion(this)"> <i class="far fa-times-circle"></i></button></div></div> ');
+function addResponse(i){
+    questionReponse[i]++;
+    var id = questionReponse[i];
+    console.log(questionReponse);
+    console.log('addResponse onto '+i+ " for question "+id);
+    console.log('#responseContener_'+id);
+    $('#responseContener_'+(i))
+    .append(
+        '<div class="input-group mb-3">'
+            +'<input type="text" class="form-control" placeholder="Reponse '+id+'" name="q_'+i+'_'+id+'">'
+            +'<div class="input-group-append">'
+                +'<input id="correct_1" type="hidden" name="cq_'+i+'_'+id+'" value="false">'
+                +'<button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this)">Faux</button>'
+                +'<button class="btn btn-outline-secondary btn-outline-danger RemoveQuestion" type="button" onclick="deleteQuestion(this, '+i+','+id+')"> '
+                +'<i class="far fa-times-circle"></i>'
+                +'</button>'
+            +'</div>'
+        +'</div>'
+    );
 }
 
+var questionReponse = [];
 $(function(){
-    if($('#nomQuizz').length != 0 ){
-        $('#nomQuizz').ready(function(){
+    if($('#creationQuizz').length != 0 ){
+        $('#creationQuizz').ready(function(){
             addQuestion();
-            addResponse();
+            addResponse(0);
         });
     }
 });
+

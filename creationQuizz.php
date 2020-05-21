@@ -9,7 +9,7 @@
     	}
     ?>
 
-    <h3 class="pb-4 mb-4 font-italic border-bottom">Création d'un quizz</h3>
+    <h3 class="pb-4 mb-4 font-italic border-bottom" id="creationQuizz">Création d'un quizz</h3>
 
     <form action="creationQuizUpdate.php" method="POST">
 

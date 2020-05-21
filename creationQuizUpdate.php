@@ -2,7 +2,8 @@
     <?php
     	include 'header.php';	
     	$tab = addQuizz();
-    	if(count($tab)==2){
+    	var_dump($_POST);
+    	/*if(count($tab)==2){
     		echo '
     			<form action="quizz.php" method="post">
     				<input type="hidden" value="'.$tab[0].'" name="idCategorie">
@@ -24,7 +25,7 @@
     			</script>
     		';
 
-    	}
+    	}*/
     ?>
 
 <br>
