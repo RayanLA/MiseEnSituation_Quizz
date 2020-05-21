@@ -272,6 +272,9 @@
 	}
 
 	function createquizz($conn, $nomQuizz, $description, $url ){
+		/*var_dump("
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ".$nomQuizz.", ".$_POST['categorie'].", ".$description.", ".$url.")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
@@ -288,6 +291,9 @@
 	}
 
 	function createQuestion($conn, $question, $idQuizz){
+		/*var_dump("
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ".$question.")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO questions (id_quizz, question)
@@ -304,10 +310,13 @@
 	}
 
 	function createAnswer($conn, $reponse, $correct, $idQuestion){
+		/*var_dump("
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO reponses (id_question, reponse, correct)
-			 		VALUES (".$idQuestion.", ?, ".($correct=="true").")";
+			 		VALUES (".$idQuestion.", ?, ".(int)($correct=="true").")";
 
 			if ($stmt = $conn->prepare($SQLRequest)){
 	 			$stmt->bind_param("s", $reponse);
@@ -340,10 +349,21 @@
 			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
 			$latestIdQuizz = getLatestId($conn);
 
-			createQuestion($conn, $_POST['question'], $latestIdQuizz);
-			$latestIdQuestion = getLatestId($conn);
+			$array = $_POST['quizzData'];
 
-			createAnswer($conn, $_POST['reponse_1'], $_POST['correct_1'], $latestIdQuestion);
+			for($i=0; $i<count($array); $i++){
+				$aQuestion = $array[$i];
+				$theQuestion = $aQuestion['question'];
+
+				createQuestion($conn, $theQuestion, $latestIdQuizz);
+				$latestIdQuestion = getLatestId($conn);
+				
+				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+					$reponse   = $value;
+					$isCorrect = $aQuestion['reponses']['correct'][$id];
+					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
+				}
+			}
 
 			CloseCon($conn);
 
@@ -355,6 +375,46 @@
 		}
 		return [];
   }
+
+  function prepareDataForQuizzCreation(){
+  	$aray = [];
+  	foreach ($_POST as $name => $val)
+	{
+		/*Question*/
+		if( substr($name, 0, strlen("question_")) == "question_" ){
+			$array[substr($name, strlen("question_"), strlen($name))]["question"] = $val;
+			unset($_POST[$name]);
+		}
+
+		/*reponses cq_X_Y */
+		if( substr($name, 0, strlen("cq_")) == "cq_" ){
+			$reste = substr($name, strlen("cq_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["correct"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+
+		/*is a correct answer : q_iqQuestion_idReponse*/
+		if( substr($name, 0, strlen("q_")) == "q_" ){
+			$reste = substr($name, strlen("q_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["reponse"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+	}
+	$_POST["quizzData"] = $array;
+  }
+
+
+
 
 	function generateCardQuizz($row){
 		echo("<div class=\"col-md-6\">");
@@ -388,7 +448,7 @@
 
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
-      echo("<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."' style='overflow: hidden;object-fit: contain;'></img>");
+      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
       echo("</div>");
       echo("</div>");
       echo("</div>");

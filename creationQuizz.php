@@ -9,7 +9,7 @@
     	}
     ?>
 
-    <h3 class="pb-4 mb-4 font-italic border-bottom">Création d'un quizz</h3>
+    <h3 class="pb-4 mb-4 font-italic border-bottom" id="creationQuizz">Création d'un quizz</h3>
 
     <form action="creationQuizUpdate.php" method="POST">
 
@@ -97,8 +97,8 @@
     			</div>
 
     			<!-- Question -->
-    			<div class="row no-gutters border rounded mb-4">
-    				<div class="questionContener col-md-12 p-3" ></div>
+    			<div class="row no-gutters">
+    				<div class="questionContener col-md-12" ></div>
     			</div>
 
     			<!-- Bouton ajout question-->
