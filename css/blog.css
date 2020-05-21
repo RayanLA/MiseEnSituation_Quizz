@@ -166,3 +166,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 60px;
   height: 60px;
 }
+
+
+.link{
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.link:hover{
+  text-decoration: underline;
+}
