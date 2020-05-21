@@ -17,9 +17,6 @@
     ?>
   </header>
   
-  <?php
-  ?>
-
   <div class="row mb-2">
     <?php 
     $conn = OpenCon();
@@ -46,11 +43,7 @@
     } catch (Exception $e) {
       echo $e;
     }
-    
-
     CloseCon($conn);
-
-
     ?>
    
 
