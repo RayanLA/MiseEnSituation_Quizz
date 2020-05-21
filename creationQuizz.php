@@ -2,13 +2,16 @@
     <?php
     	include 'header.php';
     	$Categories = getExistingCategories();
-    ?>
 
-    <script type="text/javascript" src="script.js"></script>
+    	if(isset($_POST['errorCreation']) && $_POST['errorCreation']){
+    		echo '<script type="text/javascript">alert("une erreur s\'est produite");</script>';
+    		unset($_POST['errorCreation']);
+    	}
+    ?>
 
     <h3 class="pb-4 mb-4 font-italic border-bottom">Création d'un quizz</h3>
 
-    <form action="creationQuizUpdate.php" method="get">
+    <form action="creationQuizUpdate.php" method="POST">
 
     	<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative formQuizDiv">
     		<!-- Titre -->
@@ -21,7 +24,7 @@
     			<div class="input-group-prepend">
     				<label class="input-group-text" for="inputGroupSelect01">Categories disponibles : </label>
     			</div>
-    			<select class="custom-select" id="inputGroupSelect01">
+    			<select class="custom-select" id="inputGroupSelect01" name="categorie">
     				<option selected>Selectionner...</option>
     				<?php
     					for($i=0; $i<count($Categories); $i++) {
@@ -74,13 +77,14 @@
 
     				<!-- Thumbnail -->
     				<div class="col-md-5 col-3 col-lg-3 p-4">
-    					<img src="" class="thumbnailImage" id="thumbnailImg" width="200" height="250">
+    					<img src="" class="thumbnailImage" id="thumbnailImg" width="200" >
     				</div>
     			</div>
     		</div>
     	</div>
 
 
+    	<!-- Questions -->
     	<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative formQuizDiv">
     		
     		<div class="col-md-12">
@@ -92,14 +96,21 @@
     				</div>
     			</div>
 
-    			<!-- Input url -->
-    			<div class="row">
-    				
+    			<!-- Question -->
+    			<div class="row no-gutters border rounded mb-4">
+    				<div class="questionContener col-md-12 p-3" ></div>
+    			</div>
+
+    			<!-- Bouton ajout question-->
+    			<div class="row d-flex flex-row-reverse">
+    				<div>
+    					<button type="button" class="btn btn-primary" onclick="addQuestion()">Ajouter une question</button>
+    				</div>
     			</div>
     		</div>
     	</div>
 
-    	<div class="mb-4 d-flex flex-row-reverse">
+    	<div class="mb-4 d-flex justify-content-center">
     		<button type="submit" class="btn btn-lg btn-primary">Créer le Quizz !</button>
     	</div>
     </form>

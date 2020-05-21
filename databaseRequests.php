@@ -233,9 +233,10 @@
 
 			if($result = $conn->query($requestSQL)){
 	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$result->free();
 	 			 	return $row['score'];
             	}
-            	$result->free();
+            	
 	 		}else{;
 	 			//ECHEC 
 	 		}
@@ -268,6 +269,91 @@
 		} catch (Exception $e) {
 			return [];
 		}
+	}
+
+	function createquizz($conn, $nomQuizz, $description, $url ){
+		try {
+			$SQLRequest = "
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ?, ".$_POST['categorie'].", ?, ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("sss", $nomQuizz, $description, $url);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createQuestion($conn, $question, $idQuizz){
+		try {
+			$SQLRequest = "
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $question);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createAnswer($conn, $reponse, $correct, $idQuestion){
+		try {
+			$SQLRequest = "
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ?, ".($correct=="true").")";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $reponse);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function getLatestId($conn){
+		$requestSQL = "SELECT LAST_INSERT_ID() as res";
+		if($result = $conn->query($requestSQL)){
+			while (($row = $result->fetch_assoc())) {
+				$result->free();
+				return $row['res'];
+			}
+		}else{;
+	 			//ECHEC 
+		}
+	}
+
+	function addQuizz()
+	{
+		try {
+
+			$conn = OpenCon();
+			
+			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
+			$latestIdQuizz = getLatestId($conn);
+
+			createQuestion($conn, $_POST['question'], $latestIdQuizz);
+			$latestIdQuestion = getLatestId($conn);
+
+			createAnswer($conn, $_POST['reponse_1'], $_POST['correct_1'], $latestIdQuestion);
+
+			CloseCon($conn);
+
+			return [$_POST['categorie'], $latestIdQuizz];
+
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+		return [];
 	}
 
  ?> 

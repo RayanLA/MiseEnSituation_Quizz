@@ -182,3 +182,25 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   object-fit: contain;
 }
+
+.VraiFaux{
+  width: 58px;
+}
+
+.RemoveQuestion{
+  color: red;
+  border-color: red !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.addResponse{
+  color: green;
+  border-color: green !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.hide{
+  display: none;
+}
