@@ -10,7 +10,7 @@ $conn = OpenCon();
 if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=? AND mdp=?")){
 
     $stmt->bind_param("ss", $_POST['login'], $_POST['password']);
-    echo('SELECT COUNT(id) FROM utilisateurs WHERE login='.$_POST['login'].' AND mdp='.$_POST['password']);
+    //echo('SELECT COUNT(id) FROM utilisateurs WHERE login='.$_POST['login'].' AND mdp='.$_POST['password']);
     $stmt->execute();
     $count_result = 0; 
     $idLogin;
@@ -29,7 +29,11 @@ if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=?
     $_SESSION['isGuest'] = false;
     $_SESSION['justConnected'] = true;
     
-    header("Location:index.php");
+    echo '
+        <script type="text/javascript">
+            window.location.replace("index.php");
+        </script>
+    ';
     }
     else {
         $err = 0;
