@@ -4,8 +4,14 @@
         header('Location:  index.php');
     }
     
+    $nbPlayedQuizzPerCategorie = getNbPlayedQuizzPerCategorie();
+    /*$playedQuizzScore = getPlayedQuizzScore();
+    $nbOfCreatedQuizz = getNbOfCreatedQuizz();
+    $infoCreatedQuizz = getInfoCreatedQuizz();*/
+            
 
 ?>
+
 <hr/>
 <div class="card">
   <div class="card-header">
@@ -55,11 +61,29 @@
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             <a href="#" class="btn btn-primary">Go somewhere</a> -->             
           </div>
-          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
-            <h5 class="card-title">Tab Card Two</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>              
+
+          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab"> 
+            <!-- Le nb de quizz joué par catégorie
+             Le nombre de bonne réponse par quizz
+             Le nombre de quizz créé
+             Le nb de joueur à ses quizz -->
+             <?php 
+             echo '<div class="row">';
+             foreach ($nbPlayedQuizzPerCategorie as $key => $value) {
+                echo '<div class="col-sm-4">';
+                echo    '<div class="card" >
+                            <div class="card-body">';
+                echo          '<h5 class="card-title">'.$key.'</h5>';
+                echo          '<p class="card-text">A été joué <span class="titleImitation">'.$value.'</span> fois !</b></p>';
+                echo        '</div>
+                        </div>';
+                echo  '</div>';
+             }      
+             echo "</div>";
+             ?>
+
           </div>
+
           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
             <?php
              $sql = "   SELECT categories.nom as cnom,score,quizz.nom as qnom,COUNT(questions.question) as nbQuestion 

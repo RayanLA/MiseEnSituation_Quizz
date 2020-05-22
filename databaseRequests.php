@@ -454,6 +454,46 @@
       echo("</div>");
 	}
 
+
+	function getNbPlayedQuizzPerCategorie(){
+		/*Le nb de quizz joué par catégorie*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT  *, COUNT(*) as nb_repet 
+							FROM (
+							    SELECT C.nom as nom
+							    FROM `scores` as S, utilisateurs as U, categories as C, quizz as Q
+								WHERE S.id_utilisateur = U.id AND U.id = ".$_SESSION['idUtilisateur']." AND Q.id = S.id_quizz AND C.id = Q.id_categorie ) T 
+							GROUP BY nom 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['nom']] = $row['nb_repet'];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+
+	}
+
+	function getPlayedQuizzScore(){
+
+	}
+
+	function getNbOfCreatedQuizz(){
+
+	}
+
+	function getInfoCreatedQuizz(){
+
+	}
  ?> 
-
-

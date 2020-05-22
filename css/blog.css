@@ -214,3 +214,8 @@ h1, h2, h3, h4, h5, h6 {
 .link:hover{
   text-decoration: underline;
 }
+
+.titleImitation{
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.5em;
+}
