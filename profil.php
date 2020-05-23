@@ -8,9 +8,9 @@
     $playedQuizzScore = getPlayedQuizzScore();
     $nbOfCreatedQuizz = getNbOfCreatedQuizz();
     $infoCreatedQuizz = getInfoCreatedQuizz();
-    var_dump($infoCreatedQuizz);
 ?>
 
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
 
 <hr/>
 <div class="card">
@@ -63,11 +63,8 @@
           </div>
 
           <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab"> 
-            <!-- Le nb de quizz joué par catégorie
-             Le nombre de bonne réponse par quizz
-             Le nombre de quizz créé
-             Le nb de joueur à ses quizz -->
-             
+            
+            <!-- Le nb de quizz joué par catégorie -->
              <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
               <div class="col-md-12">
                <h3 class="pb-4 mb-4 font-italic border-bottom">Nombre de quizz joué par catégorie : </h3>
@@ -91,14 +88,44 @@
           <!-- Le nombre de bonne réponse par quizz -->
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
             <div class="col-md-12">
-              <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par bonne réponse : </h3>
+              <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz : </h3>
+           </div>
+           <div class="col-md-12">
+
+
+            <div class="container">
+              <div class="row my-2">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <canvas id="barChart" height="100"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+           </div>
+         </div>
+
+         <!-- Le nombre de quizz créé --> 
+         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+            <div class="col-md-12">
+              <h3 class="pb-4 mb-4 font-italic ">Vous avez créé %n quizz : </h3>
            </div>
            <div>
 
-             <div class="text-center">
-              <span class="min-chart" id="minChart" data-percent="56"><span class="percent"></span></span>
 
-            </div>
+           </div>
+         </div>
+
+         <!-- Le nb de joueur à ses quizz -->
+         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+            <div class="col-md-12">
+              <h3 class="pb-4 mb-4 font-italic border-bottom">Statistiques sur les joueurs de vos jeux : </h3>
+           </div>
+           <div>
+
 
            </div>
          </div>
