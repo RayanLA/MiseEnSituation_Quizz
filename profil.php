@@ -62,7 +62,10 @@
           </div>
           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
             <?php
-             $sql = "SELECT categories.nom as cnom,score,quizz.nom as qnom,COUNT(questions.question) as nbQuestion FROM categories,scores,quizz JOIN questions ON questions.id_quizz = quizz.id WHERE id_utilisateur = 1 AND categories.id = quizz.id_categorie AND scores.id_quizz = quizz.id GROUP BY questions.id_quizz ORDER BY scores.id DESC LIMIT 12";
+             $sql = "   SELECT categories.nom as cnom,score,quizz.nom as qnom,COUNT(questions.question) as nbQuestion 
+                        FROM categories,scores,quizz JOIN questions ON questions.id_quizz = quizz.id 
+                        WHERE id_utilisateur = 1 AND categories.id = quizz.id_categorie AND scores.id_quizz = quizz.id 
+                        GROUP BY questions.id_quizz ORDER BY scores.id DESC LIMIT 12";
              $con = OpenCon();
              $res = $con->query($sql);     
              //var_dump($res);       
@@ -78,7 +81,8 @@
                         </div>';
                 echo  '</div>';
              }      
-             echo "</div>";                                                                                 
+             echo "</div>";
+              CloseCon($con);
             ?>
           </div>
 
