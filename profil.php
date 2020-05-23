@@ -5,12 +5,12 @@
     }
     
     $nbPlayedQuizzPerCategorie = getNbPlayedQuizzPerCategorie();
-    /*$playedQuizzScore = getPlayedQuizzScore();
+    $playedQuizzScore = getPlayedQuizzScore();
     $nbOfCreatedQuizz = getNbOfCreatedQuizz();
-    $infoCreatedQuizz = getInfoCreatedQuizz();*/
-            
-
+    $infoCreatedQuizz = getInfoCreatedQuizz();
+    var_dump($infoCreatedQuizz);
 ?>
+
 
 <hr/>
 <div class="card">
@@ -19,7 +19,7 @@
       <li class="nav-item">
         <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Changer le mot de passe</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" onclick="chart()">
         <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Statistiques</a>
       </li>
       <li class="nav-item">
@@ -67,20 +67,42 @@
              Le nombre de bonne réponse par quizz
              Le nombre de quizz créé
              Le nb de joueur à ses quizz -->
+             
+             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+              <div class="col-md-12">
+               <h3 class="pb-4 mb-4 font-italic border-bottom">Nombre de quizz joué par catégorie : </h3>
+             </div>
              <?php 
-             echo '<div class="row">';
              foreach ($nbPlayedQuizzPerCategorie as $key => $value) {
-                echo '<div class="col-sm-4">';
-                echo    '<div class="card" >
-                            <div class="card-body">';
-                echo          '<h5 class="card-title">'.$key.'</h5>';
-                echo          '<p class="card-text">A été joué <span class="titleImitation">'.$value.'</span> fois !</b></p>';
-                echo        '</div>
-                        </div>';
-                echo  '</div>';
-             }      
-             echo "</div>";
-             ?>
+              echo '
+                    <div class="col-sm-4">
+                      <div class="card m-2">
+                        <div class="card-body">
+                        <h5 class="card-title">'.$key.'</h5>
+                        <p class="card-text">A été joué <span class="titleImitation">'.$value.'</span> fois !</b></p>
+                        </div>
+                      </div>
+                    </div>
+              ';
+            }  ?>    
+          </div>
+
+
+          <!-- Le nombre de bonne réponse par quizz -->
+          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+            <div class="col-md-12">
+              <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par bonne réponse : </h3>
+           </div>
+           <div>
+
+             <div class="text-center">
+              <span class="min-chart" id="minChart" data-percent="56"><span class="percent"></span></span>
+
+            </div>
+
+           </div>
+         </div>
+             
 
           </div>
 
