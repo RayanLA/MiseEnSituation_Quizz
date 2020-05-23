@@ -62,19 +62,19 @@ CREATE TABLE scores
 
 /*Insert USERS */
 INSERT INTO utilisateurs (login, mdp)
-VALUES ('iborne', 'olaf');
+VALUES ('iborne', 'c44e396fb98e8e7f6555911fd828fa43');
 
 INSERT INTO utilisateurs (login, mdp)
-VALUES ('rlaroze', 'pikachu');
+VALUES ('rlaroze', '9ce44f88a25272b6d9cbb430ebbcfcf1');
 
 INSERT INTO utilisateurs (login, mdp)
-VALUES ('aly', 'quentin');
+VALUES ('aly', 'c7f413a4f6f4a658c24f0a437666089e');
 
 INSERT INTO utilisateurs (login, mdp)
-VALUES ('lnedjar', 'meunuiserie');
+VALUES ('lnedjar', '3f85f188a71b745a89806eec337d34ea');
 
 INSERT INTO utilisateurs (login, mdp)
-VALUES ('rvende', 'campagne');
+VALUES ('rvende', '81dc9bdb52d04dc20036dbd8313ed055');
 
 
 

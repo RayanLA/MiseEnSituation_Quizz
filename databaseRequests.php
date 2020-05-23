@@ -233,9 +233,10 @@
 
 			if($result = $conn->query($requestSQL)){
 	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$result->free();
 	 			 	return $row['score'];
             	}
-            	$result->free();
+            	
 	 		}else{;
 	 			//ECHEC 
 	 		}
@@ -247,4 +248,212 @@
 		}
 	}
 
+	function getExistingCategories(){
+		try {
+			$res=[];$i=0;
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id 
+						   FROM categories";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$i] = $row; $i++;
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function createquizz($conn, $nomQuizz, $description, $url ){
+		/*var_dump("
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ".$nomQuizz.", ".$_POST['categorie'].", ".$description.", ".$url.")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ?, ".$_POST['categorie'].", ?, ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("sss", $nomQuizz, $description, $url);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createQuestion($conn, $question, $idQuizz){
+		/*var_dump("
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ".$question.")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $question);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createAnswer($conn, $reponse, $correct, $idQuestion){
+		/*var_dump("
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ?, ".(int)($correct=="true").")";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $reponse);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function getLatestId($conn){
+		$requestSQL = "SELECT LAST_INSERT_ID() as res";
+		if($result = $conn->query($requestSQL)){
+			while (($row = $result->fetch_assoc())) {
+				$result->free();
+				return $row['res'];
+			}
+		}else{;
+	 			//ECHEC 
+		}
+	}
+
+	function addQuizz()
+	{
+		try {
+
+			$conn = OpenCon();
+			
+			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
+			$latestIdQuizz = getLatestId($conn);
+
+			$array = $_POST['quizzData'];
+
+			for($i=0; $i<count($array); $i++){
+				$aQuestion = $array[$i];
+				$theQuestion = $aQuestion['question'];
+
+				createQuestion($conn, $theQuestion, $latestIdQuizz);
+				$latestIdQuestion = getLatestId($conn);
+				
+				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+					$reponse   = $value;
+					$isCorrect = $aQuestion['reponses']['correct'][$id];
+					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
+				}
+			}
+
+			CloseCon($conn);
+
+			return [$_POST['categorie'], $latestIdQuizz];
+
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+		return [];
+  }
+
+  function prepareDataForQuizzCreation(){
+  	$aray = [];
+  	foreach ($_POST as $name => $val)
+	{
+		/*Question*/
+		if( substr($name, 0, strlen("question_")) == "question_" ){
+			$array[substr($name, strlen("question_"), strlen($name))]["question"] = $val;
+			unset($_POST[$name]);
+		}
+
+		/*reponses cq_X_Y */
+		if( substr($name, 0, strlen("cq_")) == "cq_" ){
+			$reste = substr($name, strlen("cq_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["correct"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+
+		/*is a correct answer : q_iqQuestion_idReponse*/
+		if( substr($name, 0, strlen("q_")) == "q_" ){
+			$reste = substr($name, strlen("q_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["reponse"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+	}
+	$_POST["quizzData"] = $array;
+  }
+
+
+
+
+	function generateCardQuizz($row){
+		echo("<div class=\"col-md-6\">");
+      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
+      echo("<div class=\"col p-4 d-flex flex-column position-static\">");
+      echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
+      
+
+      echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
+
+      /*Start  nb résultat */
+      echo '<p class="card-text mb-auto"> Ce quizz comporte ';
+      $conn = OpenCon();
+      $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id_quizz']." ";
+      $result1 = mysqli_query($conn,$query) or die (mysqli_error());
+      $resultat=mysqli_fetch_row($result1);
+      echo $resultat[0]. ' questions</p>';
+      CloseCon($conn);
+      /*End */
+
+
+      
+      echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
+      echo("<p class=\"mb-auto\">".$row["description"]."</p>");
+
+      echo('<form action="quizz.php" method="post">
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
+          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
+        </form>');
+
+      echo("</div>");
+      echo("<div class=\"col-auto d-none d-lg-block\">");
+      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo("</div>");
+      echo("</div>");
+      echo("</div>");
+	}
+
  ?> 
+
+

@@ -51,10 +51,16 @@
         
           while (($row2 = $result2->fetch_assoc())) {
             $answcount++;
-            echo("<div class=\"form-check\" >");
-            echo("<input class=\"form-check-input\" type=\"checkbox\" name=\"question[]\" value=\"".$answcount."\" id=\"defaultCheck1\">");
-            echo("<label class=\"form-check-label\" for=\"defaultCheck1\">".$row2["reponse"]."</label>");
-            echo("</div>");
+
+            echo '
+                <div class="input-group mb-3" onclick="checkInput('.$answcount.')">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" id="grText_'.$answcount.'"></div>
+                  </div>
+                  <input readonly="readonly" type="text" class="form-control questionInput simplebox" value="'.$row2["reponse"].'" >
+                </div>
+                <input type="checkbox" name="question[]" value="'.$answcount.'" id="checkbox_'.$answcount.'" class="hide">
+            ';
       
           }   
           $result2->free();
