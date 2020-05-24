@@ -553,19 +553,26 @@
 		try {
 			$conn = OpenCon();
 			$array = [];
-			$queryString = "SELECT quizz, idQuizz, url, categorie, COUNT(*) as nb_repet
-							FROM (SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
-							        FROM quizz as Q, categories as C 
-							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
-							        scores as S
-							WHERE S.id_quizz = idQuizz
-							GROUP BY id_quizz 
+			$queryString = "SELECT quizz, idQuizz, categorie, maxScore, avgScore, COUNT(*) as nb_repet
+							FROM 
+								(SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
+								 FROM quizz as Q, categories as C 
+								WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
+								scores as S, 
+							    (SELECT id_quizz, MAX(score) as maxScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as M, 
+							    (SELECT id_quizz, AVG(score) as avgScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as A
+							WHERE S.id_quizz = idQuizz AND M.id_quizz=A.id_quizz AND A.id_quizz = S.id_quizz
+							GROUP BY S.id_quizz 
 							HAVING   COUNT(*) >=1 
 							ORDER BY nb_repet DESC";
 
 			if($result = $conn->query($queryString)){
 	 			 while (($row = $result->fetch_assoc())) {
-	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['url']];
+	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['maxScore'], floatval($row['avgScore'])];
             	}
 				$result->free();
 				CloseCon($conn);

@@ -19,7 +19,7 @@
         } 
 
         foreach($infoCreatedQuizz as $key => $val){ 
-            echo 'createdQuizzStats["'.$key.'"]= new Array('.$val[0].', "'.$val[1].'","'.$val[2].'");';
+            echo 'createdQuizzStats["'.$key.'"]= new Array('.$val[0].', "'.$val[1].'",'.$val[2].','.$val[3].');';
         } 
     ?>
 </script>
