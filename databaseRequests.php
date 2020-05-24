@@ -491,7 +491,7 @@
 		try {
 			$conn = OpenCon();
 			$array = [];
-			$queryString = "SELECT quizz, nb_repet, score        
+			$queryString = "SELECT quizz, nb_repet, score, S.id_quizz        
 							FROM (SELECT  *, COUNT(*) as nb_repet 
 							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
 							                    FROM questions as K, reponses as R, quizz as Q
@@ -504,7 +504,7 @@
 
 			if($result = $conn->query($queryString)){
 	 			 while (($row = $result->fetch_assoc())) {
-	 			 	$array[$row['quizz']] = (int)(($row['score']/$row['nb_repet'])*100);
+	 			 	$array[$row['quizz']] = [$row['id_quizz'],(int)(($row['score']/$row['nb_repet'])*100)];
             	}
 				$result->free();
 				CloseCon($conn);
@@ -553,8 +553,8 @@
 		try {
 			$conn = OpenCon();
 			$array = [];
-			$queryString = "SELECT quizz, COUNT(*) as nb_repet
-							FROM (SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz
+			$queryString = "SELECT quizz, idQuizz, url, categorie, COUNT(*) as nb_repet
+							FROM (SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
 							        FROM quizz as Q, categories as C 
 							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
 							        scores as S
@@ -565,7 +565,7 @@
 
 			if($result = $conn->query($queryString)){
 	 			 while (($row = $result->fetch_assoc())) {
-	 			 	$array[$row['quizz']] = $row['nb_repet'];
+	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['url']];
             	}
 				$result->free();
 				CloseCon($conn);
