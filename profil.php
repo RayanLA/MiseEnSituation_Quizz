@@ -25,6 +25,8 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-deferred@1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
 
@@ -32,19 +34,109 @@
 <div class="card">
   <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
-       <li class="nav-item">
-        <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Changer le mot de passe</a>
-      </li> 
       <li class="nav-item" onclick="chart()">
         <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Statistiques</a>
       </li>
+       <li class="nav-item">
+        <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Changer le mot de passe</a>
+      </li> 
       <li class="nav-item">
         <a class="nav-link" id="two-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Two" aria-selected="false">Derniers résultat</a>
       </li>
     </ul>
   </div>
   <div class="tab-content" id="myTabContent">
-           <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+
+          <div class="tab-pane fade show active  p-3" id="two" role="tabpanel" aria-labelledby="two-tab"> 
+            
+              <!-- Le nb de quizz joué par catégorie -->
+               <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3" id="quizzJoue">
+                <div class="col-md-12">
+                 <h3 class="pb-4 mb-4 font-italic border-bottom">Nombre de quizz joué par catégorie : </h3>
+               </div>
+               <?php 
+               foreach ($nbPlayedQuizzPerCategorie as $key => $value) {
+                echo '
+                      <div class="col-sm-4">
+                        <div class="card m-2">
+                          <div class="card-body">
+                          <h5 class="card-title">'.$key.'</h5>
+                          <p class="card-text">A été joué <span class="titleImitation">'.$value.'</span> fois !</b></p>
+                          </div>
+                        </div>
+                      </div>
+                ';
+              }  ?>    
+            </div>
+
+            <!-- Le nombre de bonne réponse par quizz -->
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+              <div class="col-md-12">
+                <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz (en pourcentage) : </h3>
+             </div>
+
+             <div class="row">
+
+              <?php 
+               foreach ($playedQuizzScore as $key => $value) {
+                echo '<div class="col-md-6" style="min-width:50%">
+                        <div class="card m-2">
+                          <div class="card-body">
+                          <h5 class="card-title">'.$key.'</h5>
+                            <div class="card">
+                              <div class="card-body">
+                                <canvas id="doughnutChart_'.$value[0].'"  ></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>';
+
+              }  ?>  
+
+             </div>
+
+           </div>
+
+
+            <!-- Le nombre de quizz créé --> 
+           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+                <div class="col-md-12">
+                 <h3 class="pb-4 mb-4 font-italic border-bottom">Vos créations : </h3>
+               </div>
+               <?php 
+               foreach ($nbOfCreatedQuizz as $key => $value) {
+                echo '
+                      <div class="col-sm-4">
+                        <div class="card m-2">
+                          <div class="card-body">
+                          <h5 class="card-title">'.$key.'</h5>
+                          <p class="card-text"><span class="titleImitation">'.$value.'</span> '.($value>1?'quizzes créés':'quizz créé').' !</b></p>
+                          </div>
+                        </div>
+                      </div>
+                ';
+              }  ?>    
+            </div>
+
+
+            
+           
+
+           <!-- Le nb de joueur à ses quizz -->
+           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+              <div class="col-md-12">
+                <h3 class="pb-4 mb-4 font-italic border-bottom">Statistiques sur les joueurs de vos jeux : </h3>
+             </div>
+              <div class="col-md-12">
+                <canvas id="barChart"></canvas>
+              </div>
+           </div>
+             
+
+          </div>
+
+           <div class="tab-pane fade p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
           
                 <form action="#" method="post">
                     <div class="form-group">
@@ -72,96 +164,10 @@
                     <button type="submit" class="btn btn-primary" id="btn_valid" disabled>Enregistrer</button>
                     </div>
                 </form>
-             
-            <!--<h5 class="card-title">Tab Card One</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a> -->             
+                         
           </div>
 
-          <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab"> 
-            
-            <!-- Le nb de quizz joué par catégorie -->
-             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
-              <div class="col-md-12">
-               <h3 class="pb-4 mb-4 font-italic border-bottom">Nombre de quizz joué par catégorie : </h3>
-             </div>
-             <?php 
-             foreach ($nbPlayedQuizzPerCategorie as $key => $value) {
-              echo '
-                    <div class="col-sm-4">
-                      <div class="card m-2">
-                        <div class="card-body">
-                        <h5 class="card-title">'.$key.'</h5>
-                        <p class="card-text">A été joué <span class="titleImitation">'.$value.'</span> fois !</b></p>
-                        </div>
-                      </div>
-                    </div>
-              ';
-            }  ?>    
-          </div>
-
-
-          <!-- Le nombre de bonne réponse par quizz -->
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
-            <div class="col-md-12">
-              <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz (en pourcentage) : </h3>
-           </div>
-
-           <div class="row">
-
-            <?php 
-             foreach ($playedQuizzScore as $key => $value) {
-              echo '<div class="col-md-6">
-                      <div class="card m-2">
-                        <div class="card-body">
-                        <h5 class="card-title">'.$key.'</h5>
-                          <div class="card">
-                            <div class="card-body">
-                              <canvas id="doughnutChart_'.$value[0].'" ></canvas>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>';
-
-            }  ?>  
-
-           </div>
-
-         </div>
-
-         <!-- Le nombre de quizz créé --> 
-         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
-              <div class="col-md-12">
-               <h3 class="pb-4 mb-4 font-italic border-bottom">Vos créations : </h3>
-             </div>
-             <?php 
-             foreach ($nbOfCreatedQuizz as $key => $value) {
-              echo '
-                    <div class="col-sm-4">
-                      <div class="card m-2">
-                        <div class="card-body">
-                        <h5 class="card-title">'.$key.'</h5>
-                        <p class="card-text"><span class="titleImitation">'.$value.'</span> '.($value>1?'quizzes créés':'quizz créé').' !</b></p>
-                        </div>
-                      </div>
-                    </div>
-              ';
-            }  ?>    
-          </div>
-
-         <!-- Le nb de joueur à ses quizz -->
-         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
-            <div class="col-md-12">
-              <h3 class="pb-4 mb-4 font-italic border-bottom">Statistiques sur les joueurs de vos jeux : </h3>
-           </div>
-            <div class="col-md-12">
-              <canvas id="barChart"></canvas>
-            </div>
-         </div>
-             
-
-          </div>
+          
 
           <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
             <?php

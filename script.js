@@ -132,30 +132,7 @@ $(function(){
 });
 
 
-
-function chart(){
-    quizzInfoScore.forEach(function(element, index, array){
-        //index => element
-        //doughnut
-        var ctxD = document.getElementById("doughnutChart_"+index).getContext('2d');
-        var myLineChart = new Chart(ctxD, {
-            type: 'doughnut',
-            data: {
-                labels: ["Bonne réponse ","Mauvaise réponse "],
-                datasets: [{
-                    data: [element, 100-element],
-                    backgroundColor: ["#64D96814", "#F7464A14"],
-                    borderColor: ["#64D968", "#FF5A5E"]
-                }]
-            },
-            options: {
-                responsive: true
-            }        
-        });
-
-    });
-
-
+function barChart(){
     /*Preparing data */
     var myData = []; var myLabel = []; 
     var i=0; var myColorBorder = [];
@@ -183,50 +160,100 @@ function chart(){
         myColorBg[i]     = bgColorSet[i%6];
         i++;
     });
-    
-    console.log(createdQuizzStats);
    
-
-
     //bar
     var ctxB = document.getElementById("barChart").getContext('2d');
-    var myBarChart = new Chart(ctxB, {
-        type: 'bar',
-        data: {
-            labels: myLabel,
-            datasets: [{
-                label: 'Nombre de participants aux quizzes',
-                data: myData,
-                backgroundColor: myColorBg,
-                borderColor: myColorBorder,
-                borderWidth: 1
+
+    var _data = {
+        labels: myLabel,
+        datasets: [{
+            label: 'Nombre de participants aux quizzes',
+            data: myData,
+            backgroundColor: myColorBg,
+            borderColor: myColorBorder,
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
             }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }, 
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        var i = Number(tooltipItem.yLabel);
-                        var description = "";
-                        createdQuizzStats.forEach(function(element, index, array){
-                            if(element[1].toString().localeCompare(tooltipItem.label)==0){
-                                description = "score moyen : "+parseFloat(element[3])+" et score maximal : "+element[2];
-                            }
-                        });
-                        return " "+i+ (i>1 ? " participants ! ":" participant ! ")+description;
-                    }
+        }, 
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                    var i = Number(tooltipItem.yLabel);
+                    var description = "";
+                    createdQuizzStats.forEach(function(element, index, array){
+                        if(element[1].toString().localeCompare(tooltipItem.label)==0){
+                            description = "Score moyen : "+parseFloat(element[3])+" et score maximal : "+element[2];
+                        }
+                    });
+                    return " "+i+ (i>1 ? " participants ! ":" participant ! ")+description;
                 }
             }
+        }, 
+        plugins: {
+          deferred: {
+            yOffset: '50%', // defer until 50% of the canvas height are inside the viewport
+            delay: 700     // delay of 500 ms after the canvas is considered inside the viewport
         }
-    });
+    }
+    };
 
-    $("#barChart").removeAttr("style").removeAttr("width").removeAttr("height");
-   
+    myBarChart = new Chart(ctxB, {type:'bar', data:_data,options});
+/*
+    $("#barChart").removeAttr("style").removeAttr("width").removeAttr("height");*/
+
 }
+
+function donutChart(){
+    quizzInfoScore.forEach(function(element, index, array){
+        //index => element
+        //doughnut
+        var ctxD = document.getElementById("doughnutChart_"+index).getContext('2d');
+        var myDonutChart = new Chart(ctxD, {
+            type: 'doughnut',
+            data: {
+                labels: ["Bonne réponse ","Mauvaise réponse "],
+                datasets: [{
+                    data: [element, 100-element],
+                    backgroundColor: ["#64D96814", "#F7464A14"],
+                    borderColor: ["#64D968", "#FF5A5E"]
+                }]
+            },
+            options: {
+                responsive: true,
+                animation:{
+                    duration:1750, 
+                    easing: 'easeInOutCubic'
+                }, 
+                plugins: {
+                    deferred: {
+                        yOffset: '50%', // defer until 50% of the canvas height are inside the viewport
+                        delay: 350     // delay of 500 ms after the canvas is considered inside the viewport
+                    }
+                }   
+            }        
+        });
+    });
+}
+
+var myBarChart;
+function chart(){
+    
+    donutChart();
+
+    barChart();
+
+}
+
+$(function(){
+    $("#quizzJoue").ready(function(){
+        chart();
+    });
+});
