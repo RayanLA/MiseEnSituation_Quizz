@@ -176,7 +176,6 @@ function chart(){
                             'rgba(255, 159, 64, 0.2)'
                         ];
 
-    console.log(createdQuizzStats);
     createdQuizzStats.forEach(function(element, index, array){
         myData[i]  = element[0];
         myLabel[i] = element[1];
