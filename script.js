@@ -223,3 +223,16 @@ function chart(){
     $("#barChart").removeAttr("style").removeAttr("width").removeAttr("height");
    
 }
+
+function checkInput(i){
+    if($("#checkbox_"+i).is(':checked')){
+        $("#checkbox_"+i).prop( "checked", false );
+        $("#grText_"+i).removeClass("bg-success");
+
+    }else{
+        $("#checkbox_"+i).prop( "checked", true );
+        $("#grText_"+i).addClass("bg-success");
+
+    }
+}
+
