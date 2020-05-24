@@ -215,6 +215,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: underline;
 }
 
+
 .titleImitation{
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: 1.5em;
@@ -222,4 +223,19 @@ h1, h2, h3, h4, h5, h6 {
 
 .debug{
   border: dashed red;
+}
+
+.questionInput{
+  background-color: white !important;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.simplebox {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
