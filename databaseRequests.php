@@ -487,8 +487,6 @@
     	unset($_POST['inscription']);
 	}
 
- ?> 
-
 
 	function getNbPlayedQuizzPerCategorie(){
 		/*Le nb de quizz joué par catégorie*/
