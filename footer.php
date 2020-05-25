@@ -18,6 +18,8 @@
           <label for="psw"><b>Mot de passe</b></label>
           <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
           <br/>
+          <span class="hide mb-2 text-danger" id="IncorrectPsw"> Login ou mot de passe incorrect ! </span>
+
           <span id="inscrivezVous"> Pas encore inscrit ? <a href="inscription.php">Inscription</a></span>
           
 
