@@ -1,6 +1,7 @@
 <html>
     <?php
       include 'header.php';
+      if(isset($_POST['inscription']) && strcmp($_POST['inscription'],'1')==0){ openModalAuth(); }
       $ArrayQuizz = get3MostTrendyQuizz();
     ?>
 

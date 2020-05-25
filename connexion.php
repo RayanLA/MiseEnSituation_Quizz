@@ -28,20 +28,13 @@ if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=?
     $_SESSION['isGuest'] = false;
     $_SESSION['justConnected'] = true;
     
-    echo '
-        <script type="text/javascript">
-            window.location.replace("index.php");
-        </script>
-    ';
+    JS_Redirect("index.php");
+
     }
     else {
         $err = 0;
         CloseCon($conn);
-        echo '
-        <script type="text/javascript">
-            window.location.replace("index.php?f='.$err.'");
-        </script>
-    ';
+        JS_Redirect("index.php?f=$err");
     }
     $stmt->close();
 }
@@ -50,7 +43,7 @@ else {
     //login ou mdp incorrect    
     $err = 0;
     CloseCon($conn);
-    header("Location:index.php?f=$err");
+    JS_Redirect("index.php?f=$err");
 }
 CloseCon($conn);
 ?>

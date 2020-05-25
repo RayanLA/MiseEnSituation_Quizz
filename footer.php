@@ -11,6 +11,7 @@
           </button>
         </div>
         <div class="modal-body">
+          <span class="hide mb-2 text-primary" id="inscriptionMessage">Votre inscription est terminée, veuillez vous identifiez :) </span>
           <label for="email"><b>Identifiant</b></label>
           <input type="text" placeholder="Pseudo" class="form-control" name="login" required>
 
@@ -18,6 +19,7 @@
           <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
           <br/>
           <span class="hide mb-2 text-danger" id="IncorrectPsw"> Login ou mot de passe incorrect ! </span>
+
           <span id="inscrivezVous"> Pas encore inscrit ? <a href="inscription.php">Inscription</a></span>
           
 
