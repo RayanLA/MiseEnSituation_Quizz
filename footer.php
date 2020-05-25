@@ -11,13 +11,14 @@
           </button>
         </div>
         <div class="modal-body">
+          <span class="hide mb-2 text-primary" id="inscriptionMessage">Votre inscription est terminée, veuillez vous identifiez :) </span>
           <label for="email"><b>Identifiant</b></label>
           <input type="text" placeholder="Pseudo" class="form-control" name="login" required>
 
           <label for="psw"><b>Mot de passe</b></label>
           <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
           <br/>
-          Pas encore inscrit ? <a href="inscription.php">Inscription</a>
+          <span id="inscrivezVous"> Pas encore inscrit ? <a href="inscription.php">Inscription</a></span>
           
 
         </div>
