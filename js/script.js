@@ -12,10 +12,10 @@ $(function(){
 
 $(function(){
   $('#nomQuizz').blur(function() {
-    	//retrieve nom quizz
-    	var nom = $('#nomQuizz').val();
-    	//retrive url Image
-    	getUrlImage(nom);
+        //retrieve nom quizz
+        var nom = $('#nomQuizz').val();
+        //retrive url Image
+        getUrlImage(nom);
 
     });
 });
@@ -132,15 +132,147 @@ $(function(){
 });
 
 
-function checkInput(i){
-    if($("#checkbox_"+i).is(':checked')){
-        $("#checkbox_"+i).prop( "checked", false );
-        $("#grText_"+i).removeClass("bg-success");
+function barChart(){
+    /*Preparing data */
+    var myData = []; var myLabel = []; 
+    var i=0; var myColorBorder = [];
+    var myColorBg = []; 
 
-    }else{
-        $("#checkbox_"+i).prop( "checked", true );
-        $("#grText_"+i).addClass("bg-success");
+     var colorBorderSet = [  'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'];
+    var bgColorSet    = [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ];
 
+    createdQuizzStats.forEach(function(element, index, array){
+        myData[i]  = element[0];
+        myLabel[i] = element[1];
+        myColorBorder[i] = colorBorderSet[i%6];
+        myColorBg[i]     = bgColorSet[i%6];
+        i++;
+    });
+   
+    //bar
+    var ctxB = document.getElementById("barChart").getContext('2d');
+
+    var _data = {
+        labels: myLabel,
+        datasets: [{
+            label: 'Nombre de participants aux quizzes',
+            data: myData,
+            backgroundColor: myColorBg,
+            borderColor: myColorBorder,
+            borderWidth: 1
+        }]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }, 
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                    var i = Number(tooltipItem.yLabel);
+                    var description = "";
+                    createdQuizzStats.forEach(function(element, index, array){
+                        if(element[1].toString().localeCompare(tooltipItem.label)==0){
+                            description = "Score moyen : "+parseFloat(element[3])+" et score maximal : "+element[2];
+                        }
+                    });
+                    return " "+i+ (i>1 ? " participants ! ":" participant ! ")+description;
+                }
+            }
+        }, 
+        plugins: {
+          deferred: {
+            yOffset: '50%', // defer until 50% of the canvas height are inside the viewport
+            delay: 700     // delay of 500 ms after the canvas is considered inside the viewport
+        }
     }
+    };
+
+    myBarChart = new Chart(ctxB, {type:'bar', data:_data,options});
+/*
+    $("#barChart").removeAttr("style").removeAttr("width").removeAttr("height");*/
+
 }
 
+function donutChart(){
+    quizzInfoScore.forEach(function(element, index, array){
+        //index => element
+        //doughnut
+        var ctxD = document.getElementById("doughnutChart_"+index).getContext('2d');
+        var myDonutChart = new Chart(ctxD, {
+            type: 'doughnut',
+            data: {
+                labels: ["Bonne réponse ","Mauvaise réponse "],
+                datasets: [{
+                    data: [element, 100-element],
+                    backgroundColor: ["#64D96814", "#F7464A14"],
+                    borderColor: ["#64D968", "#FF5A5E"]
+                }]
+            },
+            options: {
+                responsive: true,
+                animation:{
+                    duration:1000, 
+                }, 
+                plugins: {
+                    deferred: {
+                        yOffset: '30%', // defer until 50% of the canvas height are inside the viewport
+                        delay: 50     // delay of 500 ms after the canvas is considered inside the viewport
+                    }
+                }   
+            }        
+        });
+    });
+}
+
+var myBarChart;
+function chart(){
+    
+    donutChart();
+
+    barChart();
+
+}
+
+$(function(){
+    $("#quizzJoue").ready(function(){
+        chart();
+    });
+});
+
+function removeStats(){
+    $(document).ready(function(){
+        $("#two").remove();
+        $('#one').addClass('active').addClass('show');
+    });
+}
+
+function showStats(){
+    $(document).ready(function(){
+        $("#two").removeClass('hideImportant');
+    });
+}
+
+function showStatRubrique(id){
+    console.log("toto");
+    $(document).ready(function(){
+        $("#"+id).removeClass('hide');
+    });
+}

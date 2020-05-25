@@ -8,6 +8,18 @@
     $playedQuizzScore = getPlayedQuizzScore();
     $nbOfCreatedQuizz = getNbOfCreatedQuizz();
     $infoCreatedQuizz = getInfoCreatedQuizz();
+
+    $numberOfRows = count($nbPlayedQuizzPerCategorie) + count($playedQuizzScore)
+                    + count($nbOfCreatedQuizz) + count($infoCreatedQuizz);
+
+    function callTo_showStatRubrique($id){
+        echo '<script type="text/javascript">showStatRubrique("'.$id.'");</script>';
+    }
+
+    if(count($nbPlayedQuizzPerCategorie)!=0) callTo_showStatRubrique('quizzJoue');
+    if(count($playedQuizzScore)!=0) callTo_showStatRubrique('bonneReponse');
+    if(count($nbOfCreatedQuizz)!=0) callTo_showStatRubrique('quizzCree');
+    if(count($infoCreatedQuizz)!=0) callTo_showStatRubrique('joueursStat');
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -34,9 +46,16 @@
 <div class="card">
   <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
-      <li class="nav-item" onclick="chart()">
-        <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Statistiques</a>
-      </li>
+      <?php 
+        if($numberOfRows!=0){
+         echo '<li class="nav-item" onclick="chart()">
+                  <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Statistiques</a>
+                </li>';
+                echo '<script type="text/javascript">showStats();</script>';
+        }else{
+          echo '<script type="text/javascript">removeStats();</script>';
+        }
+      ?>
        <li class="nav-item">
         <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Changer le mot de passe</a>
       </li> 
@@ -47,10 +66,10 @@
   </div>
   <div class="tab-content" id="myTabContent">
 
-          <div class="tab-pane fade show active  p-3" id="two" role="tabpanel" aria-labelledby="two-tab"> 
+          <div class="tab-pane fade show active p-3 hideImportant" id="two" role="tabpanel" aria-labelledby="two-tab"> 
             
               <!-- Le nb de quizz joué par catégorie -->
-               <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3" id="quizzJoue">
+               <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="quizzJoue">
                 <div class="col-md-12">
                  <h3 class="pb-4 mb-4 font-italic border-bottom">Nombre de quizz joué par catégorie : </h3>
                </div>
@@ -70,7 +89,7 @@
             </div>
 
             <!-- Le nombre de bonne réponse par quizz -->
-            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="bonneReponse">
               <div class="col-md-12">
                 <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz (en pourcentage) : </h3>
              </div>
@@ -100,7 +119,7 @@
 
 
             <!-- Le nombre de quizz créé --> 
-           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="quizzCree">
                 <div class="col-md-12">
                  <h3 class="pb-4 mb-4 font-italic border-bottom">Vos créations : </h3>
                </div>
@@ -111,7 +130,12 @@
                         <div class="card m-2">
                           <div class="card-body">
                           <h5 class="card-title">'.$key.'</h5>
-                          <p class="card-text"><span class="titleImitation">'.$value.'</span> '.($value>1?'quizzes créés':'quizz créé').' !</b></p>
+                          <p class="card-text">';
+                          foreach ($value as $key1 => $value1) {
+                            echo $value1; 
+                            if( ( $value1!= end($value)) ) echo ", ";
+                          }
+                echo '    </p>
                           </div>
                         </div>
                       </div>
@@ -120,11 +144,8 @@
             </div>
 
 
-            
-           
-
            <!-- Le nb de joueur à ses quizz -->
-           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3">
+           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="joueursStat">
               <div class="col-md-12">
                 <h3 class="pb-4 mb-4 font-italic border-bottom">Statistiques sur les joueurs de vos jeux : </h3>
              </div>
