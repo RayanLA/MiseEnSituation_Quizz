@@ -37,7 +37,11 @@ if ($stmt = $conn->prepare("SELECT COUNT(id), id FROM utilisateurs WHERE login=?
     else {
         $err = 0;
         CloseCon($conn);
-        header("Location:index.php?f=$err");
+        echo '
+        <script type="text/javascript">
+            window.location.replace("index.php?f='.$err.'");
+        </script>
+    ';
     }
     $stmt->close();
 }

@@ -56,7 +56,7 @@
   <?php
     if(isset($_SESSION['login'])){
       if(isset($_SESSION['justConnected']) && $_SESSION['justConnected']){
-        phpAlert("Connexion réussie !"); 
+        connexionSuccessAlert();
         unset($_SESSION['justConnected']);
       }
       echo '<div class="col-md-12 blog-main">
@@ -80,7 +80,13 @@
     }
     elseif(isset($_GET['f'])) {
       if ($_GET['f'] == 0){
-        phpAlert("Login ou mot de passe incorrect !"); 
+        echo '<script type="text/javascript">
+					  $( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#IncorrectPsw").removeClass("hide");
+					});	
+    			</script>'; 
       }
     }
   ?>
