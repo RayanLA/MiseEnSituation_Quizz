@@ -454,6 +454,36 @@
       echo("</div>");
 	}
 
+
+	function JS_Redirect($url){
+		echo ' <script type="text/javascript">
+            window.location.replace("'.$url.'");
+        </script>' ;
+	}
+
+	function JS_RedirectSubscription($url){
+		echo ' 
+				<form action="'.$url.'" method="post">
+					<input type="hidden" name="inscription" value="1">
+					<button type="submit" id="buttonForm">
+    			</form>
+    			<script type="text/javascript">
+    				$("#buttonForm").click();
+    			</script>';
+	}
+
+	function openModalAuth(){
+		echo '<script type="text/javascript">
+					$( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#inscriptionMessage").removeClass("hide");
+					});	
+    			</script>';
+
+    	unset($_POST['inscription']);
+	}
+
  ?> 
 
 
