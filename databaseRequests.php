@@ -555,23 +555,19 @@
 		try {
 			$conn = OpenCon();
 			$array = [];
-			$queryString = "SELECT categorie, COUNT(*) as nb_repet
-							FROM 
-							        (SELECT C.nom as categorie, Q.nom as quizz 
+			$queryString = "SELECT C.nom as categorie, Q.nom as quizz 
 							        FROM quizz as Q, categories as C 
-							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R
-							GROUP BY categorie 
-							HAVING   COUNT(*) >=1 
-							ORDER BY nb_repet DESC";
+							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur']."
+                                    ORDER BY categorie ASC";
 
 			if($result = $conn->query($queryString)){
 	 			 while (($row = $result->fetch_assoc())) {
-	 			 	$array[$row['categorie']] = $row['nb_repet'];
+	 			 if(!isset($array[$row['categorie']])) $array[$row['categorie']] = [];  			 	
+	 			 	array_push($array[$row['categorie']], $row['quizz']);
             	}
 				$result->free();
 				CloseCon($conn);
 			}
-			
 			return $array;
 			
 		} catch (Exception $e) {

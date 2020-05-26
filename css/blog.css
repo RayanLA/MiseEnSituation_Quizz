@@ -205,6 +205,10 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
+.hideImportant{
+  display: none !important;
+}
+
 .link{
   color: #007bff;
   text-decoration: none;
