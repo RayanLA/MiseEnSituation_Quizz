@@ -19,6 +19,8 @@
   <link href="css/blog.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
+
+
   <script type="text/javascript" src="./js/script.js"></script>
 </head>
 
