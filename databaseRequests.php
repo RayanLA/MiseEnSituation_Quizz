@@ -615,22 +615,85 @@
 		}
 	}
 
+	function getQuizzesSearchBox(){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id, id_categorie FROM quizz";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$row['nom']] = [$row['id_categorie'],
+	 			 						 $row['id'] ]; 
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
 
 	function searchBox(){
+		$categories = getExistingCategories();
+		$quizzes    = getQuizzesSearchBox();
+		$i=0;
+
+		/*debug */
+		/*echo '<script type="text/javascript">';
+		$stringDebug ="";
+		foreach ($categories as $key => $value) {
+					$stringDebug = $stringDebug.'{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
+					if($i!=(count($categories)-1)){
+						$stringDebug= $stringDebug.',';
+					}
+					$i++;
+				}
+				echo 'console.log('.$stringDebug.');';
+
+				echo 'console.log("___________________________\n");';
+
+
+		$stringDebug = "";
+		$i=0;
+		foreach ($quizzes as $key => $value) {
+			$stringDebug = $stringDebug.'{name: "'.$key.'", type:"quizz", idC: '.$value[0].', idQ: '.$value[1].'}';
+			if($i!=(count($quizzes)-1)) $stringDebug=$stringDebug.',';
+			$i++;
+		}
+				echo 'console.log(\''.$stringDebug.'\');';
+
+		echo '</script>';*/
+
+
+		
 		echo '
-		<input id="data-categories" placeholder="Quizzes et catégories"/>
+		<input id="data-categories" placeholder="Quizzes et catégories" style="z-index:10;"/>
 		<span id="formForSearch" class="hide"></span>
 		<script type="text/javascript">
 		var options = {
 			data: {
-				"categories": [
-				{name: "Film", type:"categorie", id: 2},
-				{name: "Jeux Videos", type:"categorie", id: 2}
-				],
-				"quizzes": [
-				{name: "MCU", type:"quizz", idC: 2, idQ: 1},
-				{name: "Chat siamois", type:"quizz", idC: 4, idQ:5}
-				]
+				"categories": [';
+				foreach ($categories as $key => $value) {
+					echo '{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
+					if($i!=(count($categories)-1)){
+						echo ',';
+					}
+					$i++;
+				}
+		echo    '],
+				"quizzes": [';
+				$i=0;
+				foreach ($quizzes as $key => $value) {
+					echo '{name: "'.$key.'", type:"quizz", idC: '.$value[0].', idQ: '.$value[1].'}';
+					if($i!=(count($quizzes)-1)) echo ',';
+					$i++;
+				}
+		echo	']
 				},
 
 				getValue: "name",
@@ -645,7 +708,7 @@
 
 						list: {
 							match: {
-								enabled: false
+								enabled: true
 								},
 								maxNumberOfElements: 10,
 								onChooseEvent: function() {
