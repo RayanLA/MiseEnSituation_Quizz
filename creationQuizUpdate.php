@@ -13,8 +13,8 @@
     			</form>
     			<script type="text/javascript">
     				$("#buttonForm").click();
-    			</script>
-    		';
+    			</script>';
+    		
     	}else{
     		echo '
     		<form action="creationQuizz.php" method="post">
@@ -23,13 +23,13 @@
     			</form>
     			<script type="text/javascript">
     				$("#buttonForm").click();
-    			</script>
-    		';
+    			</script>';
+    		
 
     	}
     ?>
-
 <br>
+
 <?php 
 	include 'footer.php';
 ?>

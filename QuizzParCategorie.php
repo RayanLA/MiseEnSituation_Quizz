@@ -14,6 +14,8 @@
   <header class="blog-header py-3">
     <?php
       include 'header.php';
+
+      if(!isset($_POST['idCategorie'])) JS_Redirect("index.php");
     ?>
   </header>
   

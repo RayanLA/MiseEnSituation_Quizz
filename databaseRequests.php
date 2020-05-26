@@ -45,8 +45,11 @@
 	 	CloseCon($conn);
 	 }
 
-	 function phpAlert($msg) {
-		echo '<script type="text/javascript">alert("' . $msg . '")</script>';
+	 function connexionSuccessAlert() {
+		echo "<script> $(document).ready(function (){
+			$('.toast').toast('show');
+		});
+		 </script> ";
 	}
 
 	function get3MostTrendyQuizz(){
@@ -454,6 +457,161 @@
       echo("</div>");
 	}
 
+
+	function JS_Redirect($url){
+		echo ' <script type="text/javascript">
+            window.location.replace("'.$url.'");
+        </script>' ;
+	}
+
+	function JS_RedirectSubscription($url){
+		echo ' 
+				<form action="'.$url.'" method="post">
+					<input type="hidden" name="inscription" value="1">
+					<button type="submit" id="buttonForm">
+    			</form>
+    			<script type="text/javascript">
+    				$("#buttonForm").click();
+    			</script>';
+	}
+
+	function openModalAuth(){
+		echo '<script type="text/javascript">
+					$( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#inscriptionMessage").removeClass("hide");
+					});	
+    			</script>';
+
+    	unset($_POST['inscription']);
+	}
+
+
+	function getNbPlayedQuizzPerCategorie(){
+		/*Le nb de quizz joué par catégorie*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT  *, COUNT(*) as nb_repet 
+							FROM (
+							    SELECT C.nom as nom
+							    FROM `scores` as S, utilisateurs as U, categories as C, quizz as Q
+								WHERE S.id_utilisateur = U.id AND U.id = ".$_SESSION['idUtilisateur']." AND Q.id = S.id_quizz AND C.id = Q.id_categorie ) T 
+							GROUP BY nom 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['nom']] = $row['nb_repet'];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+
+	}
+
+	function getPlayedQuizzScore(){
+		/*Le nombre de bonne réponse par quizz en pourcentage*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, nb_repet, score, S.id_quizz        
+							FROM (SELECT  *, COUNT(*) as nb_repet 
+							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
+							                    FROM questions as K, reponses as R, quizz as Q
+							                    WHERE Q.id = K.id_quizz and R.id_question = K.id) as S
+							        GROUP BY id_quizz 
+							        HAVING   COUNT(*) >=1 
+							        ORDER BY nb_repet DESC) as R, 
+							        scores as S 
+							WHERE S.id_quizz = R.id_quizz AND S.id_utilisateur = ".$_SESSION['idUtilisateur'];
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['quizz']] = [$row['id_quizz'],(int)(($row['score']/$row['nb_repet'])*100)];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getNbOfCreatedQuizz(){
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT C.nom as categorie, Q.nom as quizz 
+							        FROM quizz as Q, categories as C 
+							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur']."
+                                    ORDER BY categorie ASC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 if(!isset($array[$row['categorie']])) $array[$row['categorie']] = [];  			 	
+	 			 	array_push($array[$row['categorie']], $row['quizz']);
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getInfoCreatedQuizz(){
+		//Le nb de joueur à ses quizz
+
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, idQuizz, categorie, maxScore, avgScore, COUNT(*) as nb_repet
+							FROM 
+								(SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
+								 FROM quizz as Q, categories as C 
+								WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
+								scores as S, 
+							    (SELECT id_quizz, MAX(score) as maxScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as M, 
+							    (SELECT id_quizz, AVG(score) as avgScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as A
+							WHERE S.id_quizz = idQuizz AND M.id_quizz=A.id_quizz AND A.id_quizz = S.id_quizz
+							GROUP BY S.id_quizz 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['maxScore'], floatval($row['avgScore'])];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
  ?> 
-
-

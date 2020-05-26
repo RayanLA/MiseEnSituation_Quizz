@@ -2,7 +2,7 @@
     <?php
     include 'header.php';
     if(isset($_SESSION["login"])){
-      header("Location:index.php");
+      JS_Redirect("index.php");
     }
     ?>
   
@@ -65,7 +65,7 @@
               $sql5 = "INSERT INTO `utilisateurs` (`login`, `mdp`) VALUES ('$pseudo', '$hashedPasse')";
               $stmt = $bd->query($sql5);
               echo "Demande d'inscription réussie ! Connectez-vous pour que votre pseudo apparaisse dans les scores.";
-              header("Refresh:3; index.php");
+              JS_RedirectSubscription("index.php");
             } catch(PDOException $e) {
               echo $e->getMessage();
             }

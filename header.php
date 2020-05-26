@@ -7,6 +7,7 @@
   updateImages();
 ?>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
   <link rel="icon" href="img/icone.png" />
   <title>QUIZZIO</title>
@@ -18,14 +19,26 @@
   <link href="css/blog.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
-  <script type="text/javascript" src="script.js"></script>
+  <script type="text/javascript" src="./js/script.js"></script>
 </head>
+
 <body>
+  <div class="position-absolute fixed-bottom w-100 d-flex flex-column p-4" >
+      <div class="toast ml-auto" role="alert" data-delay="700" data-autohide="false">
+          <div class="toast-header">
+              <strong class="mr-auto text-primary">Bravo !</strong>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="toast-body"> Connexion réussie ! </div>
+      </div>
+  </div>
   <div class="container">
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-          <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
+          <a href="index.php"><img class="logo" src='img/logo.png'></a>
         <?php
             if(isset($_SESSION['login'])){
             echo '<a class="p-2 text-muted" href="creationQuizz.php">Créer un quizz</a>';
