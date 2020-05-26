@@ -108,7 +108,6 @@
                       function validateForm(e){e.closest("form").submit();}
                     </script>';
                 echo"
-                <style>.hide{display:none;}</style>
                   <form action=\"QuizzParCategorie.php\" method=\"post\">
                     <input name=\"idCategorie\" id=\"numquestion\" value=\"".$row["id"]."\" class=\"hide\"/>
                     <input name=\"nomCategorie\" value=\"".$row["nom"]."\" class=\"hide\"/>

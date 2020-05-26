@@ -135,48 +135,6 @@
 
 
 
-
-<input id="data-categories" placeholder="Quizzes et catégories"/>
-<script type="text/javascript">
-  var options = {
-        data: {
-            "categories": [
-            {name: "Film", type:"categorie", id: 1},
-            {name: "Jeux Videos", type:"categorie", id: 2}
-            ],
-            "quizzes": [
-            {name: "MCU", type:"quizz", idC: 3, idQ: 4},
-            {name: "Chat siamois", type:"quizz", idC: 4, idQ:5}
-            ]
-        },
-
-        getValue: "name",
-
-        categories: [{
-            listLocation: 'categories',
-            header: '--- CATEGORIES ---'
-        }, {
-            listLocation: 'quizzes',
-            header: '--- QUIZZES ---'
-        }],
-
-        list: {
-            match: {
-                enabled: false
-            },
-            maxNumberOfElements: 10,
-            onChooseEvent: function() {
-              //if($("#data-categories").getSelectedItemData().type)
-            var value = $("#data-categories").getSelectedItemData().id; 
-            console.log(value);
-            }
-        }
-    };
-
-    $('#data-categories').easyAutocomplete(options);
-</script>
-
 <?php
       include 'footer.php'
-
 ?>

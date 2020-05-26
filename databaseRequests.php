@@ -444,8 +444,8 @@
       echo("<p class=\"mb-auto\">".$row["description"]."</p>");
 
       echo('<form action="quizz.php" method="post">
-          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
-          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" class="hide">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" class="hide">
           <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
         </form>');
 
@@ -613,5 +613,55 @@
 			var_dump($e);
 			return [];
 		}
+	}
+
+
+	function searchBox(){
+		echo '
+		<input id="data-categories" placeholder="Quizzes et catégories"/>
+		<span id="formForSearch" class="hide"></span>
+		<script type="text/javascript">
+		var options = {
+			data: {
+				"categories": [
+				{name: "Film", type:"categorie", id: 2},
+				{name: "Jeux Videos", type:"categorie", id: 2}
+				],
+				"quizzes": [
+				{name: "MCU", type:"quizz", idC: 2, idQ: 1},
+				{name: "Chat siamois", type:"quizz", idC: 4, idQ:5}
+				]
+				},
+
+				getValue: "name",
+
+				categories: [{
+					listLocation: "categories",
+					header: "--- CATEGORIES ---"
+					}, {
+						listLocation: "quizzes",
+						header: "--- QUIZZES ---"
+						}],
+
+						list: {
+							match: {
+								enabled: false
+								},
+								maxNumberOfElements: 10,
+								onChooseEvent: function() {
+									if(("categorie").localeCompare( $("#data-categories").getSelectedItemData().type) == 0){
+										redirectToCategorie($("#data-categories").getSelectedItemData().id,                   $("#data-categories").getSelectedItemData().name);
+										}else{
+											console.log("quizz");
+											redirectToQuizz($("#data-categories").getSelectedItemData().idC,
+											$("#data-categories").getSelectedItemData().idQ);
+										}
+									}
+								}
+							};
+
+							$("#data-categories").easyAutocomplete(options);
+							</script>
+		';
 	}
  ?> 

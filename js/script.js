@@ -281,3 +281,24 @@ function showStatRubrique(id){
         $("#"+id).removeClass('hide');
     });
 }
+
+
+function redirectToQuizz(idC, idQ){
+    console.log(idC, idQ);
+    $("#formForSearch").append('<form action="quizz.php" method="post">'
+                    +'<input name="idQuizz" value="'+idQ+'" class="hide"/>'
+                    +'<input name="idCategorie"  value="'+idC+'" class="hide"/>'
+                    +'<button type="submit" id="formSearchButton">'
+                  +'</form>');
+    $('#formSearchButton').click();
+}
+
+function redirectToCategorie(id, name){
+    console.log(id);
+    $("#formForSearch").append('<form action="QuizzParCategorie.php" method="post">'
+                    +'<input name="idCategorie" id="numquestion" value="'+id+'" class="hide"/>'
+                    +'<input name="nomCategorie" value="'+name+'" class="hide">'
+                    +'<button type="submit" id="formSearchButton">'
+                  +'</form>');
+    $('#formSearchButton').click();
+}
