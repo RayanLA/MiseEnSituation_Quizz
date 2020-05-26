@@ -23,8 +23,8 @@
 ?>
 
 <script type="text/javascript" language="javascript">
-    var quizzInfoScore = new Array();
-    var createdQuizzStats = new Array();
+    quizzInfoScore = new Array();
+    createdQuizzStats = new Array();
     <?php 
         foreach($playedQuizzScore as $key => $val){ 
             echo 'quizzInfoScore['.$val[0].'] = '.$val[1].'; ';
