@@ -11,13 +11,25 @@
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
   <link rel="icon" href="img/icone.png" />
   <title>QUIZZIO</title>
-  
+
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/blog.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <link href="./css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link href="./css/easy-autocomplete.themes.min.css" rel="stylesheet" type="text/css">
+  <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+  <script src="./js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+
+  <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script>
+
   <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
+
+  
   <script type="text/javascript" src="./js/script.js"></script>
 </head>
 
@@ -84,6 +96,7 @@
           </div>
           </div>
           </header>
+
           <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
               <?php
