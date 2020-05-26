@@ -11,8 +11,7 @@
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
   <link rel="icon" href="img/icone.png" />
   <title>QUIZZIO</title>
-
-
+  
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
