@@ -277,7 +277,6 @@ function showStats(){
 }
 
 function showStatRubrique(id){
-    console.log("toto");
     $(document).ready(function(){
         $("#"+id).removeClass('hide');
     });
