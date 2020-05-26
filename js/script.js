@@ -300,3 +300,17 @@ function redirectToCategorie(id, name){
                   +'</form>');
     $('#formSearchButton').click();
 }
+
+function showSearchBar(){
+    $("#buttonSearchBar").animate({
+        opacity:0
+    });
+    $("#buttonSearchBar").animate({
+        display: 'none'
+    });
+    $('#divSearchBox').animate({
+        opacity: 1, 
+        right: '-18px'
+    }, 'fast');
+
+}

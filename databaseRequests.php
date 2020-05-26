@@ -670,9 +670,22 @@
 		echo '</script>';*/
 
 
-		
+		/*<input id="data-categories" placeholder="Quizzes et catégories"/>*/
 		echo '
-		<input id="data-categories" placeholder="Quizzes et catégories" style="z-index:10;"/>
+		
+
+		<div class="input-group mb-3" style="top:8px; opacity:0" id="divSearchBox">
+		  <input type="text" class="form-control" placeholder="Quizzes et catégories"  id="data-categories">
+		</div>
+
+		<span onclick="showSearchBar()" id="buttonSearchBar">
+			<svg class="bi bi-search" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="#276955" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+			<path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+			</svg>
+		</span>
+
+		
 		<span id="formForSearch" class="hide"></span>
 		<script type="text/javascript">
 		var options = {
@@ -680,9 +693,7 @@
 				"categories": [';
 				foreach ($categories as $key => $value) {
 					echo '{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
-					if($i!=(count($categories)-1)){
-						echo ',';
-					}
+					if($i!=(count($categories)-1)) echo ',';
 					$i++;
 				}
 		echo    '],
