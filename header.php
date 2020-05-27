@@ -12,14 +12,19 @@
   <link rel="icon" href="img/icone.png" />
   <title>QUIZZIO</title>
 
-
   <!-- Custom styles for this template -->
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/blog.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
 
+  <link href="./css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link href="./css/easy-autocomplete.themes.min.css" rel="stylesheet" type="text/css">
+  <script src="./js/jquery-3.5.1.min.js"></script>
+  <script src="./js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+
+  <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script>
+
+  <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
 
   <script type="text/javascript" src="./js/script.js"></script>
 </head>
@@ -56,13 +61,16 @@
           </a>-->
 
               <?php
+
+              searchBox();
+
                 if(isset($_SESSION['login'])){
                   echo '<div class="dropdown">';
-                    echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    echo '<button  id="dropdownDiv" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       echo '<svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
                             </svg>';
-                      echo "  ".$_SESSION['login'];
+                      echo '<span style="margin-left:4px;">'.substr($_SESSION['login'], 0, 9).'</span>';
                     echo '</button>';
                     
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
@@ -87,7 +95,8 @@
           </div>
           </div>
           </header>
-          <div class="nav-scroller py-1 mb-2">
+
+          <div class="nav-scroller py-1 mb-2 " style="z-index: 0 !important;">
             <nav class="nav d-flex justify-content-between">
               <?php
 
@@ -98,7 +107,6 @@
                       function validateForm(e){e.closest("form").submit();}
                     </script>';
                 echo"
-                <style>.hide{display:none;}</style>
                   <form action=\"QuizzParCategorie.php\" method=\"post\">
                     <input name=\"idCategorie\" id=\"numquestion\" value=\"".$row["id"]."\" class=\"hide\"/>
                     <input name=\"nomCategorie\" value=\"".$row["nom"]."\" class=\"hide\"/>
