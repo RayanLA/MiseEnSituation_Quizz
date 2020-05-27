@@ -26,7 +26,6 @@
 
   <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
 
-  
   <script type="text/javascript" src="./js/script.js"></script>
 </head>
 
@@ -102,7 +101,7 @@
               <?php
 
               $bd = OpenCon();
-              $result = $bd->query("SELECT * FROM categories");
+              $result = $bd->query("SELECT * FROM categories LIMIT 5");
               while (($row = $result->fetch_assoc())) {
                 echo '<script type="text/javascript">
                       function validateForm(e){e.closest("form").submit();}
@@ -111,7 +110,7 @@
                   <form action=\"QuizzParCategorie.php\" method=\"post\">
                     <input name=\"idCategorie\" id=\"numquestion\" value=\"".$row["id"]."\" class=\"hide\"/>
                     <input name=\"nomCategorie\" value=\"".$row["nom"]."\" class=\"hide\"/>
-                    <a class=\"p-2 text-muted\" onclick=\"validateForm(this)\">".$row["nom"]."</a>
+                    <a class=\"p-2 text-muted pointeur\" onclick=\"validateForm(this)\">".$row["nom"]." </a>
                   </form>
                   ";
               }

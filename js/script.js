@@ -283,6 +283,7 @@ function showStatRubrique(id){
 }
 
 
+
 function redirectToQuizz(idC, idQ){
     $("#formForSearch").append('<form action="quizz.php" method="post">'
                     +'<input name="idQuizz" value="'+idQ+'" class="hide"/>'
