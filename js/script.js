@@ -276,3 +276,4 @@ function showStatRubrique(id){
         $("#"+id).removeClass('hide');
     });
 }
+

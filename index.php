@@ -16,21 +16,23 @@
       <?php
           for ($i = 0; $i < 3; $i++) {
 
+
             if($i==0) echo '<div class="carousel-item active">';
             else echo '<div class="carousel-item">';
 
             /*echo '<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
               <div class="container">';*/
 
-            echo '<img class="bd-placeholder-img" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" style="opacity: 0.75;object-fit: cover;overflow:hidden;"/>
+            echo '<img class="bd-placeholder-img imgCaroussel" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" id="imgCaroussel_'.$i.'"/>
               <div class="container">';
 
             if($i==0) echo '<div class="carousel-caption text-left">';
             elseif($i==1) echo '<div class="carousel-caption">';
             else echo '<div class="carousel-caption text-right">';
-
-            echo '<h1>'.$ArrayQuizz[$i][0].'</h1>';
-            echo '<p>'.$ArrayQuizz[$i][1].'</p>';
+            echo '<div class="no-gutters rounded overflow-hidden flex-md-row p-4 shadow-sm h-md-200 cardCaroussel mb-2">';
+            echo  '    <h1>'.$ArrayQuizz[$i][0].'</h1>';
+            echo  '    <p>'.$ArrayQuizz[$i][1].'</p> ';
+            echo '</div>';
 
 
             echo '<form action="quizz.php" method="post">
