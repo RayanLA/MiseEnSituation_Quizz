@@ -27,7 +27,6 @@ $(function(){
 });
 
 function getUrlImage(input){
-    console.log(input);
     if(input!=""){
         var urlAPI = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q="+encodeURI(input)+"&searchType=image"
 
@@ -162,83 +161,90 @@ function barChart(){
     });
    
     //bar
-    var ctxB = document.getElementById("barChart").getContext('2d');
+    if($("#barChart").length!=0){
+        var ctxB = document.getElementById("barChart").getContext('2d');
 
-    var _data = {
-        labels: myLabel,
-        datasets: [{
-            label: 'Nombre de participants aux quizzes',
-            data: myData,
-            backgroundColor: myColorBg,
-            borderColor: myColorBorder,
-            borderWidth: 1
-        }]
-    };
-
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
+        var _data = {
+            labels: myLabel,
+            datasets: [{
+                label: 'Nombre de participants aux quizzes',
+                data: myData,
+                backgroundColor: myColorBg,
+                borderColor: myColorBorder,
+                borderWidth: 1
             }]
-        }, 
-        tooltips: {
-            callbacks: {
-                label: function(tooltipItem) {
-                    var i = Number(tooltipItem.yLabel);
-                    var description = "";
-                    createdQuizzStats.forEach(function(element, index, array){
-                        if(element[1].toString().localeCompare(tooltipItem.label)==0){
-                            description = "Score moyen : "+parseFloat(element[3])+" et score maximal : "+element[2];
-                        }
-                    });
-                    return " "+i+ (i>1 ? " participants ! ":" participant ! ")+description;
-                }
-            }
-        }, 
-        plugins: {
-          deferred: {
-            yOffset: '50%', // defer until 50% of the canvas height are inside the viewport
-            delay: 700     // delay of 500 ms after the canvas is considered inside the viewport
-        }
-    }
-    };
+        };
 
-    myBarChart = new Chart(ctxB, {type:'bar', data:_data,options});
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }, 
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        var i = Number(tooltipItem.yLabel);
+                        var description = "";
+                        createdQuizzStats.forEach(function(element, index, array){
+                            if(element[1].toString().localeCompare(tooltipItem.label)==0){
+                                description = "Score moyen : "+parseFloat(element[3])+" et score maximal : "+element[2];
+                            }
+                        });
+                        return " "+i+ (i>1 ? " participants ! ":" participant ! ")+description;
+                    }
+                }
+            }, 
+            plugins: {
+              deferred: {
+                yOffset: '50%', // defer until 50% of the canvas height are inside the viewport
+                delay: 700     // delay of 500 ms after the canvas is considered inside the viewport
+            }
+        }
+        };
+
+        myBarChart = new Chart(ctxB, {type:'bar', data:_data,options});
+    }
 /*
     $("#barChart").removeAttr("style").removeAttr("width").removeAttr("height");*/
 
 }
 
+var quizzInfoScore = [];
+var createdQuizzStats = [];
 function donutChart(){
     quizzInfoScore.forEach(function(element, index, array){
         //index => element
         //doughnut
-        var ctxD = document.getElementById("doughnutChart_"+index).getContext('2d');
-        var myDonutChart = new Chart(ctxD, {
-            type: 'doughnut',
-            data: {
-                labels: ["Bonne réponse ","Mauvaise réponse "],
-                datasets: [{
-                    data: [element, 100-element],
-                    backgroundColor: ["#64D96814", "#F7464A14"],
-                    borderColor: ["#64D968", "#FF5A5E"]
-                }]
-            },
-            options: {
-                responsive: true,
-                animation:{
-                    duration:1000, 
-                }, 
-                plugins: {
-                    deferred: {
-                        yOffset: '30%', // defer until 50% of the canvas height are inside the viewport
-                        delay: 50     // delay of 500 ms after the canvas is considered inside the viewport
-                    }
-                }   
-            }        
-        });
+        if($("#"+"doughnutChart_"+index).length!=0){
+           var ctxD = document.getElementById("doughnutChart_"+index).getContext('2d');
+            var myDonutChart = new Chart(ctxD, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Bonne réponse ","Mauvaise réponse "],
+                    datasets: [{
+                        data: [element, 100-element],
+                        backgroundColor: ["#64D96814", "#F7464A14"],
+                        borderColor: ["#64D968", "#FF5A5E"]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation:{
+                        duration:1000, 
+                    }, 
+                    plugins: {
+                        deferred: {
+                            yOffset: '30%', // defer until 50% of the canvas height are inside the viewport
+                            delay: 50     // delay of 500 ms after the canvas is considered inside the viewport
+                        }
+                    }   
+                }        
+            }); 
+        }
+        
     });
 }
 
@@ -271,11 +277,11 @@ function showStats(){
 }
 
 function showStatRubrique(id){
-    console.log("toto");
     $(document).ready(function(){
         $("#"+id).removeClass('hide');
     });
 }
+
 
 function openModalShare(type, idC, idQ, nom){
     if(("C").localeCompare(type)==0){
@@ -294,3 +300,38 @@ function openModalShare(type, idC, idQ, nom){
     }
     $("#shareModal").modal('toggle');
 }
+
+
+
+function redirectToQuizz(idC, idQ){
+    $("#formForSearch").append('<form action="quizz.php" method="post">'
+                    +'<input name="idQuizz" value="'+idQ+'" class="hide"/>'
+                    +'<input name="idCategorie"  value="'+idC+'" class="hide"/>'
+                    +'<button type="submit" id="formSearchButton">'
+                  +'</form>');
+    $('#formSearchButton').click();
+}
+
+function redirectToCategorie(id, name){
+    $("#formForSearch").append('<form action="QuizzParCategorie.php" method="post">'
+                    +'<input name="idCategorie" id="numquestion" value="'+id+'" class="hide"/>'
+                    +'<input name="nomCategorie" value="'+name+'" class="hide">'
+                    +'<button type="submit" id="formSearchButton">'
+                  +'</form>');
+    $('#formSearchButton').click();
+}
+
+function showSearchBar(){
+    $("#buttonSearchBar").animate({
+        opacity:0
+    });
+    $("#buttonSearchBar").animate({
+        display: 'none'
+    });
+    $('#divSearchBox').animate({
+        opacity: 1, 
+        right: '-18px'
+    }, 'fast');
+
+}
+

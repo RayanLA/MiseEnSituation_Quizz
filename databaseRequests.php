@@ -444,6 +444,7 @@
       echo("<p class=\"mb-auto\">".$row["description"]."</p>");
 
       echo('<form action="quizz.php" method="post">
+
           <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" class="hide">
           <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" class="hide">
           <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span> 
@@ -454,6 +455,7 @@
 	          <path fill-rule="evenodd" d="M2.5 14A1.5 1.5 0 0 0 4 15.5h8a1.5 1.5 0 0 0 1.5-1.5V7A1.5 1.5 0 0 0 12 5.5h-1.5a.5.5 0 0 0 0 1H12a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V7a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 0 0-1H4A1.5 1.5 0 0 0 2.5 7v7z"/>
 	          </svg>
           </span>
+
         </form>');
       echo '';
       echo("</div>");
@@ -622,6 +624,7 @@
 		}
 	}
 
+
 	function checkIfQuizzExistInDB($cId, $qId){
 		try {
 			$res=[];$i=0;
@@ -668,4 +671,100 @@
 		return null;
 	}
 
+
+	function getQuizzesSearchBox(){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id, id_categorie FROM quizz";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$row['nom']] = [$row['id_categorie'],
+	 			 						 $row['id'] ]; 
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function searchBox(){
+		$categories = getExistingCategories();
+		$quizzes    = getQuizzesSearchBox();
+		$i=0;
+    
+		echo '
+		
+
+		<div class="input-group mb-3" style="top:8px; opacity:0" id="divSearchBox">
+		  <input type="text" class="form-control" placeholder="Quizzes et catégories"  id="data-categories">
+		</div>
+
+		<span onclick="showSearchBar()" id="buttonSearchBar">
+			<svg class="bi bi-search" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="#276955" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+			<path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+			</svg>
+		</span>
+
+		
+		<span id="formForSearch" class="hide"></span>
+		<script type="text/javascript">
+		var options = {
+			data: {
+				"categories": [';
+				foreach ($categories as $key => $value) {
+					echo '{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
+					if($i!=(count($categories)-1)) echo ',';
+					$i++;
+				}
+		echo    '],
+				"quizzes": [';
+				$i=0;
+				foreach ($quizzes as $key => $value) {
+					echo '{name: "'.$key.'", type:"quizz", idC: '.$value[0].', idQ: '.$value[1].'}';
+					if($i!=(count($quizzes)-1)) echo ',';
+					$i++;
+				}
+		echo	']
+				},
+
+				getValue: "name",
+
+				categories: [{
+					listLocation: "categories",
+					header: "--- CATEGORIES ---"
+					}, {
+						listLocation: "quizzes",
+						header: "--- QUIZZES ---"
+						}],
+
+						list: {
+							match: {
+								enabled: true
+								},
+								maxNumberOfElements: 10,
+								onChooseEvent: function() {
+									if(("categorie").localeCompare( $("#data-categories").getSelectedItemData().type) == 0){
+										redirectToCategorie($("#data-categories").getSelectedItemData().id,                   $("#data-categories").getSelectedItemData().name);
+										}else{
+											console.log("quizz");
+											redirectToQuizz($("#data-categories").getSelectedItemData().idC,
+											$("#data-categories").getSelectedItemData().idQ);
+										}
+									}
+								}
+							};
+
+							$("#data-categories").easyAutocomplete(options);
+							</script>
+		';
+	}
  ?> 
