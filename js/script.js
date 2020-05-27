@@ -282,7 +282,7 @@ function openModalShare(type, idC, idQ, nom){
         $("#messageShare")
         .html("La categorie "+nom+" est prête pour le partage !"
                /*+" L'URL de partage a été copié dans votre presse-papier :)"*/ );
-        $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation?c="+idC);
+        $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation.php?c="+idC);
         /*var copyText = document.querySelector("#urlShare");
         copyText.select();
         document.execCommand('copy');*/

@@ -19,6 +19,12 @@
     ?>
   </header>
   
+  <div class="row m-2 ">
+    <?php
+      echo '<button type="button" class="btn btn-primary shareCategorie" onclick="openModalShare(\'C\', '.$_POST['idCategorie'].', null, \''.$_POST['nomCategorie'].'\')">Partager cette catégorie</button> ';
+    ?>
+  </div>
+
   <div class="row mb-2">
     <?php 
     $conn = OpenCon();
