@@ -5,6 +5,35 @@
       $ArrayQuizz = get3MostTrendyQuizz();
     ?>
 
+    <div>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="shareModalLabel">Partager</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="messageShare" class="mb-3"></div>
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">URL :</span>
+                </div>
+                <input type="text" class="form-control" id="urlShare" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -113,7 +142,7 @@
       quizz.date_creation as crea, quizz.url as url, categories.id as id_categorie,
       quizz.id as id_quizz
       FROM quizz,categories 
-      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 10");
 
      while (($row = $result->fetch_assoc())) {
       

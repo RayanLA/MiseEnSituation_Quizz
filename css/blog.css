@@ -245,3 +245,16 @@ h1, h2, h3, h4, h5, h6 {
 .pointeur{
   cursor:pointer;
 }
+
+.shareButton{
+  margin-left:15px;
+}
+
+.svgShare{
+  width: 1.5em;
+  height: 1.5em;
+  position: relative;
+  top:-2px;
+  cursor: pointer;
+  z-index: 1;
+}
