@@ -1,7 +1,9 @@
 <html>
     <?php
-
     include 'header.php';
+    if(isset($_SESSION["login"])){
+      JS_Redirect("index.php");
+    }
     ?>
   
   <div class="col-md-12 blog-main">
@@ -51,7 +53,8 @@
         echo "Pseudo déjà utilisé, choisissez un autre pseudo svp.";
       } else {
         $passe = htmlspecialchars($_POST['passe']);
-
+        $hashedPasse = md5($passe);
+        
         if (strlen($passe) > 16 || strlen($passe) < 8 || preg_match('/[^a-z0-9]/i', $passe)) {
           echo "Le mot de passe ne respecte pas les instructions : il doit faire 8 à 16 caractères alphanumériques.";
         } else {
@@ -59,10 +62,10 @@
             
           if($passe == $passe2) {
             try {
-              $sql5 = "INSERT INTO `utilisateurs` (`login`, `mdp`) VALUES ('$pseudo', '$passe')";
+              $sql5 = "INSERT INTO `utilisateurs` (`login`, `mdp`) VALUES ('$pseudo', '$hashedPasse')";
               $stmt = $bd->query($sql5);
               echo "Demande d'inscription réussie ! Connectez-vous pour que votre pseudo apparaisse dans les scores.";
-              header("Refresh:3; index.php");
+              JS_RedirectSubscription("index.php");
             } catch(PDOException $e) {
               echo $e->getMessage();
             }

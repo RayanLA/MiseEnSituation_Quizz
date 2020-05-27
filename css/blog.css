@@ -166,3 +166,82 @@ h1, h2, h3, h4, h5, h6 {
   width: 60px;
   height: 60px;
 }
+
+.formQuizDiv{
+  padding: 1.5em;
+}
+
+.descriptionQuizz {
+  white-space: nowrap;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbnailImage{
+  overflow: hidden;
+  object-fit: contain;
+}
+
+.VraiFaux{
+  width: 58px;
+}
+
+.RemoveQuestion{
+  color: red;
+  border-color: red !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.addResponse{
+  color: green;
+  border-color: green !important;
+  background-color: white;
+  z-index: 2;
+}
+
+.hide{
+  display: none;
+}
+
+.hideImportant{
+  display: none !important;
+}
+
+.link{
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.link:hover{
+  text-decoration: underline;
+}
+
+.titleImitation{
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.5em;
+}
+
+.debug{
+  border: dashed red;
+}
+
+.imgCaroussel{
+  opacity: 1;
+  object-fit: cover;
+  overflow:hidden;
+}
+
+.cardCaroussel{
+   background-color: rgba(0, 0, 0, 0.70);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  padding: 50px;
+  display:inline-block;
+}
+
+.pointeur{
+  cursor:pointer;
+}

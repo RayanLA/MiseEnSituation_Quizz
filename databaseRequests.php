@@ -45,6 +45,13 @@
 	 	CloseCon($conn);
 	 }
 
+	 function connexionSuccessAlert() {
+		echo "<script> $(document).ready(function (){
+			$('.toast').toast('show');
+		});
+		 </script> ";
+	}
+
 	function get3MostTrendyQuizz(){
 	 	$conn = OpenCon();
 	 	//result array
@@ -152,7 +159,7 @@
 	 			$stmt->fetch();
 
 	 			CloseCon($bd);
-	 			var_dump("Result dbRequest : ".$count_result."<br>");
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
 	 			return $count_result;
 	 			
 	 		}
@@ -229,9 +236,10 @@
 
 			if($result = $conn->query($requestSQL)){
 	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$result->free();
 	 			 	return $row['score'];
             	}
-            	$result->free();
+            	
 	 		}else{;
 	 			//ECHEC 
 	 		}
@@ -243,4 +251,367 @@
 		}
 	}
 
+	function getExistingCategories(){
+		try {
+			$res=[];$i=0;
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id 
+						   FROM categories";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$i] = $row; $i++;
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function createquizz($conn, $nomQuizz, $description, $url ){
+		/*var_dump("
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ".$nomQuizz.", ".$_POST['categorie'].", ".$description.", ".$url.")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO quizz (id_createur, nom, id_categorie, description, url)
+			 		VALUES (".$_SESSION['idUtilisateur'].", ?, ".$_POST['categorie'].", ?, ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("sss", $nomQuizz, $description, $url);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createQuestion($conn, $question, $idQuizz){
+		/*var_dump("
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ".$question.")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO questions (id_quizz, question)
+			 		VALUES (".$idQuizz.", ?)";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $question);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function createAnswer($conn, $reponse, $correct, $idQuestion){
+		/*var_dump("
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
+		try {
+			$SQLRequest = "
+					INSERT INTO reponses (id_question, reponse, correct)
+			 		VALUES (".$idQuestion.", ?, ".(int)($correct=="true").")";
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+	 			$stmt->bind_param("s", $reponse);
+	 			$stmt->execute();
+	 			$stmt->fetch();
+	 		}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+	}
+
+	function getLatestId($conn){
+		$requestSQL = "SELECT LAST_INSERT_ID() as res";
+		if($result = $conn->query($requestSQL)){
+			while (($row = $result->fetch_assoc())) {
+				$result->free();
+				return $row['res'];
+			}
+		}else{;
+	 			//ECHEC 
+		}
+	}
+
+	function addQuizz()
+	{
+		try {
+
+			$conn = OpenCon();
+			
+			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
+			$latestIdQuizz = getLatestId($conn);
+
+			$array = $_POST['quizzData'];
+
+			for($i=0; $i<count($array); $i++){
+				$aQuestion = $array[$i];
+				$theQuestion = $aQuestion['question'];
+
+				createQuestion($conn, $theQuestion, $latestIdQuizz);
+				$latestIdQuestion = getLatestId($conn);
+				
+				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+					$reponse   = $value;
+					$isCorrect = $aQuestion['reponses']['correct'][$id];
+					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
+				}
+			}
+
+			CloseCon($conn);
+
+			return [$_POST['categorie'], $latestIdQuizz];
+
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+		return [];
+  }
+
+  function prepareDataForQuizzCreation(){
+  	$aray = [];
+  	foreach ($_POST as $name => $val)
+	{
+		/*Question*/
+		if( substr($name, 0, strlen("question_")) == "question_" ){
+			$array[substr($name, strlen("question_"), strlen($name))]["question"] = $val;
+			unset($_POST[$name]);
+		}
+
+		/*reponses cq_X_Y */
+		if( substr($name, 0, strlen("cq_")) == "cq_" ){
+			$reste = substr($name, strlen("cq_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["correct"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+
+		/*is a correct answer : q_iqQuestion_idReponse*/
+		if( substr($name, 0, strlen("q_")) == "q_" ){
+			$reste = substr($name, strlen("q_"), strlen($name));
+			$pos = strpos($reste, "_");
+			if($pos !== false){
+				$qID = substr($reste, 0, $pos);
+				$rID = substr($reste, $pos+1, strlen($reste));
+				$array[$qID]["reponses"]["reponse"][$rID] = $val; 
+			}
+			unset($_POST[$name]);
+		}
+	}
+	$_POST["quizzData"] = $array;
+  }
+
+
+
+
+	function generateCardQuizz($row){
+		echo("<div class=\"col-md-6\">");
+      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
+      echo("<div class=\"col p-4 d-flex flex-column position-static\">");
+      echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
+      
+
+      echo("<h3 class=\"mb-0\">".$row["qnom"]."</h3>");
+
+      /*Start  nb résultat */
+      echo '<p class="card-text mb-auto"> Ce quizz comporte ';
+      $conn = OpenCon();
+      $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id_quizz']." ";
+      $result1 = mysqli_query($conn,$query) or die (mysqli_error());
+      $resultat=mysqli_fetch_row($result1);
+      echo $resultat[0]. ' questions</p>';
+      CloseCon($conn);
+      /*End */
+
+
+      
+      echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
+      echo("<p class=\"mb-auto\">".$row["description"]."</p>");
+
+      echo('<form action="quizz.php" method="post">
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
+          <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span>
+        </form>');
+
+      echo("</div>");
+      echo("<div class=\"col-auto d-none d-lg-block\">");
+      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo("</div>");
+      echo("</div>");
+      echo("</div>");
+	}
+
+
+	function JS_Redirect($url){
+		echo ' <script type="text/javascript">
+            window.location.replace("'.$url.'");
+        </script>' ;
+	}
+
+	function JS_RedirectSubscription($url){
+		echo ' 
+				<form action="'.$url.'" method="post">
+					<input type="hidden" name="inscription" value="1">
+					<button type="submit" id="buttonForm">
+    			</form>
+    			<script type="text/javascript">
+    				$("#buttonForm").click();
+    			</script>';
+	}
+
+	function openModalAuth(){
+		echo '<script type="text/javascript">
+					$( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#inscriptionMessage").removeClass("hide");
+					});	
+    			</script>';
+
+    	unset($_POST['inscription']);
+	}
+
+
+	function getNbPlayedQuizzPerCategorie(){
+		/*Le nb de quizz joué par catégorie*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT  *, COUNT(*) as nb_repet 
+							FROM (
+							    SELECT C.nom as nom
+							    FROM `scores` as S, utilisateurs as U, categories as C, quizz as Q
+								WHERE S.id_utilisateur = U.id AND U.id = ".$_SESSION['idUtilisateur']." AND Q.id = S.id_quizz AND C.id = Q.id_categorie ) T 
+							GROUP BY nom 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['nom']] = $row['nb_repet'];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+
+	}
+
+	function getPlayedQuizzScore(){
+		/*Le nombre de bonne réponse par quizz en pourcentage*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, nb_repet, score, S.id_quizz        
+							FROM (SELECT  *, COUNT(*) as nb_repet 
+							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
+							                    FROM questions as K, reponses as R, quizz as Q
+							                    WHERE Q.id = K.id_quizz and R.id_question = K.id) as S
+							        GROUP BY id_quizz 
+							        HAVING   COUNT(*) >=1 
+							        ORDER BY nb_repet DESC) as R, 
+							        scores as S 
+							WHERE S.id_quizz = R.id_quizz AND S.id_utilisateur = ".$_SESSION['idUtilisateur'];
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['quizz']] = [$row['id_quizz'],(int)(($row['score']/$row['nb_repet'])*100)];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getNbOfCreatedQuizz(){
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT C.nom as categorie, Q.nom as quizz 
+							        FROM quizz as Q, categories as C 
+							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur']."
+                                    ORDER BY categorie ASC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 if(!isset($array[$row['categorie']])) $array[$row['categorie']] = [];  			 	
+	 			 	array_push($array[$row['categorie']], $row['quizz']);
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getInfoCreatedQuizz(){
+		//Le nb de joueur à ses quizz
+
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, idQuizz, categorie, maxScore, avgScore, COUNT(*) as nb_repet
+							FROM 
+								(SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
+								 FROM quizz as Q, categories as C 
+								WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
+								scores as S, 
+							    (SELECT id_quizz, MAX(score) as maxScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as M, 
+							    (SELECT id_quizz, AVG(score) as avgScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as A
+							WHERE S.id_quizz = idQuizz AND M.id_quizz=A.id_quizz AND A.id_quizz = S.id_quizz
+							GROUP BY S.id_quizz 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['maxScore'], floatval($row['avgScore'])];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
  ?> 

@@ -7,6 +7,7 @@
   updateImages();
 ?>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
   <link rel="icon" href="img/icone.png" />
   <title>QUIZZIO</title>
@@ -16,16 +17,33 @@
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/blog.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
+
+
+  <script type="text/javascript" src="./js/script.js"></script>
 </head>
+
 <body>
+  <div class="position-absolute fixed-bottom w-100 d-flex flex-column p-4" >
+      <div class="toast ml-auto" role="alert" data-delay="700" data-autohide="false">
+          <div class="toast-header">
+              <strong class="mr-auto text-primary">Bravo !</strong>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="toast-body"> Connexion réussie ! </div>
+      </div>
+  </div>
   <div class="container">
     <header class="blog-header py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-          <a href="index.php"><img class="logo" src='img/logo.png'></img></a>
+          <a href="index.php"><img class="logo" src='img/logo.png'></a>
         <?php
             if(isset($_SESSION['login'])){
-            echo '<a class="p-2 text-muted" href="#">Créer un quizz</a>';
+            echo '<a class="p-2 text-muted" href="creationQuizz.php">Créer un quizz</a>';
             }
         ?>
         </div>    
@@ -38,10 +56,7 @@
           </a>-->
 
               <?php
-                if(!isset($_SESSION['login'])){
-                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal">S\'identifier</a>';
-                }
-                else{
+                if(isset($_SESSION['login'])){
                   echo '<div class="dropdown">';
                     echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                       echo '<svg class="bi bi-person-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -59,6 +74,14 @@
                       </svg></a>';
                     echo '</div>';
                   echo '</div>';
+                }elseif(!isset($_SESSION['login']) && !( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) )) {
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="modalAuth">S\'identifier</a>';
+                }
+
+                if( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
+                   || ( isset($_POST['isGuest']) && $_POST['isGuest']) ){
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="">Invité</a>';
                 }
               ?>
           </div>
@@ -69,9 +92,19 @@
               <?php
 
               $bd = OpenCon();
-              $result = $bd->query("SELECT * FROM categories");
+              $result = $bd->query("SELECT * FROM categories LIMIT 5");
               while (($row = $result->fetch_assoc())) {
-                echo("<a class=\"p-2 text-muted\" href=\"QuizzParCategorie.php?idCategorie=".$row["id"]."\">".$row["nom"]."</a>");
+                echo '<script type="text/javascript">
+                      function validateForm(e){e.closest("form").submit();}
+                    </script>';
+                echo"
+                <style>.hide{display:none;}</style>
+                  <form action=\"QuizzParCategorie.php\" method=\"post\">
+                    <input name=\"idCategorie\" id=\"numquestion\" value=\"".$row["id"]."\" class=\"hide\"/>
+                    <input name=\"nomCategorie\" value=\"".$row["nom"]."\" class=\"hide\"/>
+                    <a class=\"p-2 text-muted pointeur\" onclick=\"validateForm(this)\">".$row["nom"]." </a>
+                  </form>
+                  ";
               }
               CloseCon($bd);
               ?>
