@@ -115,7 +115,7 @@
       quizz.date_creation as crea, quizz.url as url, categories.id as id_categorie,
       quizz.id as id_quizz
       FROM quizz,categories 
-      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 10");
 
      while (($row = $result->fetch_assoc())) {
       

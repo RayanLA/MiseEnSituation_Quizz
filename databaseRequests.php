@@ -447,13 +447,17 @@
 
           <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" class="hide">
           <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" class="hide">
-          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
+          <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span> 
+          <span class="shareButton" onclick="openModalShare(\'Q\', '.$row["id_categorie"].', '.$row["id_quizz"].', \''.$row["qnom"].'\')">
+	          <svg class="bi bi-box-arrow-up svgShare" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+	          <path fill-rule="evenodd" d="M4.646 4.354a.5.5 0 0 0 .708 0L8 1.707l2.646 2.647a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708z"/>
+	          <path fill-rule="evenodd" d="M8 11.5a.5.5 0 0 0 .5-.5V2a.5.5 0 0 0-1 0v9a.5.5 0 0 0 .5.5z"/>
+	          <path fill-rule="evenodd" d="M2.5 14A1.5 1.5 0 0 0 4 15.5h8a1.5 1.5 0 0 0 1.5-1.5V7A1.5 1.5 0 0 0 12 5.5h-1.5a.5.5 0 0 0 0 1H12a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V7a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 0 0-1H4A1.5 1.5 0 0 0 2.5 7v7z"/>
+	          </svg>
+          </span>
 
-          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
-          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
-          <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span>
         </form>');
-
+      echo '';
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
       echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
@@ -620,6 +624,54 @@
 		}
 	}
 
+
+	function checkIfQuizzExistInDB($cId, $qId){
+		try {
+			$res=[];$i=0;
+			$bd = OpenCon();
+
+			if ($stmt = $bd->prepare("SELECT COUNT(*) FROM quizz WHERE id=? AND id_categorie=?")){
+
+	 			$stmt->bind_param("ii", $qId, $cId);
+	 			$stmt->execute();
+	 			$count_result = 0; 
+	 			$stmt->bind_result($count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return $count_result==1;
+	 		}
+		} catch (Exception $e) {
+			return false;
+		}
+		return false;
+	}
+
+	function getCategorieName($cId){
+		try {
+			$res=[];$i=0;
+			$bd = OpenCon();
+
+			if ($stmt = $bd->prepare("SELECT nom, COUNT(*) FROM categories WHERE id=?")){
+
+	 			$stmt->bind_param("i", $cId);
+	 			$stmt->execute();
+	 			$count_result = 0; $nom=""; 
+	 			$stmt->bind_result($nom, $count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return ($count_result==1)?$nom:null;
+	 		}
+		} catch (Exception $e) {
+			return null;
+		}
+		return null;
+	}
+
+
 	function getQuizzesSearchBox(){
 		try {
 			$res=[];
@@ -647,35 +699,7 @@
 		$categories = getExistingCategories();
 		$quizzes    = getQuizzesSearchBox();
 		$i=0;
-
-		/*debug */
-		/*echo '<script type="text/javascript">';
-		$stringDebug ="";
-		foreach ($categories as $key => $value) {
-					$stringDebug = $stringDebug.'{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
-					if($i!=(count($categories)-1)){
-						$stringDebug= $stringDebug.',';
-					}
-					$i++;
-				}
-				echo 'console.log('.$stringDebug.');';
-
-				echo 'console.log("___________________________\n");';
-
-
-		$stringDebug = "";
-		$i=0;
-		foreach ($quizzes as $key => $value) {
-			$stringDebug = $stringDebug.'{name: "'.$key.'", type:"quizz", idC: '.$value[0].', idQ: '.$value[1].'}';
-			if($i!=(count($quizzes)-1)) $stringDebug=$stringDebug.',';
-			$i++;
-		}
-				echo 'console.log(\''.$stringDebug.'\');';
-
-		echo '</script>';*/
-
-
-		/*<input id="data-categories" placeholder="Quizzes et catégories"/>*/
+    
 		echo '
 		
 
