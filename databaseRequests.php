@@ -448,12 +448,7 @@
           <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" class="hide">
           <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" class="hide">
           <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span> 
-          <div class="" style=" width: 1.5em;
-  height: 1.5em;
-  position: relative;
-  top:-2px;
-  cursor: pointer;
-  z-index: 1;margin-top:1em;">
+          <div class="svgShare" >
 	          <span class="shareButton" onclick="openModalShare(\'Q\', '.$row["id_categorie"].', '.$row["id_quizz"].', \''.$row["qnom"].'\')">
 		          <svg class="bi bi-box-arrow-up " viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 		          <path fill-rule="evenodd" d="M4.646 4.354a.5.5 0 0 0 .708 0L8 1.707l2.646 2.647a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708z"/>
@@ -571,7 +566,7 @@
 		try {
 			$conn = OpenCon();
 			$array = [];
-			$queryString = "SELECT C.nom as categorie, Q.nom as quizz 
+			$queryString = "SELECT C.nom as categorie, Q.nom as quizz, Q.id_categorie as cID, Q.id as qID
 							        FROM quizz as Q, categories as C 
 							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur']."
                                     ORDER BY categorie ASC";
@@ -579,7 +574,7 @@
 			if($result = $conn->query($queryString)){
 	 			 while (($row = $result->fetch_assoc())) {
 	 			 if(!isset($array[$row['categorie']])) $array[$row['categorie']] = [];  			 	
-	 			 	array_push($array[$row['categorie']], $row['quizz']);
+	 			 	array_push($array[$row['categorie']], ["quizz"=>$row['quizz'], "cID"=>$row['cID'], "qID"=>$row['qID']]);
             	}
 				$result->free();
 				CloseCon($conn);
@@ -774,4 +769,30 @@
 							</script>
 		';
 	}
+
+	function getMetadata($cId, $qID){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT Q.description as description, Q.url as url
+							FROM quizz Q, categories C 
+							WHERE C.id=Q.id_categorie AND C.id=".$cId." AND Q.id=".$qID;
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	return ["description"=>$row['description'], "url"=>$row['url']];
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+
  ?> 
