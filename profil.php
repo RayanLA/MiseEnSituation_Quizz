@@ -20,6 +20,14 @@
     if(count($playedQuizzScore)!=0) callTo_showStatRubrique('bonneReponse');
     if(count($nbOfCreatedQuizz)!=0) callTo_showStatRubrique('quizzCree');
     if(count($infoCreatedQuizz)!=0) callTo_showStatRubrique('joueursStat');
+
+    $quizzTab = [];
+    foreach ($nbOfCreatedQuizz as $key => $value) {
+      foreach ($value as $key1 => $value1) { 
+        $quizzTab += array($value1['quizz'] => $value1);
+      }
+    }ksort($quizzTab);
+
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -41,6 +49,38 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-deferred@1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
+<div id="selectQuizzModifyModal" class="modal fade" role="dialog">
+    <div class="modal-dialog form-group">
+      <form class="modal-content" action="modifyQuizz.php" method="post">
+        <div class="container">
+          <div class="modal-header">
+            <h5 class="modal-title" id="title" style="text-align: center">Choisissez un de vos quizz : </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <div class="form-group">
+            <select class="form-control" id="quizzList" name="selectedQuizz">
+              <?php
+                foreach ($quizzTab as $key => $value) {
+                  echo '<option value="'.$value['cID'].'_'.$value['qID'].'_'.$value['quizz'].'">'.$value['quizz'].'</option>';
+                }
+              ?>
+            </select>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <div class="clearfix">
+              <button type="submit" class="btn btn-primary">Modifier</button>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
 
 <hr/>
 <div class="card">
@@ -120,8 +160,17 @@
 
             <!-- Le nombre de quizz créé --> 
            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="quizzCree">
-                <div class="col-md-12">
-                 <h3 class="pb-4 mb-4 font-italic border-bottom">Vos créations : </h3>
+                <div class="col-md-12 border-bottom pb-4 mb-4 " >
+                  <div class="row creationBandeau" >
+                    <div class="col-md-6">
+                      <h3 class="font-italic ">Vos créations : </h3>
+                    </div>
+                    <div class="col-md-6 linkModalModifyQuizz">
+                      <span class="stretched-link link pointeur" onclick="modalChangeQuizz(this)" data-toggle="modal" data-target="#selectQuizzModifyModal" >Modifier un quizz</span> 
+                    </div>
+                  </div>
+                   
+                   
                </div>
                <?php 
                foreach ($nbOfCreatedQuizz as $key => $value) {
@@ -132,7 +181,7 @@
                           <h5 class="card-title">'.$key.'</h5>
                           <p class="card-text">';
                           foreach ($value as $key1 => $value1) {
-                            echo $value1; 
+                            echo $value1['quizz']; 
                             if( ( $value1!= end($value)) ) echo ", ";
                           }
                 echo '    </p>
