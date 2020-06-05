@@ -794,5 +794,30 @@
 		}
 	}
 
+	function getQuestionsReponse($idC, $idQ){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT q.question, R.reponse, R.correct
+							FROM quizz Q, questions q, reponses R
+							WHERE Q.id=".$idQ." AND Q.id_categorie=".$idC." AND q.id_quizz=Q.id AND R.id_question=q.id ";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	if(!isset($res[$row['question']])) $res[$row['question']] = [];
+	 			 	array_push($res[$row['question']], ["reponse"=>$row['reponse'], "correct"=>$row['correct']]);
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
 
  ?> 

@@ -21,12 +21,14 @@
     if(count($nbOfCreatedQuizz)!=0) callTo_showStatRubrique('quizzCree');
     if(count($infoCreatedQuizz)!=0) callTo_showStatRubrique('joueursStat');
 
+    print_r($nbOfCreatedQuizz);
+
     $quizzTab = [];
     foreach ($nbOfCreatedQuizz as $key => $value) {
       foreach ($value as $key1 => $value1) { 
-        $quizzTab += array($value1['quizz'] => $value1);
+        $quizzTab += array($value1['quizz'][0] => $value1);
       }
-    }ksort($quizzTab);
+    }ksort($quizzTab);echo '<br>';print_r($quizzTab);
 
 ?>
 

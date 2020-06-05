@@ -13,6 +13,9 @@
 	$description = $data["description"];
 	$url = $data["url"];
 
+	$questionReponse = getQuestionsReponse($cID, $qID);
+	print_r($questionReponse);
+
     echo '<h3 class="pb-4 mb-4 font-italic border-bottom" id="modifyQuizz">'.$quizzName.'</h3>';
 
     echo '<script type="text/javascript">getUrlImage("'.$url.'");</script>';
