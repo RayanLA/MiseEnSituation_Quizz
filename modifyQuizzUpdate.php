@@ -22,6 +22,7 @@
 			<form action="quizz.php" method="post">
 				<input type="hidden" value="'.$_POST['idC'].'" name="idCategorie">
 				<input type="hidden" value="'.$_POST['idQ'].'" name="idQuizz">
+				<input type="hidden" value="Votre quizz a été mis à jour !" name="message">
 				<button type="submit" id="buttonForm" class="hide">
 			</form>
 			<script type="text/javascript">

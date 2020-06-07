@@ -68,7 +68,6 @@
             <div class="clearfix">
               <button type="submit" class="btn btn-primary">Modifier</button>
             </div>
-
           </div>
         </div>
       </form>

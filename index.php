@@ -3,11 +3,6 @@
       include 'header.php';
       if(isset($_POST['inscription']) && strcmp($_POST['inscription'],'1')==0){ openModalAuth(); }
       $ArrayQuizz = get3MostTrendyQuizz();
-      if(isset($_POST['message'])){
-        $msg = $_POST['message']; unset($_POST['message']);
-        inform($msg);
-      }
-
     ?>
 
 
