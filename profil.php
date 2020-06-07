@@ -8,6 +8,7 @@
     $playedQuizzScore = getPlayedQuizzScore();
     $nbOfCreatedQuizz = getNbOfCreatedQuizz();
     $infoCreatedQuizz = getInfoCreatedQuizz();
+    $orderedByQuizz   = getQuizzOrderAZ();
 
     $numberOfRows = count($nbPlayedQuizzPerCategorie) + count($playedQuizzScore)
                     + count($nbOfCreatedQuizz) + count($infoCreatedQuizz);
@@ -20,15 +21,6 @@
     if(count($playedQuizzScore)!=0) callTo_showStatRubrique('bonneReponse');
     if(count($nbOfCreatedQuizz)!=0) callTo_showStatRubrique('quizzCree');
     if(count($infoCreatedQuizz)!=0) callTo_showStatRubrique('joueursStat');
-
-    print_r($nbOfCreatedQuizz);
-
-    $quizzTab = [];
-    foreach ($nbOfCreatedQuizz as $key => $value) {
-      foreach ($value as $key1 => $value1) { 
-        $quizzTab += array($value1['quizz'][0] => $value1);
-      }
-    }ksort($quizzTab);echo '<br>';print_r($quizzTab);
 
 ?>
 
@@ -65,7 +57,7 @@
            <div class="form-group">
             <select class="form-control" id="quizzList" name="selectedQuizz">
               <?php
-                foreach ($quizzTab as $key => $value) {
+                foreach ($orderedByQuizz as $key => $value) {
                   echo '<option value="'.$value['cID'].'_'.$value['qID'].'_'.$value['quizz'].'">'.$value['quizz'].'</option>';
                 }
               ?>

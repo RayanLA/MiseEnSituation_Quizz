@@ -8,7 +8,7 @@
 			<form action="quizz.php" method="post">
 				<input type="hidden" value="'.$_POST['idC'].'" name="idCategorie">
 				<input type="hidden" value="'.$_POST['idQ'].'" name="idQuizz">
-				<button type="submit" id="buttonForm">
+				<button type="submit" id="buttonForm" class="hide">
 			</form>
 			<script type="text/javascript">
 				$("#buttonForm").click();
@@ -16,7 +16,5 @@
     ?>
 <br>
 
-<?php 
-	include 'footer.php';
-?>
+
 </html>

@@ -18,13 +18,7 @@
     echo '<script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
       function openAuthModal(){ document.getElementById("modalAuth").click(); }
-    </script>
-    <style type="text/css">
-      .link{
-        color: #007bff;
-        text-decoration: none;
-        background-color: transparent;
-      }</style>';
+    </script>';
 
 
 
@@ -36,7 +30,7 @@
 		    	<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
 		    	<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 		    	<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
-		    	<span class="stretched-link link" onclick="validateForm(this)">Commencer le quizz !</span>
+		    	<span class="stretched-link link pointeur" onclick="validateForm(this)">Commencer le quizz !</span>
 	    	</form>
 	    ';
 	}else{
@@ -60,8 +54,6 @@
 					</div>
 				</div>';
 	}
-
-	   /* echo '<a href="#" class="stretched-link" style="text-align: center;">Commencer le quizz</a>';*/
 
 
 	    echo '</div>';

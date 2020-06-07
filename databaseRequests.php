@@ -859,4 +859,30 @@
 		return ;
 	}
 
+	function getQuizzOrderAZ(){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT Q.nom as quizz, C.id as cID, Q.id as qID
+							FROM categories C, quizz Q, utilisateurs U
+							WHERE Q.id_categorie=C.id AND U.id=".$_SESSION['idUtilisateur']." AND Q.id_createur=U.id
+							ORDER BY Q.nom ASC; ";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$row['qID']] = ["cID"=>$row['cID'], "qID"=>$row['qID'], "quizz"=>$row['quizz']];
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+
+	}
+
  ?> 
