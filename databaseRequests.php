@@ -922,7 +922,7 @@
 			    </div>
 			  </div>
 			</div>
-			<button type="hidden"data-toggle="modal" data-target="#infoModal" id="infoModalToggleButton"></button>
+			<button type="button" class="hide" data-toggle="modal" data-target="#infoModal" id="infoModalToggleButton"></button>
 			<script type="text/javascript">
 				$(function(){
 					$("#infoModalToggleButton").click();
