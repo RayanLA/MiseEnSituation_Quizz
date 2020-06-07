@@ -1,5 +1,5 @@
  <?php
- include ('configDB.php'); 
+ include ('configDB_SECRET.php'); 
 
 	 $dbhost = $_dbhost;
 	 $dbuser = $_dbuser;
@@ -313,9 +313,6 @@
 	}
 
 	function createAnswer($conn, $reponse, $correct, $idQuestion){
-		/*var_dump("
-					INSERT INTO reponses (id_question, reponse, correct)
-			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO reponses (id_question, reponse, correct)
@@ -338,7 +335,7 @@
 				$result->free();
 				return $row['res'];
 			}
-		}else{;
+		}else{
 	 			//ECHEC 
 		}
 	}
@@ -352,21 +349,8 @@
 			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
 			$latestIdQuizz = getLatestId($conn);
 
-			$array = $_POST['quizzData'];
-
-			for($i=0; $i<count($array); $i++){
-				$aQuestion = $array[$i];
-				$theQuestion = $aQuestion['question'];
-
-				createQuestion($conn, $theQuestion, $latestIdQuizz);
-				$latestIdQuestion = getLatestId($conn);
-				
-				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
-					$reponse   = $value;
-					$isCorrect = $aQuestion['reponses']['correct'][$id];
-					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
-				}
-			}
+			addQuestions($conn, $latestIdQuizz);
+			
 
 			CloseCon($conn);
 
@@ -377,6 +361,24 @@
 			return [];
 		}
 		return [];
+  }
+
+  function addQuestions($conn, $IdQuizz){
+  	$array = $_POST['quizzData'];
+
+  	for($i=0; $i<count($array); $i++){
+  		$aQuestion = $array[$i];
+  		$theQuestion = $aQuestion['question'];
+
+  		createQuestion($conn, $theQuestion, $IdQuizz);
+  		$latestIdQuestion = getLatestId($conn);
+
+  		foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+  			$reponse   = $value;
+  			$isCorrect = $aQuestion['reponses']['correct'][$id];
+  			createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
+  		}
+  	}
   }
 
   function prepareDataForQuizzCreation(){
@@ -819,5 +821,42 @@
 		}
 	}
 
+	function updateMetaData(){
+		try {
+	 		$bd = OpenCon();
+	 		if ($stmt = $bd->prepare("  UPDATE quizz 
+	 									SET nom=?, description=?, url=?, id_categorie=?
+	 									WHERE id=".$_POST['idQ'])){
+
+	 			$stmt->bind_param("sssi", $_POST['nomQuizz'], $_POST['description'], $_POST['url'], $_POST['categorie']);
+	 			$stmt->execute();
+	 			CloseCon($bd);
+	 			return 0;
+	 			
+	 		}
+	 	} catch (Exception $e) {
+	 		echo $e;
+	 		return 0;
+	 	}
+        return 0;
+	}
+
+	function deleteAndAddAllQuestionReponses(){
+		$conn = OpenCon();
+		try {
+			$SQLRequest = " DELETE FROM questions
+							WHERE id_quizz=".$_POST['idQ'];
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+				$stmt->execute();
+				$stmt->fetch();
+			}
+			addQuestions($conn, $_POST['idQ']);
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+		CloseCon($conn);
+		return ;
+	}
 
  ?> 

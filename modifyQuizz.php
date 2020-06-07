@@ -14,20 +14,22 @@
 	$url = $data["url"];
 
 	$questionReponse = getQuestionsReponse($cID, $qID);
-	print_r($questionReponse);
-
     echo '<h3 class="pb-4 mb-4 font-italic border-bottom" id="modifyQuizz">'.$quizzName.'</h3>';
 
-    echo '<script type="text/javascript">getUrlImage("'.$url.'");</script>';
-
+    echo '<script type="text/javascript">
+            $(function(){
+                $(\'#thumbnailImg\').attr(\'src\',\''.$url.'\');
+            });
+            var questionReponseData = '.json_encode($questionReponse).';
+            generateQuestionReponses();
+          </script>';
 	?>
 
-	
-
-
-
-
-    <form action="creationQuizUpdate.php" method="POST">
+    <form action="modifyQuizzUpdate.php" method="POST">
+        <?php 
+            echo '<input type="hidden" name="idC" value="'.$cID.'">
+                  <input type="hidden" name="idQ" value="'.$qID.'">';
+        ?>
 
     	<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative formQuizDiv">
     		<!-- Titre -->
@@ -133,14 +135,9 @@
     	</div>
 
     	<div class="mb-4 d-flex justify-content-center">
-    		<button type="submit" class="btn btn-lg btn-primary">Créer le Quizz !</button>
+    		<button type="submit" class="btn btn-lg btn-primary">Mettre à jour le Quizz !</button>
     	</div>
     </form>
-
-
-
-
-
 
 
 	<br>

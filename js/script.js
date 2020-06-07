@@ -34,6 +34,7 @@ function getUrlImage(input){
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var json = JSON.parse(xhttp.responseText);
+                console.log(json);
                 var urlImage = json.items[0].link;
 
                 $(function(){
@@ -73,6 +74,7 @@ function addQuestion(){
     );
 
     questionReponse[id] = 0;
+    return id;
 }
 
 function changeCorrect(e, i, id){
@@ -111,13 +113,14 @@ function addResponse(i){
             +'<input type="text" class="form-control" id="q_'+i+'_'+id+'" placeholder="Reponse '+id+'" name="q_'+i+'_'+id+'">'
             +'<div class="input-group-append">'
                 +'<input id="cq_'+i+'_'+id+'" type="hidden" name="cq_'+i+'_'+id+'" value="false">'
-                +'<button class="btn btn-danger VraiFaux" type="button" onclick="changeCorrect(this, '+i+', '+id+')">Faux</button>'
+                +'<button class="btn btn-danger VraiFaux" type="button" id="bq_'+i+'_'+id+'" onclick="changeCorrect(this, '+i+', '+id+')">Faux</button>'
                 +'<button class="btn btn-outline-secondary btn-outline-danger RemoveQuestion" type="button" onclick="deleteQuestion(this, '+i+','+id+')"> '
                 +'<i class="far fa-times-circle"></i>'
                 +'</button>'
             +'</div>'
         +'</div>'
     );
+    return id;
 }
 
 var questionReponse = [];
@@ -332,6 +335,24 @@ function showSearchBar(){
         opacity: 1, 
         right: '-18px'
     }, 'fast');
-
 }
 
+
+function generateQuestionReponses(){
+    //questionReponseData
+    $(function(){
+        var tab = new Array(questionReponseData);
+        for (var i in tab) {
+            for(var q in tab[i]){
+                var idQ = addQuestion();
+                $("#question_"+idQ).val(q);
+                for(var r in tab[i][q]){
+                    var R = tab[i][q][r];
+                    var idR = addResponse(idQ);
+                    $('#q_'+idQ+'_'+idR).val(R.reponse);
+                    if((R.correct).localeCompare("1")==0) changeCorrect($('#bq_'+idQ+'_'+idR), idQ, idR);
+                }
+            }
+        }
+    });
+}
