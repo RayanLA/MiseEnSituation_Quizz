@@ -368,3 +368,10 @@ function checkInput(i){
 
     }
 }
+
+$(function(){
+    $('#deleteQuizz').click(function(){
+        $('#deleteQuizzInput').val(1);
+        $('#modifyQuizzSubmitButton').click();
+    });
+});

@@ -3,6 +3,11 @@
       include 'header.php';
       if(isset($_POST['inscription']) && strcmp($_POST['inscription'],'1')==0){ openModalAuth(); }
       $ArrayQuizz = get3MostTrendyQuizz();
+      if(isset($_POST['message'])){
+        $msg = $_POST['message']; unset($_POST['message']);
+        inform($msg);
+      }
+
     ?>
 
 
@@ -21,9 +26,6 @@
 
             if($i==0) echo '<div class="carousel-item active">';
             else echo '<div class="carousel-item">';
-
-            /*echo '<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-              <div class="container">';*/
 
             echo '<img class="bd-placeholder-img imgCaroussel" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" id="imgCaroussel_'.$i.'"/>
               <div class="container">';
@@ -118,18 +120,10 @@
       WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 10");
 
      while (($row = $result->fetch_assoc())) {
-      
       generateCardQuizz($row);
-      
-      
-      
-      //echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
-
     }
 
     CloseCon($bd);
-
-
   ?>
     
   </div>
