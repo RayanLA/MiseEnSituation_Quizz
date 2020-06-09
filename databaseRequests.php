@@ -385,7 +385,10 @@
   	$aray = [];
   	foreach ($_POST as $name => $val)
 	{
-		$val = addslashes($val);
+		//échapper les ' et les "
+		$val = str_replace("\"", "&quot;", $val);
+		$val = str_replace("'", "&#039;", $val);
+
 		/*Question*/
 		if( substr($name, 0, strlen("question_")) == "question_" ){
 			$array[substr($name, strlen("question_"), strlen($name))]["question"] = $val;
