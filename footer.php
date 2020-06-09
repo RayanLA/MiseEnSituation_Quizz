@@ -11,13 +11,16 @@
           </button>
         </div>
         <div class="modal-body">
+          <span class="hide mb-2 text-primary" id="inscriptionMessage">Votre inscription est terminée, veuillez vous identifiez :) </span>
           <label for="email"><b>Identifiant</b></label>
           <input type="text" placeholder="Pseudo" class="form-control" name="login" required>
 
           <label for="psw"><b>Mot de passe</b></label>
           <input type="password"  class="form-control" placeholder="Enter Password" name="password" required>
           <br/>
-          Pas encore inscrit ? <a href="inscription.php">Inscription</a>
+          <span class="hide mb-2 text-danger" id="IncorrectPsw"> Login ou mot de passe incorrect ! </span>
+
+          <span id="inscrivezVous"> Pas encore inscrit ? <a href="inscription.php">Inscription</a></span>
           
 
         </div>
@@ -43,6 +46,5 @@
   </p>
 </footer>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="bootstrap/js/bootstrap.bundle.js"></script></body>
+
 </html>

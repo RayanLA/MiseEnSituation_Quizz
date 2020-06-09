@@ -1,5 +1,5 @@
  <?php
- include ('configDB.php'); 
+ include ('configDB_SECRET.php'); 
 
 	 $dbhost = $_dbhost;
 	 $dbuser = $_dbuser;
@@ -45,8 +45,11 @@
 	 	CloseCon($conn);
 	 }
 
-	 function phpAlert($msg) {
-		echo '<script type="text/javascript">alert("' . $msg . '")</script>';
+	 function connexionSuccessAlert() {
+		echo "<script> $(document).ready(function (){
+			$('.toast').toast('show');
+		});
+		 </script> ";
 	}
 
 	function get3MostTrendyQuizz(){
@@ -310,9 +313,6 @@
 	}
 
 	function createAnswer($conn, $reponse, $correct, $idQuestion){
-		/*var_dump("
-					INSERT INTO reponses (id_question, reponse, correct)
-			 		VALUES (".$idQuestion.", ".$reponse.", ".(int)($correct=="true").")");*/
 		try {
 			$SQLRequest = "
 					INSERT INTO reponses (id_question, reponse, correct)
@@ -335,7 +335,7 @@
 				$result->free();
 				return $row['res'];
 			}
-		}else{;
+		}else{
 	 			//ECHEC 
 		}
 	}
@@ -349,21 +349,8 @@
 			createquizz($conn, $_POST['nomQuizz'], $_POST['description'], $_POST['url']);
 			$latestIdQuizz = getLatestId($conn);
 
-			$array = $_POST['quizzData'];
-
-			for($i=0; $i<count($array); $i++){
-				$aQuestion = $array[$i];
-				$theQuestion = $aQuestion['question'];
-
-				createQuestion($conn, $theQuestion, $latestIdQuizz);
-				$latestIdQuestion = getLatestId($conn);
-				
-				foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
-					$reponse   = $value;
-					$isCorrect = $aQuestion['reponses']['correct'][$id];
-					createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
-				}
-			}
+			addQuestions($conn, $latestIdQuizz);
+			
 
 			CloseCon($conn);
 
@@ -376,10 +363,32 @@
 		return [];
   }
 
+  function addQuestions($conn, $IdQuizz){
+  	$array = $_POST['quizzData'];
+
+  	for($i=0; $i<count($array); $i++){
+  		$aQuestion = $array[$i];
+  		$theQuestion = $aQuestion['question'];
+
+  		createQuestion($conn, $theQuestion, $IdQuizz);
+  		$latestIdQuestion = getLatestId($conn);
+
+  		foreach ($aQuestion['reponses']['reponse'] as $id => $value) {
+  			$reponse   = $value;
+  			$isCorrect = $aQuestion['reponses']['correct'][$id];
+  			createAnswer($conn, $reponse, $isCorrect, $latestIdQuestion);
+  		}
+  	}
+  }
+
   function prepareDataForQuizzCreation(){
   	$aray = [];
   	foreach ($_POST as $name => $val)
 	{
+		//échapper les ' et les "
+		$val = str_replace("\"", "&quot;", $val);
+		$val = str_replace("'", "&#039;", $val);
+
 		/*Question*/
 		if( substr($name, 0, strlen("question_")) == "question_" ){
 			$array[substr($name, strlen("question_"), strlen($name))]["question"] = $val;
@@ -431,7 +440,9 @@
       $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id_quizz']." ";
       $result1 = mysqli_query($conn,$query) or die (mysqli_error());
       $resultat=mysqli_fetch_row($result1);
-      echo $resultat[0]. ' questions</p>';
+      echo $resultat[0];
+	if ($resultat[0]=="1") echo ' question</p>';
+	else echo ' questions</p>';
       CloseCon($conn);
       /*End */
 
@@ -441,11 +452,22 @@
       echo("<p class=\"mb-auto\">".$row["description"]."</p>");
 
       echo('<form action="quizz.php" method="post">
-          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" style="display:none">
-          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" style="display:none">
-          <span class="stretched-link link" onclick="validateForm(this)">Tester mes connaissances</span>
-        </form>');
 
+          <input type="text" name="idQuizz" value="'.$row["id_quizz"].'" class="hide">
+          <input type="text" name="idCategorie" value="'.$row["id_categorie"].'" class="hide">
+          <span class="stretched-link link pointeur" onclick="validateForm(this)">Tester mes connaissances</span> 
+          <div class="svgShare" >
+	          <span class="shareButton" onclick="openModalShare(\'Q\', '.$row["id_categorie"].', '.$row["id_quizz"].', \''.$row["qnom"].'\')">
+		          <svg class="bi bi-box-arrow-up " viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		          <path fill-rule="evenodd" d="M4.646 4.354a.5.5 0 0 0 .708 0L8 1.707l2.646 2.647a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708z"/>
+		          <path fill-rule="evenodd" d="M8 11.5a.5.5 0 0 0 .5-.5V2a.5.5 0 0 0-1 0v9a.5.5 0 0 0 .5.5z"/>
+		          <path fill-rule="evenodd" d="M2.5 14A1.5 1.5 0 0 0 4 15.5h8a1.5 1.5 0 0 0 1.5-1.5V7A1.5 1.5 0 0 0 12 5.5h-1.5a.5.5 0 0 0 0 1H12a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V7a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 0 0-1H4A1.5 1.5 0 0 0 2.5 7v7z"/>
+		          </svg>
+	          </span>
+          </div>
+
+        </form>');
+      echo '';
       echo("</div>");
       echo("<div class=\"col-auto d-none d-lg-block\">");
       echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
@@ -454,6 +476,465 @@
       echo("</div>");
 	}
 
+
+	function JS_Redirect($url){
+		echo ' <script type="text/javascript">
+            window.location.replace("'.$url.'");
+        </script>' ;
+	}
+
+	function JS_RedirectSubscription($url){
+		echo ' 
+				<form action="'.$url.'" method="post">
+					<input type="hidden" name="inscription" value="1">
+					<button type="submit" id="buttonForm">
+    			</form>
+    			<script type="text/javascript">
+    				$("#buttonForm").click();
+    			</script>';
+	}
+
+	function openModalAuth(){
+		echo '<script type="text/javascript">
+					$( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#inscriptionMessage").removeClass("hide");
+					});	
+    			</script>';
+
+    	unset($_POST['inscription']);
+	}
+
+
+	function getNbPlayedQuizzPerCategorie(){
+		/*Le nb de quizz joué par catégorie*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT  *, COUNT(*) as nb_repet 
+							FROM (
+							    SELECT C.nom as nom
+							    FROM `scores` as S, utilisateurs as U, categories as C, quizz as Q
+								WHERE S.id_utilisateur = U.id AND U.id = ".$_SESSION['idUtilisateur']." AND Q.id = S.id_quizz AND C.id = Q.id_categorie ) T 
+							GROUP BY nom 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['nom']] = $row['nb_repet'];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+
+	}
+
+	function getPlayedQuizzScore(){
+		/*Le nombre de bonne réponse par quizz en pourcentage*/
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, nb_repet, score, S.id_quizz        
+							FROM (SELECT  *, COUNT(*) as nb_repet 
+							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
+							                    FROM questions as K, reponses as R, quizz as Q
+							                    WHERE Q.id = K.id_quizz and R.id_question = K.id) as S
+							        GROUP BY id_quizz 
+							        HAVING   COUNT(*) >=1 
+							        ORDER BY nb_repet DESC) as R, 
+							        scores as S 
+							WHERE S.id_quizz = R.id_quizz AND S.id_utilisateur = ".$_SESSION['idUtilisateur'];
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['quizz']] = [$row['id_quizz'],(int)(($row['score']/$row['nb_repet'])*100)];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getNbOfCreatedQuizz(){
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT C.nom as categorie, Q.nom as quizz, Q.id_categorie as cID, Q.id as qID
+							        FROM quizz as Q, categories as C 
+							        WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur']."
+                                    ORDER BY categorie ASC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 if(!isset($array[$row['categorie']])) $array[$row['categorie']] = [];  			 	
+	 			 	array_push($array[$row['categorie']], ["quizz"=>$row['quizz'], "cID"=>$row['cID'], "qID"=>$row['qID']]);
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+	function getInfoCreatedQuizz(){
+		//Le nb de joueur à ses quizz
+
+		try {
+			$conn = OpenCon();
+			$array = [];
+			$queryString = "SELECT quizz, idQuizz, categorie, maxScore, avgScore, COUNT(*) as nb_repet
+							FROM 
+								(SELECT C.nom as categorie, Q.nom as quizz, Q.id as idQuizz, url
+								 FROM quizz as Q, categories as C 
+								WHERE C.id = Q.id_categorie AND id_createur=".$_SESSION['idUtilisateur'].") as R, 
+								scores as S, 
+							    (SELECT id_quizz, MAX(score) as maxScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as M, 
+							    (SELECT id_quizz, AVG(score) as avgScore
+							     FROM scores as S 
+							     GROUP BY S.id_quizz) as A
+							WHERE S.id_quizz = idQuizz AND M.id_quizz=A.id_quizz AND A.id_quizz = S.id_quizz
+							GROUP BY S.id_quizz 
+							HAVING   COUNT(*) >=1 
+							ORDER BY nb_repet DESC";
+
+			if($result = $conn->query($queryString)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$array[$row['idQuizz']] = [$row['nb_repet'], ($row['categorie'].' - '.$row['quizz']), $row['maxScore'], floatval($row['avgScore'])];
+            	}
+				$result->free();
+				CloseCon($conn);
+			}
+			
+			return $array;
+			
+		} catch (Exception $e) {
+			var_dump($e);
+			return [];
+		}
+	}
+
+
+	function checkIfQuizzExistInDB($cId, $qId){
+		try {
+			$res=[];$i=0;
+			$bd = OpenCon();
+
+			if ($stmt = $bd->prepare("SELECT COUNT(*) FROM quizz WHERE id=? AND id_categorie=?")){
+
+	 			$stmt->bind_param("ii", $qId, $cId);
+	 			$stmt->execute();
+	 			$count_result = 0; 
+	 			$stmt->bind_result($count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return $count_result==1;
+	 		}
+		} catch (Exception $e) {
+			return false;
+		}
+		return false;
+	}
+
+	function getCategorieName($cId){
+		try {
+			$res=[];$i=0;
+			$bd = OpenCon();
+
+			if ($stmt = $bd->prepare("SELECT nom, COUNT(*) FROM categories WHERE id=?")){
+
+	 			$stmt->bind_param("i", $cId);
+	 			$stmt->execute();
+	 			$count_result = 0; $nom=""; 
+	 			$stmt->bind_result($nom, $count_result);
+	 			$stmt->fetch();
+
+	 			CloseCon($bd);
+	 			//var_dump("Result dbRequest : ".$count_result."<br>");
+	 			return ($count_result==1)?$nom:null;
+	 		}
+		} catch (Exception $e) {
+			return null;
+		}
+		return null;
+	}
+
+
+	function getQuizzesSearchBox(){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = "SELECT nom, id, id_categorie FROM quizz";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$row['nom']] = [$row['id_categorie'],
+	 			 						 $row['id'] ]; 
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function searchBox(){
+		$categories = getExistingCategories();
+		$quizzes    = getQuizzesSearchBox();
+		$i=0;
+    
+		echo '
+		
+
+		<div class="input-group mb-3" style="top:8px; opacity:0" id="divSearchBox">
+		  <input type="text" class="form-control" placeholder="Quizzes et catégories"  id="data-categories">
+		</div>
+
+		<span onclick="showSearchBar()" id="buttonSearchBar">
+			<svg class="bi bi-search" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="#276955" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+			<path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+			</svg>
+		</span>
+
+		
+		<span id="formForSearch" class="hide"></span>
+		<script type="text/javascript">
+		var options = {
+			data: {
+				"categories": [';
+				foreach ($categories as $key => $value) {
+					echo '{name: "'.$value['nom'].'", type:"categorie", id: '.$value['id'].'}';
+					if($i!=(count($categories)-1)) echo ',';
+					$i++;
+				}
+		echo    '],
+				"quizzes": [';
+				$i=0;
+				foreach ($quizzes as $key => $value) {
+					echo '{name: "'.$key.'", type:"quizz", idC: '.$value[0].', idQ: '.$value[1].'}';
+					if($i!=(count($quizzes)-1)) echo ',';
+					$i++;
+				}
+		echo	']
+				},
+
+				getValue: "name",
+
+				categories: [{
+					listLocation: "categories",
+					header: "--- CATEGORIES ---"
+					}, {
+						listLocation: "quizzes",
+						header: "--- QUIZZES ---"
+						}],
+
+						list: {
+							match: {
+								enabled: true
+								},
+								maxNumberOfElements: 10,
+								onChooseEvent: function() {
+									if(("categorie").localeCompare( $("#data-categories").getSelectedItemData().type) == 0){
+										redirectToCategorie($("#data-categories").getSelectedItemData().id,                   $("#data-categories").getSelectedItemData().name);
+										}else{
+											console.log("quizz");
+											redirectToQuizz($("#data-categories").getSelectedItemData().idC,
+											$("#data-categories").getSelectedItemData().idQ);
+										}
+									}
+								}
+							};
+
+							$("#data-categories").easyAutocomplete(options);
+							</script>
+		';
+	}
+
+	function getMetadata($cId, $qID){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT Q.description as description, Q.url as url
+							FROM quizz Q, categories C 
+							WHERE C.id=Q.id_categorie AND C.id=".$cId." AND Q.id=".$qID;
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	return ["description"=>$row['description'], "url"=>$row['url']];
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function getQuestionsReponse($idC, $idQ){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT q.question, R.reponse, R.correct
+							FROM quizz Q, questions q, reponses R
+							WHERE Q.id=".$idQ." AND Q.id_categorie=".$idC." AND q.id_quizz=Q.id AND R.id_question=q.id ";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	if(!isset($res[$row['question']])) $res[$row['question']] = [];
+	 			 	array_push($res[$row['question']], ["reponse"=>$row['reponse'], "correct"=>$row['correct']]);
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function updateMetaData(){
+		try {
+	 		$bd = OpenCon();
+	 		if ($stmt = $bd->prepare("  UPDATE quizz 
+	 									SET nom=?, description=?, url=?, id_categorie=?
+	 									WHERE id=".$_POST['idQ'])){
+
+	 			$stmt->bind_param("sssi", $_POST['nomQuizz'], $_POST['description'], $_POST['url'], $_POST['categorie']);
+	 			$stmt->execute();
+	 			CloseCon($bd);
+	 			return 0;
+	 			
+	 		}
+	 	} catch (Exception $e) {
+	 		echo $e;
+	 		return 0;
+	 	}
+        return 0;
+	}
+
+	function deleteAndAddAllQuestionReponses(){
+		$conn = OpenCon();
+		try {
+			$SQLRequest = " DELETE FROM questions
+							WHERE id_quizz=".$_POST['idQ'];
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+				$stmt->execute();
+				$stmt->fetch();
+			}
+			addQuestions($conn, $_POST['idQ']);
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+		CloseCon($conn);
+		return ;
+	}
+
+	function getQuizzOrderAZ(){
+		try {
+			$res=[];
+
+			$conn = OpenCon();
+			$requestSQL = " SELECT Q.nom as quizz, C.id as cID, Q.id as qID
+							FROM categories C, quizz Q, utilisateurs U
+							WHERE Q.id_categorie=C.id AND U.id=".$_SESSION['idUtilisateur']." AND Q.id_createur=U.id
+							ORDER BY Q.nom ASC; ";
+
+			if($result = $conn->query($requestSQL)){
+	 			 while (($row = $result->fetch_assoc())) {
+	 			 	$res[$row['qID']] = ["cID"=>$row['cID'], "qID"=>$row['qID'], "quizz"=>$row['quizz']];
+            	}
+            	$result->free();
+            }
+
+			CloseCon($conn);
+			return $res;
+
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	function deleteQuizz($idQ){
+		$conn = OpenCon();
+		try {
+			$SQLRequest = " DELETE FROM quizz
+							WHERE id=".$idQ;
+
+			if ($stmt = $conn->prepare($SQLRequest)){
+				$stmt->execute();
+				$stmt->fetch();
+			}
+		} catch (Exception $e) {
+			var_dump($e);
+		}
+		CloseCon($conn);
+		return ;
+	}
+
+	function inform($msg){
+		echo '
+
+			<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Informations : </h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        '.$msg.'
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Compris</button>
+			         </div>
+			    </div>
+			  </div>
+			</div>
+			<button type="button" class="hide" data-toggle="modal" data-target="#infoModal" id="infoModalToggleButton"></button>
+			<script type="text/javascript">
+				$(function(){
+					$("#infoModalToggleButton").click();
+				});
+			</script>
+		';
+	}
+
  ?> 
-
-

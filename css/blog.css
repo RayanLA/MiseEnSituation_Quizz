@@ -205,6 +205,10 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
+.hideImportant{
+  display: none !important;
+}
+
 .link{
   color: #007bff;
   text-decoration: none;
@@ -213,6 +217,70 @@ h1, h2, h3, h4, h5, h6 {
 
 .link:hover{
   text-decoration: underline;
+}
+
+.titleImitation{
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 1.5em;
+}
+
+.debug{
+  border: dashed red;
+}
+
+#data-categories{
+
+}
+
+#dropdownDiv{
+  width: 10em !important;
+  max-width: 10em !important;
+  margin-left: 1em;
+}
+
+.imgCaroussel{
+  opacity: 1;
+  object-fit: cover;
+  overflow:hidden;
+}
+
+.cardCaroussel{
+   background-color: rgba(0, 0, 0, 0.70);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  padding: 50px;
+  display:inline-block;
+}
+
+.pointeur{
+  cursor:pointer;
+}
+
+.shareButton{
+  margin-left:15px;
+}
+
+.svgShare{
+ width: 1.5em;
+  height: 1.5em;
+  position: relative;
+  top:-2px;
+  cursor: pointer;
+  z-index: 1;
+  margin-top: 1em;
+}
+
+.shareCategorie{
+  margin-left:auto; 
+  margin-right:0;
+}
+
+.creationBandeau{
+  align-items: center;
+}
+
+.linkModalModifyQuizz{
+  text-align: right;
 }
 
 .questionInput{
@@ -228,4 +296,8 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+#buttonSearchBar{
+  margin-right: 1em;
 }

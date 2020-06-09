@@ -11,14 +11,7 @@
     $nomcat = $_POST['nomcat'];
   ?>
   
-  <div class="col-md-12 blog-main">
-      <h3 class="pb-4 mb-4 border-bottom">
-        <?php echo($nomQuizz);
-              echo("\n".$nomcat); ?>
-      </h3>
-  </div>  
-
-  <div>
+  
 
 <?php
   $bd = OpenCon();
@@ -32,8 +25,16 @@
           break;
         } 
       }
-      if($count == $numquestion){ 
+      if($count == $numquestion){
+
   ?>
+    <div class="col-md-12 blog-main">
+      <h3 class="pb-4 mb-4 border-bottom">
+        <?php echo($nomcat.' - '.$nomQuizz); ?>
+      </h3>
+    </div>  
+
+  <div>
         <form action="questionchange.php" method="post">
         <input type="hidden" name="numquestion" id="numquestion" value="<?php echo($numquestion); ?>"/>
         <input type="hidden" name="idQuizz" id="idQuizz" value="<?php echo($idQuizz); ?>"/>
@@ -49,9 +50,9 @@
         
           $answcount = 0;
         
-          while (($row2 = $result2->fetch_assoc())) {
+          while ($row2 = $result2->fetch_assoc()) {
             $answcount++;
-
+            
             echo '
                 <div class="input-group mb-3" onclick="checkInput('.$answcount.')">
                   <div class="input-group-prepend">

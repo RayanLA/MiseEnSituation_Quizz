@@ -11,20 +11,16 @@
 	    	<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
 	    		<div class="col p-4 d-flex flex-column position-static">
 	    		<h3 class="pb-4 mb-4 font-italic border-bottom">'.$array['nom'].'</h3>
+	    		
 	    			<strong class="d-inline-block mb-2 text-primary">'.$array['date_creation'].'</strong>
-	    			<p class="card-text">'.$array['description'].'</p>');
+	    			<p class="card-text">'.$array['description'].'</p>'
+	    		);
 
     
     echo '<script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
       function openAuthModal(){ document.getElementById("modalAuth").click(); }
-    </script>
-    <style type="text/css">
-      .link{
-        color: #007bff;
-        text-decoration: none;
-        background-color: transparent;
-      }</style>';
+    </script>';
 
 
 
@@ -36,8 +32,9 @@
 		    	<input name="idQuizz" id="idQuizz" value="'.$_POST['idQuizz'].'" class="hide"/>
 		    	<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 		    	<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
-		    	<span class="stretched-link link" onclick="validateForm(this)">Commencer le quizz !</span>
+		    	<span class="stretched-link link pointeur" onclick="validateForm(this)">Commencer le quizz !</span>
 	    	</form>
+
 	    ';
 	}else{
 		/*echo '<span class="stretched-link link" onclick="" style="margin-top:2em;">Oups, il semble que tu n\'est pas encore connecté(e)... :(</span>';*/
@@ -61,10 +58,11 @@
 				</div>';
 	}
 
-	   /* echo '<a href="#" class="stretched-link" style="text-align: center;">Commencer le quizz</a>';*/
 
-
-	    echo '</div>';
+	    echo '<div class="row m-2 ">
+	    		<button type="button" class="btn btn-primary shareCategorie" onclick="openModalShare(\'C\', '.$_POST['idQuizz'].', null, \''.$_POST['idCategorie'].'\')">Partager ce Quizz</button> 
+  					</div>
+  					</div>';
 
     	echo "<div class=\".col-md-5 .col-3 .col-lg-3 p-4 d-flex flex-column position-static\">
     		<img class=\"bd-placeholder-img\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$array["url"]."' style='overflow: hidden;object-fit: contain;'></img>

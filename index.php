@@ -1,8 +1,11 @@
 <html>
     <?php
       include 'header.php';
+      if(isset($_POST['inscription']) && strcmp($_POST['inscription'],'1')==0){ openModalAuth(); }
       $ArrayQuizz = get3MostTrendyQuizz();
     ?>
+
+
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -15,21 +18,20 @@
       <?php
           for ($i = 0; $i < 3; $i++) {
 
+
             if($i==0) echo '<div class="carousel-item active">';
             else echo '<div class="carousel-item">';
 
-            /*echo '<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-              <div class="container">';*/
-
-            echo '<img class="bd-placeholder-img" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" style="opacity: 0.75;object-fit: cover;overflow:hidden;"/>
+            echo '<img class="bd-placeholder-img imgCaroussel" width="100%" height="100%" focusable="false" role="img"src="'.$ArrayQuizz[$i][4].'" id="imgCaroussel_'.$i.'"/>
               <div class="container">';
 
             if($i==0) echo '<div class="carousel-caption text-left">';
             elseif($i==1) echo '<div class="carousel-caption">';
             else echo '<div class="carousel-caption text-right">';
-
-            echo '<h1>'.$ArrayQuizz[$i][0].'</h1>';
-            echo '<p>'.$ArrayQuizz[$i][1].'</p>';
+            echo '<div class="no-gutters rounded overflow-hidden flex-md-row p-4 shadow-sm h-md-200 cardCaroussel mb-2">';
+            echo  '    <h1>'.$ArrayQuizz[$i][0].'</h1>';
+            echo  '    <p>'.$ArrayQuizz[$i][1].'</p> ';
+            echo '</div>';
 
 
             echo '<form action="quizz.php" method="post">
@@ -56,7 +58,7 @@
   <?php
     if(isset($_SESSION['login'])){
       if(isset($_SESSION['justConnected']) && $_SESSION['justConnected']){
-        phpAlert("Connexion réussie !"); 
+        connexionSuccessAlert();
         unset($_SESSION['justConnected']);
       }
       echo '<div class="col-md-12 blog-main">
@@ -69,9 +71,9 @@
         <div class="col-md-12">
           <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative">
             <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-primary">Toi aussi test les connaissances des autres</strong>
-              <p class="card-text">Nous t\'offrons la possibilité de créer tes propres quizz, puis cela clique 
-                sur le lien en juste en dessous. Fait grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
+              <strong class="d-inline-block mb-2 text-primary">Toi aussi teste les connaissances des autres</strong>
+              <p class="card-text">Nous t\'offrons la possibilité de créer tes propres quizz, pour cela clique 
+                sur le lien juste en dessous. Fais grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
               <a href="creationQuizz.php" class="stretched-link" style="text-align: center;">Créer un quizz</a>
             </div>
           </div>
@@ -80,7 +82,13 @@
     }
     elseif(isset($_GET['f'])) {
       if ($_GET['f'] == 0){
-        phpAlert("Login ou mot de passe incorrect !"); 
+        echo '<script type="text/javascript">
+					  $( document ).ready(function(){
+						$("#modalAuth").click();
+						$("#inscrivezVous").hide();
+						$("#IncorrectPsw").removeClass("hide");
+					});	
+    			</script>'; 
       }
     }
   ?>
@@ -104,27 +112,20 @@
       quizz.date_creation as crea, quizz.url as url, categories.id as id_categorie,
       quizz.id as id_quizz
       FROM quizz,categories 
-      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 20");
+      WHERE quizz.id_categorie  = categories.id ORDER BY quizz.id DESC LIMIT 10");
 
      while (($row = $result->fetch_assoc())) {
-      
       generateCardQuizz($row);
-      
-      
-      
-      //echo("<a class=\"p-2 text-muted\" href=\"#".$row["id"]."\">".$row["nom"]."</a>");
-
     }
 
     CloseCon($bd);
-
-
   ?>
     
   </div>
 </div>
 
+
+
 <?php
       include 'footer.php'
-
 ?>
