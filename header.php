@@ -147,3 +147,10 @@
         </div>
       </div>
     </div>
+
+    <?php
+      if(isset($_POST['message'])){
+        $msg = $_POST['message']; unset($_POST['message']);
+        inform($msg);
+      }
+    ?>

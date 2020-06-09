@@ -25,6 +25,26 @@
           </script>';
 	?>
 
+    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmez la suppression : </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body text-danger">
+        <?php echo 'Vous êtes sur le point de supprimer definitivement &laquo;'.$quizzName.'&raquo; ainsi que toutes ses questions, réponses et les scores de ses joueurs ! ';
+        ?>
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="deleteQuizz" class="btn btn-danger">Confirmer la suppression</button>
+    </div>
+</div>
+</div>
+</div>
+
     <form action="modifyQuizzUpdate.php" method="POST">
         <?php 
             echo '<input type="hidden" name="idC" value="'.$cID.'">
@@ -134,8 +154,11 @@
     		</div>
     	</div>
 
+        <input type="hidden" name="deleteQuizz" value="0" id="deleteQuizzInput">
+
     	<div class="mb-4 d-flex justify-content-center">
-    		<button type="submit" class="btn btn-lg btn-primary">Mettre à jour le Quizz !</button>
+    		<button type="submit" id="modifyQuizzSubmitButton" class="btn btn-lg btn-primary m-4">Mettre à jour le Quizz !</button>
+            <button type="button" data-toggle="modal" data-target="#confirmDelete" id="confirmDeleteButton" class="btn btn-lg btn-danger m-4">Supprimer le Quizz</button>
     	</div>
     </form>
 
