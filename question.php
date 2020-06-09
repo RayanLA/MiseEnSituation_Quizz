@@ -51,6 +51,8 @@
         
           while (($row2 = $result2->fetch_assoc())) {
             $answcount++;
+
+            $row2["reponse"] = str_replace("\"", "&quot;", stripslashes($row2["reponse"]));
             
             echo '
                 <div class="input-group mb-3" onclick="checkInput('.$answcount.')">
