@@ -436,7 +436,9 @@
       $query = "SELECT count(question)  FROM questions WHERE id_quizz=".$row['id_quizz']." ";
       $result1 = mysqli_query($conn,$query) or die (mysqli_error());
       $resultat=mysqli_fetch_row($result1);
-      echo $resultat[0]. ' questions</p>';
+      echo $resultat[0];
+	if ($resultat[0]=="1") echo ' question</p>';
+	else echo ' questions</p>';
       CloseCon($conn);
       /*End */
 
