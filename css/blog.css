@@ -301,3 +301,19 @@ h1, h2, h3, h4, h5, h6 {
 #buttonSearchBar{
   margin-right: 1em;
 }
+
+.minWidthDonut{
+  min-width:50%;
+}
+.alignCenter{
+  text-align: center;
+}
+.aucunAffichage{
+  display:none;
+}
+.tailleMaxBoutonConnexion{
+  max-width:50%;
+}
+.positionJeuAnonyme{
+  vertical-align: middle;
+}
