@@ -449,7 +449,7 @@
 
       
       echo("<div class=\"mb-1 text-muted\">".$row["crea"]."</div>");
-      echo("<p class=\"mb-auto\" class=\"news-text\">".$row["description"]."</p>");
+      echo("<p class=\"mb-auto news-text\">".$row["description"]."</p>");
 
       echo('<form action="quizz.php" method="post">
 

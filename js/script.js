@@ -27,17 +27,15 @@ $(function(){
 });
 
 $(function(){
-    
     $(".news-text").each(function () {
-        console.log("toto");
         len=$(this).text().length;
-        str= $(this).text().substr(0,10);
+        str= $(this).text().substr(0,70);
         lastIndexOf = str.lastIndexOf(" "); 
-        if(len>10) {
+        if(len>70) {
             $(this).text(str.substr(0, lastIndexOf) + '…');
         }
     });
-});
+    });
 
 function getUrlImage(input){
     if(input!=""){
