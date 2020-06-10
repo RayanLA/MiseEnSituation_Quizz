@@ -62,7 +62,7 @@
 
     echo '<script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
-      function openAuthModal(){ document.getElementById("modalAuth").click(); }
+      function openAuthModal(){ $(function(){$("modalAuth").click();}); }
     </script>';
       if(isset($_SESSION) && isset($_SESSION['login'])){
          echo '

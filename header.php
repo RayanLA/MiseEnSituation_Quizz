@@ -89,7 +89,7 @@
 
                 if( (isset($_SESSION['isGuest']) && $_SESSION['isGuest'] )
                    || ( isset($_POST['isGuest']) && $_POST['isGuest']) ){
-                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="">Invité</a>';
+                  echo '<a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#loginModal" id="modalAuth">Invité</a>';
                 }
               ?>
           </div>
