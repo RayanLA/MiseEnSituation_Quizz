@@ -124,10 +124,10 @@
             <!-- Le nombre de bonne réponse par quizz -->
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-200 position-relative p-3 hide" id="bonneReponse">
               <div class="col-md-12">
-                <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz (en pourcentage) : </h3>
+                <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz : </h3>
              </div>
 
-             <div class="row">
+             <div class="row minWidthRowCharts">
 
               <?php 
                foreach ($playedQuizzScore as $key => $value) {
@@ -137,7 +137,7 @@
                           <h5 class="card-title">'.$key.'</h5>
                             <div class="card">
                               <div class="card-body">
-                                <canvas id="doughnutChart_'.$value[0].'"  ></canvas>
+                                <canvas id="doughnutChart_'.$value[0].'" class="canvasChart"  ></canvas>
                               </div>
                             </div>
                           </div>

@@ -304,7 +304,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .minWidthDonut{
-  min-width:50%;
+  min-width:50% !important;
 }
 .alignCenter{
   text-align: center;
@@ -323,10 +323,18 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 20em;
 }
 
-
 .contener{
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100%;
+}
+
+.canvasChart{
+  min-height: 100% !important;
+  min-width: 100% !important;
+}
+
+.minWidthRowCharts{
+  min-width: 100%
 }
