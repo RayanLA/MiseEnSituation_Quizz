@@ -345,11 +345,12 @@ function generateQuestionReponses(){
         for (var i in tab) {
             for(var q in tab[i]){
                 var idQ = addQuestion();
-                $("#question_"+idQ).val(q);
+                $("#question_"+idQ).val((q).replaceAll("&quot;", '"'));
                 for(var r in tab[i][q]){
                     var R = tab[i][q][r];
                     var idR = addResponse(idQ);
-                    $('#q_'+idQ+'_'+idR).val(R.reponse);
+                    $('#q_'+idQ+'_'+idR).val((R.reponse).replaceAll("&quot;", '"'));
+                    console.log(R.reponse);
                     if((R.correct).localeCompare("1")==0) changeCorrect($('#bq_'+idQ+'_'+idR), idQ, idR);
                 }
             }

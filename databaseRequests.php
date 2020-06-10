@@ -386,8 +386,8 @@
   	foreach ($_POST as $name => $val)
 	{
 		//échapper les ' et les "
-		$val = str_replace("\"", "&quot;", $val);
-		$val = str_replace("'", "&#039;", $val);
+		$val = str_replace("\"", "&quot;", $val);/*
+		$val = str_replace("'", "&apos;", $val);*/
 
 		/*Question*/
 		if( substr($name, 0, strlen("question_")) == "question_" ){
@@ -802,6 +802,13 @@
 		}
 	}
 
+	//Convert HTML code
+	function cHTML($s){
+		str_replace("&quot;", "\"", $s);/*
+		str_replace("&apos;", "'", $s);*/
+		return $s;
+	}
+
 	function getQuestionsReponse($idC, $idQ){
 		try {
 			$res=[];
@@ -812,7 +819,8 @@
 							WHERE Q.id=".$idQ." AND Q.id_categorie=".$idC." AND q.id_quizz=Q.id AND R.id_question=q.id ";
 
 			if($result = $conn->query($requestSQL)){
-	 			 while (($row = $result->fetch_assoc())) {
+	 			 while (($row = $result->fetch_assoc())) {/*
+	 			 	foreach ($row as $key => $value) { $row[$key] = cHTML($value); }*/
 	 			 	if(!isset($res[$row['question']])) $res[$row['question']] = [];
 	 			 	array_push($res[$row['question']], ["reponse"=>$row['reponse'], "correct"=>$row['correct']]);
             	}
