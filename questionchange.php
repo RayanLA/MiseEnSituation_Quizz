@@ -22,7 +22,7 @@
     	<input type="hidden" name="idQuizz" id="idQuizz" value="<?php echo($_POST['idQuizz']); ?>"/>
     	<input type="hidden" name="nomQuizz" id="nomQuizz" value="<?php echo($_POST['nomQuizz']); ?>"/>
     	<input type="hidden" name="nomcat" id="nomcat" value="<?php echo($_POST['nomcat']); ?>"/>
-    	<button type="submit" class="btn btn-primary"style="display:none">Valider</button>
+    	<button type="submit" class="btn btn-primary aucunAffichage">Valider</button>
     </div>
    </form>
  </div>

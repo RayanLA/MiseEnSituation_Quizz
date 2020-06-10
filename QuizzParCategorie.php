@@ -6,8 +6,6 @@
         <title>QUIZZ</title>
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="css/blog.css" rel="stylesheet">
   </head>
   <body>
     <div class="container">
@@ -79,12 +77,12 @@
   }else{
     echo ' 
         <div class="row p-4 justify-content-center align-self-center">
-          <div class="col d-flex justify-content-end" style="max-width=50%">
+          <div class="col d-flex justify-content-end tailleMaxBoutonConnexion">
             <button class="btn btn-lg btn-primary" onclick="openAuthModal()">Se connecter pour créer un Quizz</button>
           </div>
           <div class="col d-flex justify-content-start">
           </br>
-            <a class="p-2 text-center" style="vertical-align: middle;" href="inscription.php">Ou s\'inscrire</a>
+            <a class="p-2 text-center positionJeuAnonyme" href="inscription.php">Ou s\'inscrire</a>
           </div>
         </div>
         </br>

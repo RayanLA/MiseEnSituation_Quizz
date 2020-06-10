@@ -86,7 +86,7 @@
               <input type="hidden" name="nomQuizz" id="nomQuizz" value="<?php echo($nomQuizz); ?>"/>
               <input type="hidden" name="nomcat" id="nomcat" value="<?php echo($nomcat); ?>"/>
               <br/>
-              <button type="submit" class="btn btn-primary" style="display:none">Valider</button>
+              <button type="submit" class="aucunAffichage btn btn-primary">Valider</button>
             </form>
           </div>
 

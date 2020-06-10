@@ -48,7 +48,7 @@
       <form class="modal-content" action="modifyQuizz.php" method="post">
         <div class="container">
           <div class="modal-header">
-            <h5 class="modal-title" id="title" style="text-align: center">Choisissez un de vos quizz : </h5>
+            <h5 class="modal-title alignCenter" id="title">Choisissez un de vos quizz : </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -131,7 +131,7 @@
 
               <?php 
                foreach ($playedQuizzScore as $key => $value) {
-                echo '<div class="col-md-6" style="min-width:50%">
+                echo '<div class="col-md-6 minWidthDonut">
                         <div class="card m-2">
                           <div class="card-body">
                           <h5 class="card-title">'.$key.'</h5>

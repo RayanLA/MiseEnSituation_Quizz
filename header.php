@@ -101,7 +101,7 @@
               <?php
 
               $bd = OpenCon();
-              $result = $bd->query("SELECT * FROM categories LIMIT 5");
+              $result = $bd->query("SELECT * FROM categories");
               while (($row = $result->fetch_assoc())) {
                 echo '<script type="text/javascript">
                       function validateForm(e){e.closest("form").submit();}

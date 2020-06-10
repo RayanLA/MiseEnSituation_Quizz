@@ -21,8 +21,8 @@
 			if( checkIfQuizzExistInDB($_GET['c'], $_GET['q']) ){
 				echo '
 					<form action="quizz.php" method="post">
-						<input type="text" name="idQuizz" value="'.$_GET['q'].'" style="display:none">
-						<input type="text" name="idCategorie" value="'.$_GET['c'].'" style="display:none">
+						<input type="text" class="aucunAffichage" name="idQuizz" value="'.$_GET['q'].'">
+						<input type="text" class="aucunAffichage" name="idCategorie" value="'.$_GET['c'].'">
 						<button type="submit" id="buttonRedirect">
 					</form>';
 				echo '
