@@ -5,7 +5,7 @@
     <form class="modal-content" action="connexion.php" method="post">
       <div class="container">
         <div class="modal-header">
-          <h5 class="modal-title" id="title" style="text-align: center">S'identifier</h5>
+          <h5 class="modal-title alignCenter" id="title">S'identifier</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -25,7 +25,6 @@
 
         </div>
         <div class="modal-footer">
-        <!--<p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>-->
           <div class="clearfix">
             <button type="submit" class="btn btn-secondary">Connexion</button>
           </div>

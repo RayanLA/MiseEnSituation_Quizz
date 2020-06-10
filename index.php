@@ -74,7 +74,7 @@
               <strong class="d-inline-block mb-2 text-primary">Toi aussi teste les connaissances des autres</strong>
               <p class="card-text">Nous t\'offrons la possibilité de créer tes propres quizz, pour cela clique 
                 sur le lien juste en dessous. Fais grandir le nombre de quizz pour encore plus de fun !! :trololol:</p>
-              <a href="creationQuizz.php" class="stretched-link" style="text-align: center;">Créer un quizz</a>
+              <a href="creationQuizz.php" class="stretched-link alignCenter">Créer un quizz</a>
             </div>
           </div>
         </div>

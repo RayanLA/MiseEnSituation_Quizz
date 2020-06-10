@@ -40,7 +40,7 @@
 		/*echo '<span class="stretched-link link" onclick="" style="margin-top:2em;">Oups, il semble que tu n\'est pas encore connecté(e)... :(</span>';*/
 		echo ' 
 				<div class="row p-4 justify-content-center align-self-center">
-					<div class="col" style="max-width=50%">
+					<div class="col tailleMaxBoutonConnexion">
 						<button class="btn btn-lg btn-primary" onclick="openAuthModal()">Se connecter</button>
 					</div>
 					<div class="col">
@@ -51,7 +51,7 @@
 							<input name="nomQuizz" id="nomQuizz" value="'.$array['nom'].'" class="hide"/>
 							<input name="nomcat" id="nomcat" value="'.$array['nomCategorie'].'" class="hide"/>
 							<input name="isGuest" id="isGuest" value="true" class="hide"/>
-							<span class="stretched-link link" style="vertical-align: middle;" onclick="validateForm(this)"> Ou jouer anonymement</span>
+							<span class="stretched-link link positionJeuAnonyme" onclick="validateForm(this)"> Ou jouer anonymement</span>
 						</form>
 						
 					</div>
@@ -86,7 +86,7 @@
 	    <div class="col p-4 d-flex flex-column position-static">
 	    	';
 	    $bestPlayers = getScoreBoard($_POST['idQuizz']);
-	    echo '<table class="table" style="text-align: center;">
+	    echo '<table class="table alignCenter">
 			  <thead>
 			    <tr>
 			      <th scope="col">#</th>
@@ -108,7 +108,7 @@
 		echo '	  </tbody>
 			</table>';
 			if(count($bestPlayers)==0){
-				echo '<div class="stretched-link" style="text-align: center;"><b>Personne n\'a encore essayé ce quizz :(<br>Soit le premier et marque l\'histoire du Quizz ! </b></div>';
+				echo '<div class="stretched-link alignCenter"><b>Personne n\'a encore essayé ce quizz :(<br>Soit le premier et marque l\'histoire du Quizz ! </b></div>';
 			}
 		echo '</div>';
 	    echo '	</div>';
