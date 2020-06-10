@@ -53,18 +53,27 @@ function getUrlImage(input){
     return "";
 }
 
+function deleteQuestionContener(id){
+    console.log("delete");
+    $("#questionContener_"+id).remove();
+}
+
+
 function addQuestion(){
 
     var id = questionReponse.length;
 
     $(".questionContener")
     .append(
-        '<div  class="p-3  border rounded mb-4">'
+        '<div  class="p-3  border rounded mb-4" id="questionContener_'+(id)+'">'
             +'<div class=" input-group mb-3">'
                 +'<div class="input-group-prepend">'
                     +'<span class="input-group-text" id="basic-addon1">Question '+(id+1)+': </span>'
                 +'</div>'
                 +'<input type="text" class="form-control" id="question_'+id+'" name="question_'+id+'">'
+                +'<button class="btn btn-outline-secondary btn-outline-danger" type="button" onclick="deleteQuestionContener('+id+')">'
+                +'<i class="far fa-trash-alt"></i>'
+                +'</button>'
                 +'<button class="btn btn-outline-secondary btn-outline-success addResponse" type="button" onclick="addResponse('+id+')">'
                 +'<i class="fas fa-plus-circle"></i>'
                 +'</button>'
