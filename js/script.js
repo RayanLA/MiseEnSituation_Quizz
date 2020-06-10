@@ -298,7 +298,7 @@ function showStatRubrique(id){
 function openModalShare(type, idC, idQ, nom){
     if(("C").localeCompare(type)==0){
         $("#messageShare")
-        .html("La categorie "+nom+" est prête pour le partage !"
+        .html("La categorie <i>"+nom+"</i> est prête pour le partage !"
                /*+" L'URL de partage a été copié dans votre presse-papier :)"*/ );
         $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation.php?c="+idC);
         /*var copyText = document.querySelector("#urlShare");
@@ -306,7 +306,7 @@ function openModalShare(type, idC, idQ, nom){
         document.execCommand('copy');*/
     }else{
         $("#messageShare")
-        .html("Le quizz "+nom+" est prête pour le partage !"
+        .html("Le quizz <i>"+nom+"</i> est prête pour le partage !"
                /*+" L'URL de partage a été copié dans votre presse-papier :)"*/ );
         $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation.php?c="+idC+"&q="+idQ);
     }
