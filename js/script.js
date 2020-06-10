@@ -350,7 +350,6 @@ function generateQuestionReponses(){
                     var R = tab[i][q][r];
                     var idR = addResponse(idQ);
                     $('#q_'+idQ+'_'+idR).val((R.reponse).replaceAll("&quot;", '"'));
-                    console.log(R.reponse);
                     if((R.correct).localeCompare("1")==0) changeCorrect($('#bq_'+idQ+'_'+idR), idQ, idR);
                 }
             }
