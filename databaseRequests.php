@@ -382,7 +382,7 @@
   }
 
   function prepareDataForQuizzCreation(){
-  	$aray = [];
+  	$array = [];
   	foreach ($_POST as $name => $val)
 	{
 		//échapper les ' et les "
