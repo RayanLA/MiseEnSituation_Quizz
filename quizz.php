@@ -60,7 +60,7 @@
 
 
 	    echo '<div class="row m-2 ">
-	    		<button type="button" class="btn btn-primary shareCategorie" onclick="openModalShare(\'C\', '.$_POST['idQuizz'].', null, \''.$_POST['idCategorie'].'\')">Partager ce Quizz</button> 
+	    		<button type="button" class="btn btn-primary shareCategorie" onclick="openModalShare(\'Q\', '.$_POST['idCategorie'].', '.$_POST['idQuizz'].', \''.$array['nom'].'\')">Partager ce Quizz</button> 
   					</div>
   					</div>';
 
