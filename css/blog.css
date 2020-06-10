@@ -181,6 +181,7 @@ h1, h2, h3, h4, h5, h6 {
 .thumbnailImage{
   overflow: hidden;
   object-fit: contain;
+  flex-grow: 0;
 }
 
 .VraiFaux{
@@ -316,4 +317,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 .positionJeuAnonyme{
   vertical-align: middle;
+}
+
+.cardHeight{
+  min-height: 20em;
+}
+
+
+.contener{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
 }

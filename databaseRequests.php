@@ -427,7 +427,7 @@
 
 	function generateCardQuizz($row){
 		echo("<div class=\"col-md-6\">");
-      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
+      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative cardHeight\">");
       echo("<div class=\"col p-4 d-flex flex-column position-static\">");
       echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
       
@@ -469,8 +469,10 @@
         </form>');
       echo '';
       echo("</div>");
-      echo("<div class=\"col-auto d-none d-lg-block\">");
-      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo("<div class=\"col-auto d-none d-lg-block containerThumbnail\">");
+      echo '<div class="contener">';
+      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"300\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo '</div>';
       echo("</div>");
       echo("</div>");
       echo("</div>");
