@@ -337,7 +337,7 @@ function redirectToQuizz(idC, idQ){
 
 function redirectToCategorie(id, name){
     $("#formForSearch").append('<form action="QuizzParCategorie.php" method="post">'
-                    +'<input name="idCategorie" id="numquestion" value="'+id+'" class="hide"/>'
+                    +'<input name="idCategorie" value="'+id+'" class="hide"/>'
                     +'<input name="nomCategorie" value="'+name+'" class="hide">'
                     +'<button type="submit" id="formSearchButton">'
                   +'</form>');
