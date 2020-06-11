@@ -549,7 +549,8 @@
 							FROM (SELECT  *, COUNT(*) as nb_repet 
 							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
 							                    FROM questions as K, reponses as R, quizz as Q
-							                    WHERE Q.id = K.id_quizz and R.id_question = K.id) as S
+							                    WHERE Q.id = K.id_quizz AND R.id_question = K.id
+							                    AND R.correct=1) as S
 							        GROUP BY id_quizz 
 							        HAVING   COUNT(*) >=1 
 							        ORDER BY nb_repet DESC) as R, 
