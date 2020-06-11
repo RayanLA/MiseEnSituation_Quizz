@@ -53,18 +53,27 @@ function getUrlImage(input){
     return "";
 }
 
+function deleteQuestionContener(id){
+    console.log("delete");
+    $("#questionContener_"+id).remove();
+}
+
+
 function addQuestion(){
 
     var id = questionReponse.length;
 
     $(".questionContener")
     .append(
-        '<div  class="p-3  border rounded mb-4">'
+        '<div  class="p-3  border rounded mb-4" id="questionContener_'+(id)+'">'
             +'<div class=" input-group mb-3">'
                 +'<div class="input-group-prepend">'
                     +'<span class="input-group-text" id="basic-addon1">Question '+(id+1)+': </span>'
                 +'</div>'
                 +'<input type="text" class="form-control" id="question_'+id+'" name="question_'+id+'">'
+                +'<button class="btn btn-outline-secondary btn-outline-danger" type="button" onclick="deleteQuestionContener('+id+')">'
+                +'<i class="far fa-trash-alt"></i>'
+                +'</button>'
                 +'<button class="btn btn-outline-secondary btn-outline-success addResponse" type="button" onclick="addResponse('+id+')">'
                 +'<i class="fas fa-plus-circle"></i>'
                 +'</button>'
@@ -289,7 +298,7 @@ function showStatRubrique(id){
 function openModalShare(type, idC, idQ, nom){
     if(("C").localeCompare(type)==0){
         $("#messageShare")
-        .html("La categorie "+nom+" est prête pour le partage !"
+        .html("La categorie <i>"+nom+"</i> est prête pour le partage !"
                /*+" L'URL de partage a été copié dans votre presse-papier :)"*/ );
         $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation.php?c="+idC);
         /*var copyText = document.querySelector("#urlShare");
@@ -297,7 +306,7 @@ function openModalShare(type, idC, idQ, nom){
         document.execCommand('copy');*/
     }else{
         $("#messageShare")
-        .html("Le quizz "+nom+" est prête pour le partage !"
+        .html("Le quizz <i>"+nom+"</i> est prête pour le partage !"
                /*+" L'URL de partage a été copié dans votre presse-papier :)"*/ );
         $("#urlShare").val("https://www.rayan-la-roze.fr/Quizz4A/invitation.php?c="+idC+"&q="+idQ);
     }
@@ -345,11 +354,11 @@ function generateQuestionReponses(){
         for (var i in tab) {
             for(var q in tab[i]){
                 var idQ = addQuestion();
-                $("#question_"+idQ).val(q);
+                $("#question_"+idQ).val((q).replaceAll("&quot;", '"'));
                 for(var r in tab[i][q]){
                     var R = tab[i][q][r];
                     var idR = addResponse(idQ);
-                    $('#q_'+idQ+'_'+idR).val(R.reponse);
+                    $('#q_'+idQ+'_'+idR).val((R.reponse).replaceAll("&quot;", '"'));
                     if((R.correct).localeCompare("1")==0) changeCorrect($('#bq_'+idQ+'_'+idR), idQ, idR);
                 }
             }

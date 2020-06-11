@@ -382,12 +382,12 @@
   }
 
   function prepareDataForQuizzCreation(){
-  	$aray = [];
+  	$array = [];
   	foreach ($_POST as $name => $val)
 	{
 		//échapper les ' et les "
-		$val = str_replace("\"", "&quot;", $val);
-		$val = str_replace("'", "&#039;", $val);
+		$val = str_replace("\"", "&quot;", $val);/*
+		$val = str_replace("'", "&apos;", $val);*/
 
 		/*Question*/
 		if( substr($name, 0, strlen("question_")) == "question_" ){
@@ -427,7 +427,7 @@
 
 	function generateCardQuizz($row){
 		echo("<div class=\"col-md-6\">");
-      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">");
+      echo("<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative cardHeight\">");
       echo("<div class=\"col p-4 d-flex flex-column position-static\">");
       echo("<strong class=\"d-inline-block mb-2 text-primary\">".$row["cnom"]."</strong>");
       
@@ -469,8 +469,10 @@
         </form>');
       echo '';
       echo("</div>");
-      echo("<div class=\"col-auto d-none d-lg-block\">");
-      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"250\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo("<div class=\"col-auto d-none d-lg-block containerThumbnail\">");
+      echo '<div class="contener">';
+      echo("<img class=\"bd-placeholder-img thumbnailImage\" width=\"200\" height=\"300\" focusable=\"false\" role=\"img\" aria-label=\"Placeholder: Thumbnail\" src='".$row["url"]."'></img>");
+      echo '</div>';
       echo("</div>");
       echo("</div>");
       echo("</div>");
@@ -547,7 +549,8 @@
 							FROM (SELECT  *, COUNT(*) as nb_repet 
 							        FROM (SELECT id_quizz, Q.nom as quizz, K.question as Question, reponse  
 							                    FROM questions as K, reponses as R, quizz as Q
-							                    WHERE Q.id = K.id_quizz and R.id_question = K.id) as S
+							                    WHERE Q.id = K.id_quizz AND R.id_question = K.id
+							                    AND R.correct=1) as S
 							        GROUP BY id_quizz 
 							        HAVING   COUNT(*) >=1 
 							        ORDER BY nb_repet DESC) as R, 
@@ -802,6 +805,13 @@
 		}
 	}
 
+	//Convert HTML code
+	function cHTML($s){
+		str_replace("&quot;", "\"", $s);/*
+		str_replace("&apos;", "'", $s);*/
+		return $s;
+	}
+
 	function getQuestionsReponse($idC, $idQ){
 		try {
 			$res=[];
@@ -812,7 +822,8 @@
 							WHERE Q.id=".$idQ." AND Q.id_categorie=".$idC." AND q.id_quizz=Q.id AND R.id_question=q.id ";
 
 			if($result = $conn->query($requestSQL)){
-	 			 while (($row = $result->fetch_assoc())) {
+	 			 while (($row = $result->fetch_assoc())) {/*
+	 			 	foreach ($row as $key => $value) { $row[$key] = cHTML($value); }*/
 	 			 	if(!isset($res[$row['question']])) $res[$row['question']] = [];
 	 			 	array_push($res[$row['question']], ["reponse"=>$row['reponse'], "correct"=>$row['correct']]);
             	}

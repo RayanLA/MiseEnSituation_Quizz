@@ -127,7 +127,7 @@
                 <h3 class="pb-4 mb-4 font-italic border-bottom">Pourcentage de bonne réponse par quizz : </h3>
              </div>
 
-             <div class="row">
+             <div class="row minWidthRowCharts">
 
               <?php 
                foreach ($playedQuizzScore as $key => $value) {
@@ -137,7 +137,7 @@
                           <h5 class="card-title">'.$key.'</h5>
                             <div class="card">
                               <div class="card-body">
-                                <canvas id="doughnutChart_'.$value[0].'"  ></canvas>
+                                <canvas id="doughnutChart_'.$value[0].'" class="canvasChart"  ></canvas>
                               </div>
                             </div>
                           </div>

@@ -62,12 +62,14 @@
 
     echo '<script type="text/javascript">
       function validateForm(e){e.closest("form").submit();}
-      function openAuthModal(){ document.getElementById("modalAuth").click(); }
+      function openAuthModal(){ $(function(){$("modalAuth").click();}); }
     </script>';
       if(isset($_SESSION) && isset($_SESSION['login'])){
          echo '
          <div class="d-flex justify-content-center">
-        <button class="btn btn-lg btn-primary" onclick="creationQuizz.php">Créer un Quizz</button>
+         <form action="creationQuizz.php" method="post">
+            <button class="btn btn-lg btn-primary" type="submit">Créer un Quizz</button>
+        </form>
         </div>
         </br>
         </br>

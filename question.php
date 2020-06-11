@@ -55,10 +55,10 @@
             
             echo '
                 <div class="input-group mb-3" onclick="checkInput('.$answcount.')">
-                  <div class="input-group-prepend">
+                  <div class="input-group-prepend pointeur">
                     <div class="input-group-text" id="grText_'.$answcount.'"></div>
                   </div>
-                  <input readonly="readonly" type="text" class="form-control questionInput simplebox" value="'.$row2["reponse"].'" >
+                  <input readonly="readonly" type="text" class="form-control questionInput simplebox pointeur" value="'.$row2["reponse"].'" >
                 </div>
                 <input type="checkbox" name="question[]" value="'.$answcount.'" id="checkbox_'.$answcount.'" class="hide">
             ';
