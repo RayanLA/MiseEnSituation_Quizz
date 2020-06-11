@@ -26,6 +26,17 @@ $(function(){
     });
 });
 
+$(function(){
+    $(".news-text").each(function () {
+        len=$(this).text().length;
+        str= $(this).text().substr(0,70);
+        lastIndexOf = str.lastIndexOf(" "); 
+        if(len>70) {
+            $(this).text(str.substr(0, lastIndexOf) + '…');
+        }
+    });
+    });
+
 function getUrlImage(input){
     if(input!=""){
         var urlAPI = "https://www.googleapis.com/customsearch/v1?key=AIzaSyCeLjOtZ7FVDuS7nbUIG-ZjzJuwHV9R3QQ&cx=001962025405331380680%3Abxstdd8lquo&q="+encodeURI(input)+"&searchType=image"
